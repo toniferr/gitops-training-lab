@@ -1,0 +1,35 @@
+# Local secrets and workstation state
+.env
+.env.*
+*.token
+*.pem
+*.key
+.kube/
+kubeconfig
+kubeconfig.yaml
+
+# Claude Code personal settings (per-machine tool permissions, not shared)
+.claude
+
+# Build and IDE output
+**/target/
+*.jar
+*.class
+.idea/
+.vscode/
+*.iml
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Office lock files (created while a file is open in Word/Excel/PowerPoint)
+~$*.pptx
+~$*.docx
+~$*.xlsx
+
+# OS files
+Thumbs.db
+desktop.ini
+.DS_Store
