@@ -44,25 +44,7 @@ kubectl get all -n java-api
 > - [Recorrido por el clúster Kind](repo:docs/es/reference/recorrido-cluster-kind.md)
 > - [Bootstrap de Flux con GitHub](https://fluxcd.io/flux/installation/bootstrap/github/)
 
-## Tres repositorios, tres responsabilidades {Contexto · 0–5 min}
-
-Los cambios en un clúster deben ser **repetibles y auditables**. Por eso separamos quién explica, quién decide qué corre en el clúster y quién describe la aplicación.
-
-```steps
-gitops-training-lab | Guía didáctica: explicaciones, guiones, ejercicios y validación. **No** es fuente de verdad del clúster.
-cac-gitops-platform | Bootstrap de Flux, namespaces y qué aplicaciones observa el clúster.
-java-api-gitops | Código Spring Boot, `Dockerfile` y los manifiestos Kubernetes de la API.
-```
-
-> [!NOTES]
-> Idea a fijar: el repo de plataforma es la fuente de verdad del clúster; este repo solo enseña. Editar una copia de un manifiesto aquí no cambia nada en el clúster.
-
-> [!DOCS]
-> - [Ruta de aprendizaje](repo:docs/es/00-ruta-aprendizaje.md)
-> - [`cac-gitops-platform`, fichero a fichero](repo:references/es/cac-gitops-platform.md)
-> - [`java-api-gitops`, fichero a fichero](repo:references/es/java-api-gitops.md)
-
-## ¿Qué es un clúster de Kubernetes? {Teoría · 5–12 min}
+## ¿Qué es un clúster de Kubernetes? {Teoría · 0–5 min}
 
 Un **clúster** es un grupo de máquinas, llamadas **nodos**, que trabajan como si fueran una sola. [Kubernetes](https://kubernetes.io/docs/concepts/overview/) es el software que las coordina: tú le dices *qué* quieres ejecutar, y él decide *dónde* y se encarga de que siga funcionando.
 
@@ -77,7 +59,7 @@ Un **clúster** es un grupo de máquinas, llamadas **nodos**, que trabajan como 
 > - [Recorrido por el clúster Kind](repo:docs/es/reference/recorrido-cluster-kind.md)
 > - [Kind](https://kind.sigs.k8s.io/)
 
-## Kubernetes no ejecuta órdenes: reconcilia estado {Teoría · 5–12 min}
+## Kubernetes no ejecuta órdenes: reconcilia estado {Teoría · 0–5 min}
 
 Esta idea prepara todo lo demás: GitOps usa **el mismo patrón**, solo que con Git como entrada estable.
 
@@ -98,20 +80,23 @@ El controlador repite este ciclo sin fin: comparar `spec` con `status`, y actuar
 > - [Kubernetes: controladores](https://kubernetes.io/docs/concepts/architecture/controller/)
 > - [Kubernetes: objetos](https://kubernetes.io/docs/concepts/overview/working-with-objects/)
 
-## Vocabulario de la API Java {Teoría · 5–12 min}
+## Los objetos básicos de cualquier aplicación {Teoría · 5–12 min}
 
-Antes de hablar de Flux, cada objeto debe poder explicarse con una frase.
+Da igual que sea una API en Java, un servicio en Python o un frontend: Kubernetes describe casi cualquier aplicación con los mismos objetos. Lo que cambia es la imagen del contenedor; lo que la rodea, no.
 
 ```cards
-[Namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) | Dónde viven los recursos de `java-api`. Debe existir antes que el Deployment.
-[Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) | `api-java-gitops`: réplicas, estrategia de rollout y rollback.
-[Service](https://kubernetes.io/docs/concepts/services-networking/service/) | ClusterIP `java-api`: IP estable y balanceo hacia los Pods.
-[ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) | `java-api-config`: configuración fuera de la imagen, vía variables de entorno.
+[Namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) | Un espacio con nombre dentro del clúster que agrupa y aísla los recursos de una aplicación o de un equipo.
+[Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) | Qué imagen ejecutar y cuántas copias (réplicas), y cómo actualizarlas sin cortar el servicio.
+[Service](https://kubernetes.io/docs/concepts/services-networking/service/) | Una dirección estable que reparte el tráfico entre los Pods, aunque estos se creen y se destruyan.
+[ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) | La configuración fuera de la imagen (URLs, opciones…), como variables de entorno o ficheros. Los datos sensibles van en un [Secret](https://kubernetes.io/docs/concepts/configuration/secret/).
 ```
+
+> [!NOTES]
+> Pregunta qué tecnologías usan en sus equipos: todas encajan en este patrón. Los objetos concretos de nuestra API Java aparecen más adelante, en «Tres repositorios».
 
 > [!DOCS]
 > - [Conceptos de Kubernetes](repo:docs/es/reference/conceptos-kubernetes.md)
-> - [Los manifiestos de `java-api-gitops`](repo:references/es/java-api-gitops.md)
+> - [Kubernetes: Secrets](https://kubernetes.io/docs/concepts/configuration/secret/)
 
 ## Anatomía de un manifiesto {Teoría · 5–12 min}
 
@@ -121,9 +106,9 @@ Todo objeto cuenta la misma historia: quién soy, qué quiero, qué está ocurri
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-java-gitops
+  name: mi-app
   labels:
-    app.kubernetes.io/name: java-api
+    app.kubernetes.io/name: mi-app
 spec:
   replicas: 2            # lo que edita Git
 status:
@@ -145,7 +130,7 @@ status | Estado **observado** por el clúster — lo que reporta `kubectl`.
 > - [Labels y selectores](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
 > - [Conceptos de Kubernetes](repo:docs/es/reference/conceptos-kubernetes.md)
 
-## GitOps: Git como contrato operativo {Teoría · 12–18 min}
+## GitOps: Git como contrato operativo {Teoría · 5–12 min}
 
 Git deja de ser solo historial y pasa a ser la entrada que el clúster obedece.
 
@@ -169,7 +154,27 @@ Reconciliación continua | El agente compara y corrige el drift en cada interval
 > - [Principios de OpenGitOps](https://opengitops.dev/)
 > - [Flux: conceptos básicos](https://fluxcd.io/flux/concepts/)
 
-## Cómo encaja todo: Git, Flux y Kubernetes {Teoría · 12–18 min}
+## Tres repositorios, tres responsabilidades {Nuestro escenario · 12–18 min}
+
+Pasamos de la teoría a nuestro escenario. Los cambios en un clúster deben ser **repetibles y auditables**; por eso separamos quién explica, quién decide qué corre en el clúster y quién describe la aplicación.
+
+```steps
+gitops-training-lab | Guía didáctica: explicaciones, guiones, ejercicios y validación. **No** es fuente de verdad del clúster.
+cac-gitops-platform | Bootstrap de Flux, namespaces y qué aplicaciones observa el clúster.
+java-api-gitops | Código Spring Boot, `Dockerfile` y los manifiestos Kubernetes de la API.
+```
+
+Los manifiestos de `java-api-gitops/k8s/` son justo los objetos de la teoría: el Deployment `api-java-gitops`, el Service `java-api` y el ConfigMap `java-api-config`, dentro del namespace `java-api` que crea la plataforma.
+
+> [!NOTES]
+> Idea a fijar: el repo de plataforma es la fuente de verdad del clúster; este repo solo enseña. Editar una copia de un manifiesto aquí no cambia nada en el clúster.
+
+> [!DOCS]
+> - [Ruta de aprendizaje](repo:docs/es/00-ruta-aprendizaje.md)
+> - [`cac-gitops-platform`, fichero a fichero](repo:references/es/cac-gitops-platform.md)
+> - [`java-api-gitops`, fichero a fichero](repo:references/es/java-api-gitops.md)
+
+## Cómo encaja todo: Git, Flux y Kubernetes {Nuestro escenario · 12–18 min}
 
 [Flux](https://fluxcd.io/flux/) es un conjunto de controladores que viven **dentro** del clúster. Vigilan tus repositorios de Git y aplican en Kubernetes lo que encuentran, una y otra vez. Tú solo cambias Git.
 
@@ -183,7 +188,7 @@ Reconciliación continua | El agente compara y corrige el drift en cada interval
 > - [Arquitectura de Flux](repo:docs/es/reference/arquitectura-flux.md)
 > - [Recorrido post-bootstrap](repo:docs/es/reference/recorrido-post-bootstrap.md)
 
-## Flux en este laboratorio {Teoría · 12–18 min}
+## Flux en este laboratorio {Nuestro escenario · 12–18 min}
 
 Flux se entiende mejor como controladores pequeños y especializados. Dos hacen todo el trabajo hoy:
 
