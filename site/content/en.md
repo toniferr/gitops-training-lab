@@ -62,6 +62,21 @@ java-api-gitops | Spring Boot source, `Dockerfile`, and the API's Kubernetes man
 > - [`cac-gitops-platform`, file by file](repo:references/en/cac-gitops-platform.md)
 > - [`java-api-gitops`, file by file](repo:references/en/java-api-gitops.md)
 
+## What is a Kubernetes cluster? {Theory · 5–12 min}
+
+A **cluster** is a group of machines, called **nodes**, that work as if they were one. [Kubernetes](https://kubernetes.io/docs/concepts/overview/) is the software that coordinates them: you tell it *what* you want to run, and it decides *where* and keeps it running.
+
+![Kubernetes cluster: a control plane with kube-apiserver, etcd, scheduler and controller-manager, and two worker nodes with kubelet, containerd and Pods](diagrams/cluster.en.svg "A Pod is one or more containers that run together: the smallest unit in Kubernetes. In this lab, kind simulates the whole cluster on your laptop: each node is a Docker container inside WSL2.")
+
+> [!NOTES]
+> Analogy: the control plane is an airport's control tower and the nodes are the runways; nothing lands without going through the tower (`kube-apiserver`). Don't go into every component: it's enough to know they exist and what role they play. Point at the "You or Flux" box: later on they'll see that, with GitOps, whoever talks to the cluster is Flux.
+
+> [!DOCS]
+> - [Kubernetes: cluster components](https://kubernetes.io/docs/concepts/overview/components/)
+> - [Kubernetes: Pods](https://kubernetes.io/docs/concepts/workloads/pods/)
+> - [Kind cluster tour](repo:docs/en/reference/kind-cluster-tour.md)
+> - [Kind](https://kind.sigs.k8s.io/)
+
 ## Kubernetes doesn't run commands: it reconciles state {Theory · 5–12 min}
 
 This idea sets up everything else: GitOps uses **the same pattern**, just with Git as a stable input.
@@ -153,6 +168,20 @@ Continuously reconciled | The agent compares and corrects drift every interval.
 > [!DOCS]
 > - [OpenGitOps principles](https://opengitops.dev/)
 > - [Flux: core concepts](https://fluxcd.io/flux/concepts/)
+
+## How it all fits together: Git, Flux and Kubernetes {Theory · 12–18 min}
+
+[Flux](https://fluxcd.io/flux/) is a set of controllers that live **inside** the cluster. They watch your Git repositories and apply what they find to Kubernetes, again and again. You only change Git.
+
+![Git, Flux and Kubernetes: you push to GitHub; source-controller fetches the repositories; kustomize-controller applies the manifests to kube-apiserver; Kubernetes runs the java-api Deployment, Pods and Service](diagrams/gitops-flux.en.svg "If someone changes the cluster by hand, on the next cycle Flux brings it back to what Git says.")
+
+> [!NOTES]
+> Walk through the drawing following a single change, `replicas: 2 → 1`: you edit it and push (bottom left), `source-controller` fetches it, `kustomize-controller` applies it, and Kubernetes keeps a single Pod. It's exactly what you'll do live in Demo 1.
+
+> [!DOCS]
+> - [Flux: components](https://fluxcd.io/flux/components/)
+> - [Flux architecture](repo:docs/en/reference/flux-architecture.md)
+> - [Post-bootstrap tour](repo:docs/en/reference/post-bootstrap-tour.md)
 
 ## Flux in this lab {Theory · 12–18 min}
 

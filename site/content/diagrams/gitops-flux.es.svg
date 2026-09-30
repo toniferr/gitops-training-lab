@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400">
+  <title>Cómo encajan Git, Flux y Kubernetes</title>
+  <!-- Standalone colours (e.g. viewed on GitHub). The training page strips this block and applies its theme. -->
+  <style>
+    .dg-bg { fill: #ffffff; }
+    .dg-frame { fill: none; stroke: #c3c9d4; stroke-width: 1.5; stroke-dasharray: 6 5; }
+    .dg-grp { stroke-width: 1.5; }
+    .k8s { fill: #e9eeff; stroke: #3b5bdb; }
+    .node { fill: #e5f5ed; stroke: #1f8a5b; }
+    .flux { fill: #f2ecff; stroke: #7a4fd6; }
+    .git { fill: #fdf1e2; stroke: #b25e09; }
+    .dg-box { fill: #ffffff; stroke: #d5dae3; stroke-width: 1.2; }
+    .dg-box.hl { stroke: #3b5bdb; stroke-width: 2; }
+    .dg-box.pod { stroke: #1f8a5b; stroke-width: 1.5; }
+    .dg-note { fill: none; stroke: #c3c9d4; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .dg-arrow { fill: none; stroke: #5a6376; stroke-width: 1.8; }
+    .dg-head { fill: #5a6376; }
+    text { font-family: Inter, system-ui, sans-serif; fill: #151922; }
+    .dg-t { font-size: 17px; font-weight: 600; }
+    .dg-s { font-size: 13px; fill: #5a6376; }
+    .dg-d { font-size: 12.5px; fill: #5a6376; }
+    .dg-n { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 14px; font-weight: 600; }
+    .dg-l { font-size: 12.5px; font-weight: 600; fill: #3b5bdb; paint-order: stroke; stroke: #ffffff; stroke-width: 4px; }
+  </style>
+  <defs>
+    <marker id="dgg-head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="dg-head" d="M0 0L10 5L0 10z"/>
+    </marker>
+  </defs>
+  <rect class="dg-bg" width="960" height="400"/>
+
+  <!-- Git: the desired state -->
+  <rect class="dg-grp git" x="10" y="56" width="260" height="200" rx="14"/>
+  <text class="dg-t" x="28" y="84">GitHub</text>
+  <text class="dg-s" x="28" y="104">estado deseado (Git)</text>
+
+  <rect class="dg-box" x="28" y="118" width="224" height="54" rx="10"/>
+  <text class="dg-n" x="44" y="140">cac-gitops-platform</text>
+  <text class="dg-d" x="44" y="158">qué corre en el clúster</text>
+
+  <rect class="dg-box" x="28" y="192" width="224" height="54" rx="10"/>
+  <text class="dg-n" x="44" y="214">java-api-gitops</text>
+  <text class="dg-d" x="44" y="232">la app y sus manifiestos</text>
+
+  <!-- You change Git, never the cluster -->
+  <rect class="dg-box" x="10" y="300" width="260" height="64" rx="12"/>
+  <text class="dg-t" x="28" y="327">Tú</text>
+  <text class="dg-s" x="28" y="349">editas YAML: commit + push</text>
+  <path class="dg-arrow" d="M140 300V260" marker-end="url(#dgg-head)"/>
+  <text class="dg-l" x="150" y="284">push</text>
+
+  <!-- Cluster -->
+  <rect class="dg-frame" x="300" y="10" width="650" height="380" rx="18"/>
+  <text class="dg-t" x="320" y="40">Clúster de Kubernetes (kind)</text>
+
+  <!-- Flux -->
+  <rect class="dg-grp flux" x="320" y="56" width="250" height="200" rx="14"/>
+  <text class="dg-t" x="338" y="84">Flux</text>
+  <text class="dg-s" x="338" y="104">namespace flux-system</text>
+
+  <rect class="dg-box" x="338" y="118" width="214" height="54" rx="10"/>
+  <text class="dg-n" x="354" y="140">source-controller</text>
+  <text class="dg-d" x="354" y="158">descarga Git cada 1 min</text>
+
+  <rect class="dg-box" x="338" y="192" width="214" height="54" rx="10"/>
+  <text class="dg-n" x="354" y="214">kustomize-controller</text>
+  <text class="dg-d" x="354" y="232">aplica y corrige cada 5 min</text>
+
+  <path class="dg-arrow" d="M445 172V190" marker-end="url(#dgg-head)"/>
+
+  <!-- Flux pulls from Git -->
+  <path class="dg-arrow" d="M252 145H336" marker-end="url(#dgg-head)"/>
+  <path class="dg-arrow" d="M252 219C296 219 292 158 336 158" marker-end="url(#dgg-head)"/>
+  <text class="dg-l" x="284" y="136" text-anchor="middle">pull</text>
+
+  <!-- Pull, not push -->
+  <rect class="dg-note" x="610" y="56" width="320" height="116" rx="12"/>
+  <text class="dg-t" x="628" y="84">Pull, no push</text>
+  <text class="dg-s" x="628" y="108">Nadie aplica cambios desde fuera:</text>
+  <text class="dg-s" x="628" y="128">Flux, desde dentro, lee Git</text>
+  <text class="dg-s" x="628" y="148">y lo aplica una y otra vez.</text>
+
+  <!-- Kubernetes API -->
+  <rect class="dg-box hl" x="610" y="192" width="320" height="54" rx="10"/>
+  <text class="dg-n" x="626" y="214">kube-apiserver</text>
+  <text class="dg-d" x="626" y="232">guarda el estado deseado en etcd</text>
+
+  <path class="dg-arrow" d="M552 219H608" marker-end="url(#dgg-head)"/>
+  <text class="dg-l" x="580" y="210" text-anchor="middle">apply</text>
+
+  <path class="dg-arrow" d="M770 246V274" marker-end="url(#dgg-head)"/>
+  <text class="dg-l" x="782" y="265">Kubernetes lo ejecuta</text>
+
+  <!-- The running application -->
+  <rect class="dg-grp node" x="320" y="276" width="610" height="100" rx="14"/>
+  <text class="dg-n" x="338" y="300">namespace java-api</text>
+
+  <rect class="dg-box" x="338" y="312" width="180" height="50" rx="10"/>
+  <text class="dg-n" x="354" y="333">Deployment</text>
+  <text class="dg-d" x="354" y="351">2 réplicas</text>
+
+  <rect class="dg-box pod" x="534" y="312" width="76" height="50" rx="10"/>
+  <text class="dg-n" x="572" y="342" text-anchor="middle">Pod</text>
+  <rect class="dg-box pod" x="620" y="312" width="76" height="50" rx="10"/>
+  <text class="dg-n" x="658" y="342" text-anchor="middle">Pod</text>
+
+  <rect class="dg-box" x="712" y="312" width="200" height="50" rx="10"/>
+  <text class="dg-n" x="728" y="333">Service</text>
+  <text class="dg-d" x="728" y="351">balancea a los Pods</text>
+</svg>

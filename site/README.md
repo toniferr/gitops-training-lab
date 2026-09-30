@@ -35,6 +35,7 @@ Standard GitHub Markdown, plus a few conventions:
 | `> [!DOCS]` followed by a `> - [text](url)` list | "Further reading" links at the foot of the section: the lab's reference docs (`repo:` links) and official documentation, for anyone who wants to go deeper. Put it last in the section. |
 | ` ```flow ` | Boxes joined by arrows. One `Title \| text` per line. |
 | ` ```cards ` / ` ```steps ` | A card grid; `steps` numbers the cards. One `Title \| text` per line; both parts accept inline Markdown. |
+| `![description](diagrams/x.es.svg "caption")` | A diagram from `content/diagrams/`. SVGs are inlined into the page so they follow the light/dark theme: draw them with the `dg-*` classes (see `assets/style.css` and the existing diagrams). The description is read by screen readers; the optional title becomes the caption. Keep one file per language with identical geometry. |
 | `[text](repo:docs/es/…)` | Link to that file on GitHub, **on the branch being viewed**. Use it for every link into this repository. |
 
 Keep it to what is shown during the session. Step-by-step detail belongs in the learner guide and the `docs/*/reference/` deep dives, which the page links to.

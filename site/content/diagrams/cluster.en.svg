@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450">
+  <title>Kubernetes cluster</title>
+  <!-- Standalone colours (e.g. viewed on GitHub). The training page strips this block and applies its theme. -->
+  <style>
+    .dg-bg { fill: #ffffff; }
+    .dg-frame { fill: none; stroke: #c3c9d4; stroke-width: 1.5; stroke-dasharray: 6 5; }
+    .dg-grp { stroke-width: 1.5; }
+    .k8s { fill: #e9eeff; stroke: #3b5bdb; }
+    .node { fill: #e5f5ed; stroke: #1f8a5b; }
+    .dg-box { fill: #ffffff; stroke: #d5dae3; stroke-width: 1.2; }
+    .dg-box.hl { stroke: #3b5bdb; stroke-width: 2; }
+    .dg-box.pod { stroke: #1f8a5b; stroke-width: 1.5; }
+    .dg-arrow { fill: none; stroke: #5a6376; stroke-width: 1.8; }
+    .dg-head { fill: #5a6376; }
+    text { font-family: Inter, system-ui, sans-serif; fill: #151922; }
+    .dg-t { font-size: 17px; font-weight: 600; }
+    .dg-s { font-size: 13px; fill: #5a6376; }
+    .dg-d { font-size: 12.5px; fill: #5a6376; }
+    .dg-n { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 14px; font-weight: 600; }
+  </style>
+  <defs>
+    <marker id="dgc-head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="dg-head" d="M0 0L10 5L0 10z"/>
+    </marker>
+  </defs>
+  <rect class="dg-bg" width="960" height="450"/>
+
+  <!-- Who talks to the cluster -->
+  <rect class="dg-box" x="10" y="119" width="124" height="68" rx="12"/>
+  <text class="dg-t" x="26" y="148">You or Flux</text>
+  <text class="dg-d" x="26" y="170">request changes</text>
+
+  <!-- Cluster -->
+  <rect class="dg-frame" x="160" y="10" width="790" height="430" rx="18"/>
+  <text class="dg-t" x="180" y="40">Kubernetes cluster</text>
+
+  <!-- Control plane -->
+  <rect class="dg-grp k8s" x="180" y="58" width="300" height="372" rx="14"/>
+  <text class="dg-t" x="198" y="86">Control plane</text>
+  <text class="dg-s" x="198" y="106">the brain: decides and watches</text>
+
+  <rect class="dg-box hl" x="198" y="122" width="264" height="62" rx="10"/>
+  <text class="dg-n" x="214" y="148">kube-apiserver</text>
+  <text class="dg-d" x="214" y="168">the front door</text>
+
+  <rect class="dg-box" x="198" y="194" width="264" height="62" rx="10"/>
+  <text class="dg-n" x="214" y="220">etcd</text>
+  <text class="dg-d" x="214" y="240">the cluster's memory</text>
+
+  <rect class="dg-box" x="198" y="266" width="264" height="62" rx="10"/>
+  <text class="dg-n" x="214" y="292">scheduler</text>
+  <text class="dg-d" x="214" y="312">picks a node for each Pod</text>
+
+  <rect class="dg-box" x="198" y="338" width="264" height="62" rx="10"/>
+  <text class="dg-n" x="214" y="364">controller-manager</text>
+  <text class="dg-d" x="214" y="384">compares desired vs. actual</text>
+
+  <!-- Worker node 1 -->
+  <rect class="dg-grp node" x="560" y="58" width="370" height="178" rx="14"/>
+  <text class="dg-t" x="578" y="86">Worker node</text>
+  <text class="dg-s" x="578" y="106">the muscle: runs the Pods</text>
+
+  <rect class="dg-box" x="578" y="122" width="160" height="48" rx="10"/>
+  <text class="dg-n" x="594" y="143">kubelet</text>
+  <text class="dg-d" x="594" y="161">node agent</text>
+
+  <rect class="dg-box" x="578" y="178" width="160" height="48" rx="10"/>
+  <text class="dg-n" x="594" y="199">containerd</text>
+  <text class="dg-d" x="594" y="217">runs containers</text>
+
+  <rect class="dg-box pod" x="756" y="122" width="74" height="48" rx="10"/>
+  <text class="dg-n" x="793" y="151" text-anchor="middle">Pod</text>
+  <rect class="dg-box pod" x="840" y="122" width="74" height="48" rx="10"/>
+  <text class="dg-n" x="877" y="151" text-anchor="middle">Pod</text>
+  <rect class="dg-box pod" x="756" y="178" width="74" height="48" rx="10"/>
+  <text class="dg-n" x="793" y="207" text-anchor="middle">Pod</text>
+
+  <!-- Worker node 2 -->
+  <rect class="dg-grp node" x="560" y="252" width="370" height="178" rx="14"/>
+  <text class="dg-t" x="578" y="280">Worker node</text>
+  <text class="dg-s" x="578" y="300">the muscle: runs the Pods</text>
+
+  <rect class="dg-box" x="578" y="316" width="160" height="48" rx="10"/>
+  <text class="dg-n" x="594" y="337">kubelet</text>
+  <text class="dg-d" x="594" y="355">node agent</text>
+
+  <rect class="dg-box" x="578" y="372" width="160" height="48" rx="10"/>
+  <text class="dg-n" x="594" y="393">containerd</text>
+  <text class="dg-d" x="594" y="411">runs containers</text>
+
+  <rect class="dg-box pod" x="756" y="316" width="74" height="48" rx="10"/>
+  <text class="dg-n" x="793" y="345" text-anchor="middle">Pod</text>
+  <rect class="dg-box pod" x="840" y="316" width="74" height="48" rx="10"/>
+  <text class="dg-n" x="877" y="345" text-anchor="middle">Pod</text>
+
+  <!-- The API server gives every node its instructions -->
+  <path class="dg-arrow" d="M462 153C520 153 520 146 576 146" marker-end="url(#dgc-head)"/>
+  <path class="dg-arrow" d="M462 153C520 153 520 340 576 340" marker-end="url(#dgc-head)"/>
+  <!-- Every request enters through the API server (drawn last so the arrowhead stays on top) -->
+  <path class="dg-arrow" d="M134 153H196" marker-end="url(#dgc-head)"/>
+</svg>

@@ -449,6 +449,40 @@ tr:last-child td { border-bottom: 0; }
   font-size: 0.85em;
 }
 
+/* ---------- Diagrams (inlined SVG, see inlineDiagrams in app.js) ---------- */
+
+.diagram { margin: 8px 0 24px; }
+.diagram-scroll { overflow-x: auto; }
+.diagram svg {
+  display: block;
+  width: 100%;
+  min-width: 640px;
+  height: auto;
+  fill: var(--text);
+  stroke: none;
+  stroke-width: 1;
+}
+.diagram figcaption { margin-top: 10px; color: var(--muted); font-size: 0.9em; line-height: 1.5; }
+.diagram .dg-bg { fill: none; }
+.diagram .dg-frame { fill: none; stroke: var(--border); stroke-width: 1.5; stroke-dasharray: 6 5; }
+.diagram .dg-grp { stroke-width: 1.5; }
+.diagram .k8s { fill: var(--accent-soft); stroke: var(--accent); }
+.diagram .node { fill: var(--tip-soft); stroke: var(--tip); }
+.diagram .flux { fill: var(--notes-soft); stroke: var(--notes); }
+.diagram .git { fill: var(--warn-soft); stroke: var(--warn); }
+.diagram .dg-box { fill: var(--surface); stroke: var(--border); stroke-width: 1.2; }
+.diagram .dg-box.hl { stroke: var(--accent); stroke-width: 2; }
+.diagram .dg-box.pod { stroke: var(--tip); stroke-width: 1.5; }
+.diagram .dg-note { fill: none; stroke: var(--border); stroke-width: 1.2; stroke-dasharray: 4 4; }
+.diagram .dg-arrow { fill: none; stroke: var(--muted); stroke-width: 1.8; }
+.diagram .dg-head { fill: var(--muted); }
+.diagram text { font-family: var(--font); fill: var(--text); }
+.diagram .dg-t { font-size: 17px; font-weight: 600; }
+.diagram .dg-s { font-size: 13px; fill: var(--muted); }
+.diagram .dg-d { font-size: 12.5px; fill: var(--muted); }
+.diagram .dg-n { font-family: var(--mono); font-size: 14px; font-weight: 600; }
+.diagram .dg-l { font-size: 12.5px; font-weight: 600; fill: var(--accent); paint-order: stroke; stroke: var(--bg); stroke-width: 4px; }
+
 /* ---------- Footer ---------- */
 
 .page-footer {
@@ -496,6 +530,8 @@ body.presenting .code pre { font-size: 0.8em; }
 body.presenting .cards { grid-template-columns: repeat(auto-fit, minmax(13em, 1fr)); }
 body.presenting .copy, body.presenting .code .lang { display: none; }
 body.presenting .callout-docs { font-size: 0.75em; }
+body.presenting .diagram svg { max-height: 54vh; }
+body.presenting .diagram figcaption { font-size: 0.75em; }
 body.presenting .callout-docs a { font-size: 1em; }
 
 body.presenting .present-bar {

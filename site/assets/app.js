@@ -81,7 +81,7 @@
 
   function slugify(text, used) {
     const base = text
-      .normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
       .toLowerCase().replace(/<[^>]+>|`/g, '')
       .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'section';
     let slug = base;
@@ -179,6 +179,36 @@
     });
   }
 
+  // SVG images are inlined so their classes pick up the page theme (light/dark).
+  // The file's own <style> only serves standalone viewing (e.g. on GitHub) and is dropped.
+  const svgCache = {};
+
+  async function inlineDiagrams(root) {
+    await Promise.all($$('img[src$=".svg"]', root).map(async (img) => {
+      const src = img.getAttribute('src');
+      svgCache[src] ??= fetchText(src).catch(() => null);
+      const text = await svgCache[src];
+      const svg = text && new DOMParser().parseFromString(text, 'image/svg+xml').documentElement;
+      if (!svg || svg.nodeName !== 'svg') return; // keep the plain <img> as a fallback
+      svg.querySelectorAll('style, script').forEach((n) => n.remove());
+      svg.setAttribute('role', 'img');
+      svg.setAttribute('aria-label', img.alt);
+      const figure = document.createElement('figure');
+      figure.className = 'diagram';
+      const scroll = document.createElement('div');
+      scroll.className = 'diagram-scroll';
+      scroll.append(document.importNode(svg, true));
+      figure.append(scroll);
+      if (img.title) {
+        const caption = document.createElement('figcaption');
+        caption.textContent = img.title;
+        figure.append(caption);
+      }
+      const p = img.parentElement;
+      (p.tagName === 'P' && p.childNodes.length === 1 ? p : img).replaceWith(figure);
+    }));
+  }
+
   // ```flow / ```cards / ```steps: one "Title | text" item per line.
   function customBlock(kind, text) {
     const items = text.split('\n').map((l) => l.trim()).filter(Boolean).map((line) => {
@@ -264,6 +294,7 @@
 
     main.replaceChildren(...els, renderFooter());
     enhance(main);
+    inlineDiagrams(main);
 
     const title = localized(state.meta.title);
     document.title = `${state.meta.number} · ${title} — GitOps Training Lab`;
@@ -462,6 +493,12 @@
     if (store.get('notes') === '1') setNotes(true);
     try {
       if (!window.marked) throw new Error('marked.js did not load (CDN blocked?)');
+      // Relative image paths in the Markdown are relative to content/, like the Markdown file itself.
+      window.marked.use({
+        walkTokens(token) {
+          if (token.type === 'image' && !/^([a-z]+:|\/|#)/i.test(token.href)) token.href = `content/${token.href}`;
+        },
+      });
       state.meta = await fetchJSON('content/training.json');
       // build.json is written by scripts/site/build-pages.sh; absent in a local preview.
       state.build = await fetchJSON('build.json').catch(() => null);
