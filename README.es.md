@@ -47,11 +47,11 @@ docker build -t gitops-lab/java-api:0.1.0 .
 kind load docker-image gitops-lab/java-api:0.1.0 --name gitops-lab
 ```
 
-Haz bootstrap de Flux desde el repositorio de **plataforma**. Usa tu token personal de GitHub solo en la shell; no lo confirmes nunca en Git. `<tu-usuario-github>` es un placeholder — si eres alumno, tiene que ser tu propia cuenta (tu fork), nunca `toniferr`; ejecutar esto con la cuenta de otra persona falla por permisos de push, y apuntar tu clúster al repositorio de otra persona por error es justo lo que el fork evita. Sustituye la rama si estás probando una rama de formación en lugar de `main`:
+Haz bootstrap de Flux desde el repositorio de **plataforma**. Usa un token personal de GitHub *fine-grained*, limitado a tu fork de `cac-gitops-platform` y con caducidad corta (la [guía del alumno](training/01-gitops-flux-foundations/learner-guide.es.md) detalla los permisos). `read -rs` lo pide sin mostrarlo ni guardarlo en el historial de la shell; no lo confirmes nunca en Git. `<tu-usuario-github>` es un placeholder — si eres alumno, tiene que ser tu propia cuenta (tu fork), nunca `toniferr`; ejecutar esto con la cuenta de otra persona falla por permisos de push, y apuntar tu clúster al repositorio de otra persona por error es justo lo que el fork evita. Sustituye la rama si estás probando una rama de formación en lugar de `main`:
 
 ```bash
 cd ../cac-gitops-platform
-export GITHUB_TOKEN='tu-token-personal'
+read -rs GITHUB_TOKEN && export GITHUB_TOKEN
 flux bootstrap github \
   --owner=<tu-usuario-github> \
   --repository=cac-gitops-platform \
@@ -59,6 +59,7 @@ flux bootstrap github \
   --path=clusters/kind-dev \
   --personal \
   --private
+unset GITHUB_TOKEN
 ```
 
 Verifica la reconciliación y llama a la API desde una segunda terminal:
@@ -85,8 +86,8 @@ kind delete cluster --name gitops-lab
 
 ```text
 training/01-gitops-flux-foundations
-training/02-kustomize-environments
-training/03-image-delivery
+training/02-kubernetes-foundations
+training/03-kustomize-environments
 ```
 
 La rama de plataforma es la que observa Flux. La rama de aplicación es la versión de la app que consume esa plataforma. La rama de este repositorio documenta el ejercicio y el estado esperado.
@@ -97,17 +98,8 @@ La rama de plataforma es la que observa Flux. La rama de aplicación es la versi
 | --- | --- |
 | Alumno | Haz fork de los repositorios y usa la rama correspondiente `training/01-gitops-flux-foundations` en el fork. Es seguro confirmar experimentos ahí porque el fork es personal; usa `git revert` para volver al estado inicial. |
 | Formador que prepara una sesión reproducible | Trabaja en la rama `training/*` correspondiente de los tres repositorios. Flux observa la rama de plataforma con ese mismo nombre. |
-| Mantenedor del material | Mejora documentación común y compatible hacia atrás en `main`. Crea la siguiente rama `training/*` desde `main` actualizado. |
 
-Para iniciar una formación desde el material más reciente:
-
-```bash
-git switch main
-git pull --ff-only
-git switch -c training/02-kustomize-environments
-```
-
-Cuando una sesión sea estable, etiqueta sus tres ramas de repositorio equivalentes, por ejemplo `training-01-v1.0.0`.
+Cada edición terminada se etiqueta además en los tres repositorios, por ejemplo `training-01-v1.0.0`.
 
 ## Web de la formación
 

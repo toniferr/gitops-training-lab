@@ -6,5 +6,6 @@ nodes:
     extraPortMappings:
       - containerPort: 30080
         hostPort: 8080
+        listenAddress: "127.0.0.1"   # reachable from this machine only, not from the network
         protocol: TCP
   - role: worker

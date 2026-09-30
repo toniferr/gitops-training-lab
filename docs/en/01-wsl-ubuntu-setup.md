@@ -42,6 +42,8 @@ sh scripts/wsl/install-prerequisites.sh
 
 Installs Git, Docker Engine, Java 21, Maven, kubectl, kind, and the flux CLI via `apt` and each project's official download — entirely inside Ubuntu, no Windows application involved. The detail of each install lives in the script itself (`scripts/wsl/install-prerequisites.sh`), not in this guide. It asks for your `sudo` password.
 
+It installs the exact versions this training was tested with (kubectl, kind, and flux) and checks each project's published sha256 checksum before installing anything; if one doesn't match, it stops. It also adds you to the `docker` group, which is equivalent to root access on this machine: keep that in mind if it isn't only yours.
+
 If your distribution doesn't have `systemd` enabled (needed for the Docker daemon to start on its own), the script tells you, adjusts `/etc/wsl.conf` for you, and asks you to restart WSL (`wsl --shutdown` from PowerShell, then reopen Ubuntu) before running it again.
 
 Open a new terminal when it's done (so your user picks up the `docker` group), then repeat step 2 to confirm nothing is missing anymore.

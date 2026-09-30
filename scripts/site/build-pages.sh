@@ -51,6 +51,13 @@ entries=""
 for ref in $(git for-each-ref --format='%(refname:short)' "refs/remotes/$remote/training/"); do
   branch=${ref#"$remote/"}
   slug=${branch#training/}
+  # The slug becomes a URL path and is written into JSON unescaped: accept only a safe charset.
+  case "$slug" in
+    ''|*[!a-z0-9._-]*|.*)
+      echo "skipped $branch: branch name must match training/[a-z0-9._-]+"
+      continue
+      ;;
+  esac
   if ! has_site "$ref"; then
     echo "skipped $branch: no site/"
     continue

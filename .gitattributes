@@ -7,3 +7,5 @@
 *.js text eol=lf
 *.json text eol=lf
 *.svg text eol=lf
+*.woff2 binary
+*.txt text eol=lf

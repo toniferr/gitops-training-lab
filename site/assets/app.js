@@ -188,7 +188,9 @@
       const src = img.getAttribute('src');
       svgCache[src] ??= fetchText(src).catch(() => null);
       const text = await svgCache[src];
-      const svg = text && new DOMParser().parseFromString(text, 'image/svg+xml').documentElement;
+      // Drop <style> before parsing: the CSP forbids inline styles, even in a parsed document.
+      const clean = text && text.replace(/<style[\s\S]*?<\/style>/g, '');
+      const svg = clean && new DOMParser().parseFromString(clean, 'image/svg+xml').documentElement;
       if (!svg || svg.nodeName !== 'svg') return; // keep the plain <img> as a fallback
       svg.querySelectorAll('style, script').forEach((n) => n.remove());
       svg.setAttribute('role', 'img');

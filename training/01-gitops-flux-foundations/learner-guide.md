@@ -55,10 +55,12 @@ docker build -t gitops-lab/java-api:0.1.0 .
 kind load docker-image gitops-lab/java-api:0.1.0 --name gitops-lab
 ```
 
-3. Bootstrap Flux against **your** platform fork, replacing `<your-github-username>` with your own account. Your [personal token](https://github.com/settings/tokens) needs permission to manage the repository's deploy keys (`--private` makes bootstrap create one): the full `repo` scope for a classic token, or `Administration: Read and write` + `Contents: Read and write` for a fine-grained one — without that it fails with `403 Resource not accessible by personal access token` right when generating the key:
+3. Bootstrap Flux against **your** platform fork, replacing `<your-github-username>` with your own account. Create a [*fine-grained* personal token](https://github.com/settings/personal-access-tokens/new) limited **to your `cac-gitops-platform` fork only**, with a short expiry (for example, 7 days) and the `Administration: Read and write` + `Contents: Read and write` permissions. `--private` makes bootstrap create a deploy key on the repository, and without `Administration` it fails with `403 Resource not accessible by personal access token` right when generating the key. A classic token with the `repo` scope also works, but it grants access to **all** your repositories: avoid it.
+
+`read -rs` asks for the token without echoing it or saving it in your shell history (paste it and press Enter); `unset` removes it from the session afterwards:
 
 ```bash
-export GITHUB_TOKEN='your-personal-token'
+read -rs GITHUB_TOKEN && export GITHUB_TOKEN
 flux bootstrap github \
   --owner=<your-github-username> \
   --repository=cac-gitops-platform \
@@ -66,6 +68,7 @@ flux bootstrap github \
   --path=clusters/kind-dev \
   --personal \
   --private
+unset GITHUB_TOKEN
 ```
 
 Wait for `flux get kustomizations -A` to show everything `Ready`, then look at what just got created with the [post-bootstrap tour](../../docs/en/reference/post-bootstrap-tour.md) before starting the exercises below.
@@ -157,7 +160,7 @@ To leave your WSL clean when you're done (or before repeating the exercise from 
    kind delete cluster --name gitops-lab
    ```
 
-2. `flux bootstrap` added an SSH deploy key to your `cac-gitops-platform` repository on GitHub so Flux could read it. Deleting the cluster does **not** remove it from GitHub — it stays there, with permanent read access to the repo, even though nothing uses it anymore. Remove it by hand: on GitHub, `Settings → Deploy keys` for `cac-gitops-platform`, find the entry starting with `flux-system-` and delete it.
+2. `flux bootstrap` added an SSH deploy key to your `cac-gitops-platform` repository on GitHub so Flux could read it. Deleting the cluster does **not** remove it from GitHub — it stays there, with permanent read access to the repo, even though nothing uses it anymore. Remove it by hand: on GitHub, `Settings → Deploy keys` for `cac-gitops-platform`, find the entry starting with `flux-system-` and delete it. If you created the token just for this training, revoke it too under `Settings → Developer settings → Personal access tokens`.
 
 3. (Optional) Remove the local API image if you're not repeating the exercise soon:
 

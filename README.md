@@ -47,11 +47,11 @@ docker build -t gitops-lab/java-api:0.1.0 .
 kind load docker-image gitops-lab/java-api:0.1.0 --name gitops-lab
 ```
 
-Bootstrap Flux from the **platform** repository. Use your personal GitHub token in your shell only; never commit it. `<your-github-username>` is a placeholder — as a learner, this must be your own account (your fork), never `toniferr`; running this with someone else's account fails on push permissions, and pointing your cluster at someone else's repository by accident is exactly what forking avoids. Replace the branch if you are testing a training branch instead of `main`:
+Bootstrap Flux from the **platform** repository. Use a *fine-grained* personal GitHub token, limited to your `cac-gitops-platform` fork and with a short expiry (the [learner guide](training/01-gitops-flux-foundations/learner-guide.md) lists the permissions). `read -rs` asks for it without echoing it or saving it in your shell history; never commit it. `<your-github-username>` is a placeholder — as a learner, this must be your own account (your fork), never `toniferr`; running this with someone else's account fails on push permissions, and pointing your cluster at someone else's repository by accident is exactly what forking avoids. Replace the branch if you are testing a training branch instead of `main`:
 
 ```bash
 cd ../cac-gitops-platform
-export GITHUB_TOKEN='your-personal-token'
+read -rs GITHUB_TOKEN && export GITHUB_TOKEN
 flux bootstrap github \
   --owner=<your-github-username> \
   --repository=cac-gitops-platform \
@@ -59,6 +59,7 @@ flux bootstrap github \
   --path=clusters/kind-dev \
   --personal \
   --private
+unset GITHUB_TOKEN
 ```
 
 Verify reconciliation and call the API from a second terminal:
@@ -85,8 +86,8 @@ kind delete cluster --name gitops-lab
 
 ```text
 training/01-gitops-flux-foundations
-training/02-kustomize-environments
-training/03-image-delivery
+training/02-kubernetes-foundations
+training/03-kustomize-environments
 ```
 
 The platform branch is the branch Flux watches. The application branch is the version of the app consumed by that platform. This repository's branch documents the exact exercise and expected state.
@@ -97,17 +98,8 @@ The platform branch is the branch Flux watches. The application branch is the ve
 | --- | --- |
 | Learner | Fork the repositories and use the matching `training/01-gitops-flux-foundations` branch in the fork. It is safe to commit experiments there because the fork is personal; use `git revert` to return to the starting state. |
 | Instructor preparing a repeatable session | Work in the matching `training/*` branch in all three repositories. Flux watches the platform branch with that same name. |
-| Material maintainer | Improve shared, backward-compatible documentation in `main`. Create the next `training/*` branch from up-to-date `main`. |
 
-To begin a new training from the latest material:
-
-```bash
-git switch main
-git pull --ff-only
-git switch -c training/02-kustomize-environments
-```
-
-After a session is stable, tag its three matching repository branches, for example `training-01-v1.0.0`.
+A finished edition is also tagged in the three repositories, for example `training-01-v1.0.0`.
 
 ## Training website
 

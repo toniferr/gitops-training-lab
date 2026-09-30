@@ -1,6 +1,6 @@
 # Local files and validation helpers
 
-`setup/kind/gitops-lab-kind.yaml` creates one control-plane and one worker node. It maps Kind node port 30080 to workstation port 8080. The Java API does not use this mapping because it uses a ClusterIP Service; it is reserved for a later NodePort exercise.
+`setup/kind/gitops-lab-kind.yaml` creates one control-plane and one worker node. It maps Kind node port 30080 to workstation port 8080, bound to `127.0.0.1` so it is reachable from your machine only, not from your network. The Java API does not use this mapping because it uses a ClusterIP Service; it is reserved for a later NodePort exercise.
 
 `scripts/wsl/check-prerequisites.sh` does not install anything. It reports whether the required commands exist and whether the Docker daemon can be reached. This makes it safe to run repeatedly before a class.
 

@@ -1,6 +1,6 @@
 # Ficheros locales y ayudas de validación
 
-`setup/kind/gitops-lab-kind.yaml` crea un nodo control-plane y un nodo worker. Mapea el puerto 30080 del nodo Kind al puerto 8080 de la estación. La API Java no usa ese mapeo porque emplea un Service ClusterIP; queda reservado para un ejercicio posterior con NodePort.
+`setup/kind/gitops-lab-kind.yaml` crea un nodo control-plane y un nodo worker. Mapea el puerto 30080 del nodo Kind al puerto 8080 de la estación, ligado a `127.0.0.1` para que solo sea accesible desde tu máquina, no desde tu red. La API Java no usa ese mapeo porque emplea un Service ClusterIP; queda reservado para un ejercicio posterior con NodePort.
 
 `scripts/wsl/check-prerequisites.sh` no instala nada. Informa de si existen los comandos necesarios y de si se alcanza el daemon Docker. Por eso es seguro ejecutarlo repetidamente antes de una clase.
 
