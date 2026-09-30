@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GitOps Training Lab</title>
+  <meta name="description" content="GitOps Training Lab">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="assets/style.css">
+  <script>
+    // Apply the saved theme before first paint to avoid a flash.
+    try { const t = localStorage.getItem('gtl:theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.12.0/highlight.min.js"></script>
+  <script defer src="assets/common.js"></script>
+  <script defer src="assets/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#content">Saltar al contenido</a>
+
+  <header class="topbar">
+    <button class="icon-btn toc-toggle" id="toc-toggle" type="button" aria-controls="toc" aria-expanded="false" data-i18n-label="toc">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+    </button>
+    <a class="brand" href="../" data-i18n-title="allTrainings">
+      <img src="assets/favicon.svg" alt="" width="22" height="22">
+      <span>GitOps Training Lab</span>
+    </a>
+    <span class="crumb" id="crumb"></span>
+    <div class="actions">
+      <div class="seg" role="group" id="lang-switch" data-i18n-label="language">
+        <button type="button" data-lang="es">ES</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+      <button class="btn btn-ghost" id="notes-toggle" type="button" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></svg>
+        <span data-i18n="notes"></span>
+      </button>
+      <button class="btn btn-primary" id="present" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18v12H3zM8 20h8M12 16v4"/></svg>
+        <span data-i18n="present"></span>
+      </button>
+      <button class="icon-btn" id="theme-toggle" type="button" data-i18n-label="theme">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" class="fill"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="toc" id="toc" aria-label="Índice"></nav>
+    <div class="toc-scrim" id="toc-scrim" hidden></div>
+    <main id="content" tabindex="-1">
+      <p class="loading" id="loading">…</p>
+    </main>
+  </div>
+
+  <div class="present-bar" id="present-bar">
+    <div class="progress"><span id="progress"></span></div>
+    <div class="present-controls">
+      <button class="icon-btn" id="prev" type="button" data-i18n-label="prev">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <span class="counter" id="counter"></span>
+      <button class="icon-btn" id="next" type="button" data-i18n-label="next">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <span class="timer" id="timer"></span>
+      <span class="keys" data-i18n="keys"></span>
+      <button class="btn btn-ghost" id="exit" type="button" data-i18n="exit"></button>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+# Publishes the training websites to GitHub Pages.
+#
+# Any push to main or to a training/* branch rebuilds the whole site from all
+# branches (scripts/site/build-pages.sh), so every edition stays published.
+# One-time setup is described in site/README.md.
+name: Pages
+
+on:
+  push:
+    branches:
+      - main
+      - 'training/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0   # every branch, not just the one pushed
+
+      - name: Build site from all training branches
+        run: sh scripts/site/build-pages.sh _site
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

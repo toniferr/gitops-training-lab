@@ -6,7 +6,7 @@ Bilingual teaching material for an incremental, hands-on introduction to [Kubern
 
 ## Purpose and boundaries
 
-This repository is the teaching guide: it contains explanations, instructor runbooks, learner exercises, validation scripts, diagrams, and slides. It is deliberately **not** the operational source of truth for a cluster.
+This repository is the teaching guide: it contains explanations, instructor runbooks, learner exercises, validation scripts, diagrams, and the training websites. It is deliberately **not** the operational source of truth for a cluster.
 
 The canonical repositories are:
 
@@ -19,7 +19,7 @@ The canonical repositories are:
 
 1. Read [the learning path](docs/en/00-learning-path.md).
 2. On your existing WSL2/Ubuntu setup, install the required tooling with [the setup guide](docs/en/01-wsl-ubuntu-setup.md).
-3. Follow [Training 01 as an instructor](training/01-gitops-flux-foundations/instructor-runbook.md), or [as a learner](training/01-gitops-flux-foundations/learner-guide.md).
+3. Follow [Training 01 as an instructor](training/01-gitops-flux-foundations/instructor-runbook.md), or [as a learner](training/01-gitops-flux-foundations/learner-guide.md). The session is delivered with its [training website](https://toniferr.github.io/gitops-training-lab/).
 4. Use the bilingual references to understand every relevant Kubernetes and Flux file.
 5. Go deeper anytime with the [study references](docs/en/00-learning-path.md#study-references): Kubernetes concepts, Flux architecture, and a kubectl cheatsheet.
 
@@ -109,6 +109,12 @@ git switch -c training/02-kustomize-environments
 
 After a session is stable, tag its three matching repository branches, for example `training-01-v1.0.0`.
 
+## Training website
+
+Each training is delivered with a static website instead of slides, published on GitHub Pages: [toniferr.github.io/gitops-training-lab](https://toniferr.github.io/gitops-training-lab/). The portal lists every published `training/*` branch, and each one lives on its own path (for example `/01-gitops-flux-foundations/`), frozen together with its branch. It has a presentation mode, an instructor mode with notes and a timer, and Spanish and English versions.
+
+The session content is in each branch's `site/content/es.md` and `site/content/en.md`. See [site/README.md](site/README.md) to write it, preview it locally, and for the one-time GitHub Pages setup.
+
 ## Directory map
 
 ```text
@@ -118,6 +124,6 @@ training/      Instructor and learner material for each incremental training.
 references/    File-by-file explanations of the canonical repositories.
 scripts/       POSIX shell validation helpers for WSL2 and Ubuntu.
 setup/         Local cluster configuration files.
-slides/        Presentation artifacts.
+site/          This branch's training website (GitHub Pages).
 assets/        Diagrams and screenshots used by the material.
 ```

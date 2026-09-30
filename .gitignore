@@ -25,7 +25,6 @@ __pycache__/
 venv/
 
 # Office lock files (created while a file is open in Word/Excel/PowerPoint)
-~$*.pptx
 ~$*.docx
 ~$*.xlsx
 
@@ -33,3 +32,6 @@ venv/
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# GitHub Pages build output (scripts/site/build-pages.sh)
+_site/

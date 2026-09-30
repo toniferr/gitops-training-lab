@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GitOps Training Lab</title>
+  <meta name="description" content="Formaciones prácticas de Kubernetes, GitOps y Flux · Hands-on Kubernetes, GitOps and Flux trainings">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="assets/style.css">
+  <script>
+    try { const t = localStorage.getItem('gtl:theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+  <script defer src="assets/common.js"></script>
+  <script defer src="assets/portal.js"></script>
+</head>
+<body class="portal">
+  <header class="topbar">
+    <a class="brand" href="./">
+      <img src="assets/favicon.svg" alt="" width="22" height="22">
+      <span>GitOps Training Lab</span>
+    </a>
+    <div class="actions">
+      <div class="seg" role="group" id="lang-switch" data-i18n-label="language">
+        <button type="button" data-lang="es">ES</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+      <button class="icon-btn" id="theme-toggle" type="button" data-i18n-label="theme">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" class="fill"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="slide hero">
+      <p class="eyebrow" data-i18n="eyebrow"></p>
+      <h1>GitOps Training Lab</h1>
+      <p class="lead" data-i18n="lead"></p>
+      <div class="hero-links">
+        <a class="btn btn-primary" id="path-link" href="#" data-i18n="path"></a>
+        <a class="btn btn-ghost" id="repo-link" href="#" data-i18n="repo"></a>
+      </div>
+    </section>
+
+    <section class="slide">
+      <h2 data-i18n="trainings"></h2>
+      <div class="training-grid" id="trainings"></div>
+    </section>
+
+    <footer class="page-footer" id="footer"></footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "number": "01",
+  "slug": "01-gitops-flux-foundations",
+  "repo": "toniferr/gitops-training-lab",
+  "duration": "30–40",
+  "minutes": 40,
+  "defaultLang": "es",
+  "languages": ["es", "en"],
+  "title": {
+    "es": "Fundamentos de GitOps y Flux",
+    "en": "GitOps and Flux foundations"
+  },
+  "summary": {
+    "es": "De manifiestos locales a un clúster que se reconcilia solo, con Git como fuente de verdad.",
+    "en": "From local manifests to a cluster that reconciles itself, with Git as the source of truth."
+  },
+  "links": {
+    "learner": {
+      "es": "training/01-gitops-flux-foundations/learner-guide.es.md",
+      "en": "training/01-gitops-flux-foundations/learner-guide.md"
+    },
+    "runbook": {
+      "es": "training/01-gitops-flux-foundations/instructor-runbook.es.md",
+      "en": "training/01-gitops-flux-foundations/instructor-runbook.md"
+    }
+  }
+}
