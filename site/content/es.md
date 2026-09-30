@@ -16,7 +16,7 @@ Resultado de la sesión: distinguir **estado deseado** de **estado de ejecución
 
 <!-- instructor -->
 
-Usa la misma rama, `training/01-gitops-flux-foundations`, en `cac-gitops-platform` y `java-api-gitops`. El [`GitRepository`](https://fluxcd.io/flux/components/source/gitrepositories/) de plataforma debe apuntar al repositorio Java **y a esa rama**. Haz bootstrap de Flux contra la rama de plataforma, nunca contra este repositorio didáctico.
+Usa la misma rama, `training/01-gitops-flux-foundations`, en `cac-gitops-platform` y `java-api-gitops`. El [`GitRepository`](https://fluxcd.io/flux/components/source/gitrepositories/) de plataforma debe apuntar al repositorio Java **y a esa rama**. Haz bootstrap de Flux contra la rama de plataforma.
 
 Prepara la imagen local antes de compartir pantalla:
 
@@ -92,7 +92,7 @@ Da igual que sea una API en Java, un servicio en Python o un frontend: Kubernete
 ```
 
 > [!NOTES]
-> Pregunta qué tecnologías usan en sus equipos: todas encajan en este patrón. Los objetos concretos de nuestra API Java aparecen más adelante, en «Tres repositorios».
+> Pregunta qué tecnologías usan en sus equipos: todas encajan en este patrón. Los objetos concretos de nuestra API Java aparecen más adelante, en «Dos repositorios».
 
 > [!DOCS]
 > - [Conceptos de Kubernetes](repo:docs/es/reference/conceptos-kubernetes.md)
@@ -154,12 +154,11 @@ Reconciliación continua | El agente compara y corrige el drift en cada interval
 > - [Principios de OpenGitOps](https://opengitops.dev/)
 > - [Flux: conceptos básicos](https://fluxcd.io/flux/concepts/)
 
-## Tres repositorios, tres responsabilidades {Nuestro escenario · 12–18 min}
+## Dos repositorios, dos responsabilidades {Nuestro escenario · 12–18 min}
 
-Pasamos de la teoría a nuestro escenario. Los cambios en un clúster deben ser **repetibles y auditables**; por eso separamos quién explica, quién decide qué corre en el clúster y quién describe la aplicación.
+Pasamos de la teoría a nuestro escenario. Los cambios en un clúster deben ser **repetibles y auditables**; por eso separamos quién decide qué corre en el clúster y quién describe la aplicación.
 
 ```steps
-gitops-training-lab | Guía didáctica: explicaciones, guiones, ejercicios y validación. **No** es fuente de verdad del clúster.
 cac-gitops-platform | Bootstrap de Flux, namespaces y qué aplicaciones observa el clúster.
 java-api-gitops | Código Spring Boot, `Dockerfile` y los manifiestos Kubernetes de la API.
 ```
@@ -167,7 +166,7 @@ java-api-gitops | Código Spring Boot, `Dockerfile` y los manifiestos Kubernetes
 Los manifiestos de `java-api-gitops/k8s/` son justo los objetos de la teoría: el Deployment `api-java-gitops`, el Service `java-api` y el ConfigMap `java-api-config`, dentro del namespace `java-api` que crea la plataforma.
 
 > [!NOTES]
-> Idea a fijar: el repo de plataforma es la fuente de verdad del clúster; este repo solo enseña. Editar una copia de un manifiesto aquí no cambia nada en el clúster.
+> Idea a fijar: `cac-gitops-platform` es la fuente de verdad del clúster (qué corre en él); `java-api-gitops` describe la aplicación. Cada equipo cambia su repositorio sin tocar el del otro.
 
 > [!DOCS]
 > - [Ruta de aprendizaje](repo:docs/es/00-ruta-aprendizaje.md)

@@ -31,7 +31,7 @@ kubectl get all -n java-api
 | ---: | --- | --- |
 | 0–5 | What a cluster is (control plane, nodes and Pods) and why Kubernetes reconciles state. | The cluster diagram. |
 | 5–12 | The basic objects of any application: [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/), [Service](https://kubernetes.io/docs/concepts/services-networking/service/), [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/), `spec`, and `status`. What GitOps is. | A generic manifest and the OpenGitOps principles. |
-| 12–18 | Our scenario: edge changes must be repeatable and auditable. | The three repositories, the big-picture diagram, `GitRepository` and [`Kustomization`](https://fluxcd.io/flux/components/kustomize/kustomizations/). |
+| 12–18 | Our scenario: edge changes must be repeatable and auditable. | The two repositories, the big-picture diagram, `GitRepository` and [`Kustomization`](https://fluxcd.io/flux/components/kustomize/kustomizations/). |
 | 18–27 | A Git change becomes runtime state. | Commit `replicas: 2` to `1`, push, reconcile. |
 | 27–34 | Drift is not desired state. | Manual scale to `3`, then let Flux restore `1`. |
 | 34–40 | Rollback and limits. | `git revert`; next trainings. |

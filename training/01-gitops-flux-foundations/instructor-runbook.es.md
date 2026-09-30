@@ -31,7 +31,7 @@ kubectl get all -n java-api
 | ---: | --- | --- |
 | 0–5 | Qué es un clúster (plano de control, nodos y Pods) y por qué Kubernetes reconcilia estado. | El diagrama del clúster. |
 | 5–12 | Los objetos básicos de cualquier aplicación: [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/), [Service](https://kubernetes.io/docs/concepts/services-networking/service/), [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/), `spec` y `status`. Qué es GitOps. | Un manifiesto genérico y los principios de OpenGitOps. |
-| 12–18 | Nuestro escenario: los cambios en edge deben ser repetibles y auditables. | Los tres repositorios, el diagrama completo, `GitRepository` y [`Kustomization`](https://fluxcd.io/flux/components/kustomize/kustomizations/). |
+| 12–18 | Nuestro escenario: los cambios en edge deben ser repetibles y auditables. | Los dos repositorios, el diagrama completo, `GitRepository` y [`Kustomization`](https://fluxcd.io/flux/components/kustomize/kustomizations/). |
 | 18–27 | Un cambio Git se convierte en estado de ejecución. | Commit de `replicas: 2` a `1`, push y reconciliación. |
 | 27–34 | El drift no es estado deseado. | Escalado manual a `3`; Flux lo devuelve a `1`. |
 | 34–40 | Rollback y límites. | `git revert` y próximas formaciones. |

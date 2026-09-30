@@ -16,7 +16,7 @@ Session outcome: tell **desired state** apart from **runtime state**, and watch 
 
 <!-- instructor -->
 
-Use the same branch, `training/01-gitops-flux-foundations`, in `cac-gitops-platform` and `java-api-gitops`. The platform [`GitRepository`](https://fluxcd.io/flux/components/source/gitrepositories/) must point at the Java repository **and at that branch**. Bootstrap Flux against the platform branch, never against this teaching repository.
+Use the same branch, `training/01-gitops-flux-foundations`, in `cac-gitops-platform` and `java-api-gitops`. The platform [`GitRepository`](https://fluxcd.io/flux/components/source/gitrepositories/) must point at the Java repository **and at that branch**. Bootstrap Flux against the platform branch.
 
 Prepare the local image before sharing your screen:
 
@@ -92,7 +92,7 @@ Whether it's a Java API, a Python service or a frontend, Kubernetes describes al
 ```
 
 > [!NOTES]
-> Ask which technologies their teams use: they all fit this pattern. Our Java API's concrete objects come later, in "Three repositories".
+> Ask which technologies their teams use: they all fit this pattern. Our Java API's concrete objects come later, in "Two repositories".
 
 > [!DOCS]
 > - [Kubernetes concepts](repo:docs/en/reference/kubernetes-concepts.md)
@@ -154,12 +154,11 @@ Continuously reconciled | The agent compares and corrects drift every interval.
 > - [OpenGitOps principles](https://opengitops.dev/)
 > - [Flux: core concepts](https://fluxcd.io/flux/concepts/)
 
-## Three repositories, three responsibilities {Our scenario · 12–18 min}
+## Two repositories, two responsibilities {Our scenario · 12–18 min}
 
-From theory to our scenario. Changes to a cluster must be **repeatable and auditable**; that is why we separate who explains, who decides what runs in the cluster, and who describes the application.
+From theory to our scenario. Changes to a cluster must be **repeatable and auditable**; that is why we separate who decides what runs in the cluster and who describes the application.
 
 ```steps
-gitops-training-lab | Teaching guide: explanations, runbooks, exercises and validation. **Not** the cluster's source of truth.
 cac-gitops-platform | Flux bootstrap, namespaces, and which applications the cluster watches.
 java-api-gitops | Spring Boot source, `Dockerfile`, and the API's Kubernetes manifests.
 ```
@@ -167,7 +166,7 @@ java-api-gitops | Spring Boot source, `Dockerfile`, and the API's Kubernetes man
 The manifests in `java-api-gitops/k8s/` are exactly the objects from the theory: the `api-java-gitops` Deployment, the `java-api` Service and the `java-api-config` ConfigMap, inside the `java-api` namespace that the platform creates.
 
 > [!NOTES]
-> Idea to land: the platform repo is the cluster's source of truth; this repo only teaches. Editing a copy of a manifest here changes nothing in the cluster.
+> Idea to land: `cac-gitops-platform` is the cluster's source of truth (what runs in it); `java-api-gitops` describes the application. Each team changes its own repository without touching the other's.
 
 > [!DOCS]
 > - [Learning path](repo:docs/en/00-learning-path.md)
