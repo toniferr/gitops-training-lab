@@ -65,8 +65,8 @@ Esta idea prepara todo lo demás: GitOps usa **el mismo patrón**, solo que con 
 
 ```flow
 YAML / spec | Declaras qué quieres, no cómo hacerlo.
-API Server | Guarda ese estado deseado.
-Controlador | Observa la diferencia y actúa.
+`kube-apiserver` | Lo valida y lo guarda en `etcd` como estado deseado.
+`controller-manager` | Sus controladores comparan deseado y real, y actúan.
 Status | Reporta el estado real observado.
 ```
 

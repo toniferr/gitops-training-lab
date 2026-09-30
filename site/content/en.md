@@ -65,8 +65,8 @@ This idea sets up everything else: GitOps uses **the same pattern**, just with G
 
 ```flow
 YAML / spec | You declare what you want, not how.
-API Server | Stores that desired state.
-Controller | Watches the difference and acts.
+`kube-apiserver` | Validates it and stores it in `etcd` as desired state.
+`controller-manager` | Its controllers compare desired and actual, and act.
 Status | Reports the observed real state.
 ```
 
