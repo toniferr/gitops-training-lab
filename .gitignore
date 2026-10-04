@@ -35,3 +35,6 @@ desktop.ini
 
 # GitHub Pages build output (scripts/site/build-pages.sh)
 _site/
+
+# Local working notes for Claude, not published
+PROGRESS.md
