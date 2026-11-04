@@ -72,9 +72,9 @@ A [Namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/
 | --- | --- | --- |
 | `readinessProbe` | Can this Pod receive traffic right now? | Removed from the Service's endpoints; container keeps running. |
 | `livenessProbe` | Is this process still healthy? | Container is restarted. |
-| `startupProbe` (not used here) | Has slow-starting app finished booting? | Delays the other two probes until it succeeds. |
+| `startupProbe` | Has a slow-starting app finished booting? | Container is restarted, but only after `failureThreshold × periodSeconds`. Until it succeeds, the other two probes don't run. |
 
-`api-java-gitops` checks `/actuator/health/readiness` and `/actuator/health/liveness`, the standard Spring Boot Actuator endpoints.
+`api-java-gitops` checks `/actuator/health/readiness` and `/actuator/health/liveness`, the standard Spring Boot Actuator endpoints, and uses all three probes. Its `startupProbe` gives the JVM up to 3 minutes (`36 × 5s`) to boot. Without it, on a slow laptop and with the `500m` CPU limit, Spring Boot can take close to a minute to start, and liveness alone kills the container mid-boot: the Pod shows `RESTARTS 1` and a previous exit code `143` (SIGTERM from the kubelet).
 
 ## [Requests and limits](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)
 

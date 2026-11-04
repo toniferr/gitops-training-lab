@@ -16,7 +16,7 @@ This selects the namespace `java-api`, includes [ConfigMap](https://kubernetes.i
 
 ## `k8s/deployment.yaml`
 
-`Deployment/api-java-gitops` declares two desired replicas. Its selector and Pod labels must match exactly; the Service uses the same name label. `imagePullPolicy: IfNotPresent` allows the preloaded Kind image. [Readiness checks](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes) decide when a Pod receives traffic; liveness checks restart an unhealthy process. Requests reserve 100m CPU and 256Mi memory; limits cap it at 500m and 512Mi.
+`Deployment/api-java-gitops` declares two desired replicas. Its selector and Pod labels must match exactly; the Service uses the same name label. `imagePullPolicy: IfNotPresent` allows the preloaded Kind image. [Readiness checks](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes) decide when a Pod receives traffic; liveness checks restart an unhealthy process; a startup check holds both back for up to 3 minutes while the JVM boots, so a slow laptop doesn't get the container killed mid-start. Requests reserve 100m CPU and 256Mi memory; limits cap it at 500m and 512Mi.
 
 ## `k8s/service.yaml`
 

@@ -6,6 +6,10 @@
 
 You will deploy a Java API from Git, change its declared replica count, create manual drift, and confirm that Flux restores the value from Git.
 
+## Before you start
+
+Complete the [setup guide](../../docs/en/01-wsl-ubuntu-setup.md): clone this repository, install the tools and create the `gitops-lab` cluster. This guide assumes that `kubectl get nodes` already shows two `Ready` nodes.
+
 ## Workspace layout
 
 Keep the three repositories beside each other:
@@ -21,13 +25,13 @@ Use your own GitHub forks, never the canonical repositories directly — forking
 
 ## Fork the repositories
 
-1. On GitHub, open [`cac-gitops-platform`](https://github.com/toniferr/cac-gitops-platform) and [`java-api-gitops`](https://github.com/toniferr/java-api-gitops) (the canonical repositories) and click **Fork** on each, into your own account.
-2. Clone them beside this repository, replacing `<your-github-username>` with your account:
+1. On GitHub, open [`cac-gitops-platform`](https://github.com/toniferr/cac-gitops-platform) and [`java-api-gitops`](https://github.com/toniferr/java-api-gitops) (the canonical repositories) and click **Fork** on each, into your own account. **Untick "Copy the `main` branch only"**: the training branch isn't `main`, and with that box ticked your fork won't have it.
+2. Clone them beside this repository over SSH (you will push to them), replacing `<your-github-username>` with your account:
 
 ```bash
 cd ~/Workspace
-git clone https://github.com/<your-github-username>/cac-gitops-platform.git
-git clone https://github.com/<your-github-username>/java-api-gitops.git
+git clone git@github.com:<your-github-username>/cac-gitops-platform.git
+git clone git@github.com:<your-github-username>/java-api-gitops.git
 ```
 
 If you have [GitHub CLI](https://cli.github.com/) installed, one command per repo does the fork and the clone together: `gh repo fork toniferr/cac-gitops-platform --clone=true` (and the same for `java-api-gitops`).
@@ -35,18 +39,34 @@ If you have [GitHub CLI](https://cli.github.com/) installed, one command per rep
 3. In **each** fork, check out `training/01-gitops-flux-foundations`. This is your personal copy, so commit the exercise changes directly to that branch; revert them when you want to return to the starting point:
 
 ```bash
-git switch training/01-gitops-flux-foundations
+git -C cac-gitops-platform switch training/01-gitops-flux-foundations
+git -C java-api-gitops switch training/01-gitops-flux-foundations
+```
+
+If `git switch` fails with `invalid reference`, your fork only has `main`. Fetch the branch from the original repository and push it to your fork, inside the affected clone (this is the command for `cac-gitops-platform`; for the other one, change the repository in the URL):
+
+```bash
+git remote add upstream https://github.com/toniferr/cac-gitops-platform.git
+git fetch upstream
+git switch -c training/01-gitops-flux-foundations upstream/training/01-gitops-flux-foundations
+git push -u origin training/01-gitops-flux-foundations
 ```
 
 ## One-time fork setup
 
 Do this once, before the exercises, so your cluster reads from *your* forks and not the originals:
 
-1. In **your fork** of `cac-gitops-platform`, edit `clusters/kind-dev/flux-system/apps-source.yaml` and change:
-   - `spec.url` to your own fork's URL: `https://github.com/<your-github-username>/java-api-gitops.git`.
-   - `spec.ref.branch` to `training/01-gitops-flux-foundations`. Leave it on `main` and Flux keeps reading your fork's `main` branch even though you commit the exercise changes to the training branch — your commits would have no visible effect.
+1. In **your fork** of `cac-gitops-platform`, point `spec.url` in `clusters/kind-dev/flux-system/apps-source.yaml` at your own `java-api-gitops` fork, then commit and push. `spec.ref.branch` already points at this training branch, so leave it as it is. Skip this step and Flux keeps reading `toniferr`'s original `java-api-gitops` repository — your changes to your own fork would have no visible effect.
 
-   Commit and push that change. Skip this step entirely and Flux keeps reading `toniferr`'s original `java-api-gitops` repository — your changes to your own fork would have no visible effect.
+```bash
+cd ~/Workspace/cac-gitops-platform
+sed -i 's|github.com/toniferr/java-api-gitops|github.com/<your-github-username>/java-api-gitops|' clusters/kind-dev/flux-system/apps-source.yaml
+grep -E 'url:|branch:' clusters/kind-dev/flux-system/apps-source.yaml
+git add clusters/kind-dev/flux-system/apps-source.yaml
+git commit -m "point java-api source at my fork"
+git push
+```
+
 2. Build the Java API image and load it into the local cluster. Kubernetes can't pull it from any registry — it only exists as a local image on your machine, and `kind` needs a copy inside its own nodes:
 
 ```bash
@@ -55,7 +75,7 @@ docker build -t gitops-lab/java-api:0.1.0 .
 kind load docker-image gitops-lab/java-api:0.1.0 --name gitops-lab
 ```
 
-3. Bootstrap Flux against **your** platform fork, replacing `<your-github-username>` with your own account. Create a [*fine-grained* personal token](https://github.com/settings/personal-access-tokens/new) limited **to your `cac-gitops-platform` fork only**, with a short expiry (for example, 7 days) and the `Administration: Read and write` + `Contents: Read and write` permissions. `--private` makes bootstrap create a deploy key on the repository, and without `Administration` it fails with `403 Resource not accessible by personal access token` right when generating the key. A classic token with the `repo` scope also works, but it grants access to **all** your repositories: avoid it.
+3. Bootstrap Flux against **your** platform fork, replacing `<your-github-username>` with your own account. Create a [*fine-grained* personal token](https://github.com/settings/personal-access-tokens/new) limited **to your `cac-gitops-platform` fork only**, with a short expiry (for example, 7 days) and the `Administration: Read and write` + `Contents: Read and write` permissions. Bootstrap creates an SSH deploy key on the repository, and without `Administration` it fails with `403 Resource not accessible by personal access token` right when generating the key. The command uses `--private=false` because a fork of a public repository is public. A classic token with the `repo` scope also works, but it grants access to **all** your repositories: avoid it.
 
 `read -rs` asks for the token without echoing it or saving it in your shell history (paste it and press Enter); `unset` removes it from the session afterwards:
 
@@ -67,8 +87,9 @@ flux bootstrap github \
   --branch=training/01-gitops-flux-foundations \
   --path=clusters/kind-dev \
   --personal \
-  --private
+  --private=false
 unset GITHUB_TOKEN
+git -C ~/Workspace/cac-gitops-platform pull --ff-only   # brings back the commits bootstrap pushed
 ```
 
 Wait for `flux get kustomizations -A` to show everything `Ready`, then look at what just got created with the [post-bootstrap tour](../../docs/en/reference/post-bootstrap-tour.md) before starting the exercises below.
@@ -82,7 +103,7 @@ Wait for `flux get kustomizations -A` to show everything `Ready`, then look at w
    cat k8s/deployment.yaml
    ```
 
-   Find `spec.replicas` (how many Pods Git declares), `spec.template.spec.containers[0].image` (which image should run), `readinessProbe`/`livenessProbe` (how Kubernetes decides a Pod is ready for traffic, or needs restarting), and `resources.requests`/`resources.limits` (reserved memory/CPU and the hard ceiling). This is pure desired state as it lives in Git — you haven't touched Flux or the cluster yet, just read the file.
+   Find `spec.replicas` (how many Pods Git declares), `spec.template.spec.containers[0].image` (which image should run), `startupProbe`/`readinessProbe`/`livenessProbe` (how Kubernetes waits for the JVM to boot, then decides a Pod is ready for traffic, or needs restarting), and `resources.requests`/`resources.limits` (reserved memory/CPU and the hard ceiling). This is pure desired state as it lives in Git — you haven't touched Flux or the cluster yet, just read the file.
 
 2. In the application training branch in your fork, change `replicas` from `2` to `1`, commit, and push.
 

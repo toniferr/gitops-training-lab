@@ -6,6 +6,10 @@
 
 Desplegarás una API Java desde Git, cambiarás su número de réplicas declarado, crearás drift manual y comprobarás que Flux restaura el valor de Git.
 
+## Antes de empezar
+
+Completa la [guía de preparación](../../docs/es/01-preparacion-wsl-ubuntu.md): clona este repositorio, instala las herramientas y crea el clúster `gitops-lab`. Esta guía da por hecho que `kubectl get nodes` ya muestra dos nodos `Ready`.
+
 ## Distribución del workspace
 
 Mantén los tres repositorios juntos:
@@ -21,13 +25,13 @@ Usa siempre tus propios forks de GitHub en cac-gitops-platform y java-api-gitops
 
 ## Haz fork de los repositorios
 
-1. En GitHub, abre [`cac-gitops-platform`](https://github.com/toniferr/cac-gitops-platform) y [`java-api-gitops`](https://github.com/toniferr/java-api-gitops) (los repositorios canónicos) y pulsa **Fork** en cada uno, hacia tu propia cuenta.
-2. Clónalos junto a este repositorio (gitops-training-lab), sustituyendo `<tu-usuario-github>` por tu cuenta:
+1. En GitHub, abre [`cac-gitops-platform`](https://github.com/toniferr/cac-gitops-platform) y [`java-api-gitops`](https://github.com/toniferr/java-api-gitops) (los repositorios canónicos) y pulsa **Fork** en cada uno, hacia tu propia cuenta. **Desmarca «Copy the `main` branch only»**: la rama de formación no es `main`, y con esa casilla marcada tu fork no la tendrá.
+2. Clónalos junto a este repositorio (gitops-training-lab) por SSH (vas a hacer push), sustituyendo `<tu-usuario-github>` por tu cuenta:
 
 ```bash
 cd ~/Workspace
-git clone https://github.com/<tu-usuario-github>/cac-gitops-platform.git
-git clone https://github.com/<tu-usuario-github>/java-api-gitops.git
+git clone git@github.com:<tu-usuario-github>/cac-gitops-platform.git
+git clone git@github.com:<tu-usuario-github>/java-api-gitops.git
 ```
 
 Si tienes instalado [GitHub CLI](https://cli.github.com/), un solo comando por repo hace el fork y el clonado a la vez: `gh repo fork toniferr/cac-gitops-platform --clone=true` (y lo mismo con `java-api-gitops`).
@@ -35,18 +39,34 @@ Si tienes instalado [GitHub CLI](https://cli.github.com/), un solo comando por r
 3. En **cada** fork, cambia a branch `training/01-gitops-flux-foundations`. Es tu copia personal, así que confirma directamente ahí los cambios del ejercicio y reviértelos cuando quieras volver al punto inicial:
 
 ```bash
-git switch training/01-gitops-flux-foundations
+git -C cac-gitops-platform switch training/01-gitops-flux-foundations
+git -C java-api-gitops switch training/01-gitops-flux-foundations
+```
+
+Si `git switch` falla con `invalid reference`, tu fork solo tiene `main`. Trae la rama del repositorio original y súbela a tu fork, dentro del clon afectado (este es el comando para `cac-gitops-platform`; para el otro, cambia el repositorio en la URL):
+
+```bash
+git remote add upstream https://github.com/toniferr/cac-gitops-platform.git
+git fetch upstream
+git switch -c training/01-gitops-flux-foundations upstream/training/01-gitops-flux-foundations
+git push -u origin training/01-gitops-flux-foundations
 ```
 
 ## Configuración inicial del fork
 
 Haz esto una vez, antes de los ejercicios, para que tu clúster lea de tus forks y no de los originales:
 
-1. En **tu fork** de `cac-gitops-platform`, edita `clusters/kind-dev/flux-system/apps-source.yaml` y cambia:
-   - `spec.url` a la URL de tu propio fork: `https://github.com/<tu-usuario-github>/java-api-gitops.git`.
-   - `spec.ref.branch` a `training/01-gitops-flux-foundations`. Si dejas `main`, Flux sigue leyendo la rama `main` de tu fork de `java-api-gitops` aunque tú confirmes los cambios del ejercicio en la rama de formación — tus commits no tendrían ningún efecto visible.
+1. En **tu fork** de `cac-gitops-platform`, apunta `spec.url` de `clusters/kind-dev/flux-system/apps-source.yaml` a tu propio fork de `java-api-gitops`, y haz commit y push. `spec.ref.branch` ya apunta a esta rama de formación, así que déjalo como está. Si te saltas este paso, Flux sigue leyendo el `java-api-gitops` original de `toniferr` — tus cambios en tu propio fork no tendrían ningún efecto visible.
 
-   Haz commit y push de ese cambio. Si te saltas por completo este paso, Flux sigue leyendo el `java-api-gitops` original de `toniferr` — tus cambios en tu propio fork no tendrían ningún efecto visible.
+```bash
+cd ~/Workspace/cac-gitops-platform
+sed -i 's|github.com/toniferr/java-api-gitops|github.com/<tu-usuario-github>/java-api-gitops|' clusters/kind-dev/flux-system/apps-source.yaml
+grep -E 'url:|branch:' clusters/kind-dev/flux-system/apps-source.yaml
+git add clusters/kind-dev/flux-system/apps-source.yaml
+git commit -m "point java-api source at my fork"
+git push
+```
+
 2. Construye la imagen de la API Java y cárgala en el clúster local. Kubernetes no la puede descargar de ningún registro — solo existe como imagen local en tu máquina, y `kind` necesita una copia dentro de sus propios nodos:
 
 ```bash
@@ -55,7 +75,7 @@ docker build -t gitops-lab/java-api:0.1.0 .
 kind load docker-image gitops-lab/java-api:0.1.0 --name gitops-lab
 ```
 
-3. Haz bootstrap de Flux contra **tu** fork de plataforma, sustituyendo `<tu-usuario-github>` por tu propia cuenta. Crea un [token personal *fine-grained*](https://github.com/settings/personal-access-tokens/new) limitado **solo a tu fork de `cac-gitops-platform`**, con caducidad corta (por ejemplo, 7 días) y los permisos `Administration: Read and write` + `Contents: Read and write`. `--private` hace que el bootstrap cree una *deploy key* en el repositorio, y sin `Administration` falla con `403 Resource not accessible by personal access token` justo al generar la clave. Un token clásico con scope `repo` también funciona, pero da acceso a **todos** tus repositorios: evítalo.
+3. Haz bootstrap de Flux contra **tu** fork de plataforma, sustituyendo `<tu-usuario-github>` por tu propia cuenta. Crea un [token personal *fine-grained*](https://github.com/settings/personal-access-tokens/new) limitado **solo a tu fork de `cac-gitops-platform`**, con caducidad corta (por ejemplo, 7 días) y los permisos `Administration: Read and write` + `Contents: Read and write`. El bootstrap crea una *deploy key* SSH en el repositorio, y sin `Administration` falla con `403 Resource not accessible by personal access token` justo al generar la clave. El comando usa `--private=false` porque un fork de un repositorio público es público. Un token clásico con scope `repo` también funciona, pero da acceso a **todos** tus repositorios: evítalo.
 
 `read -rs` pide el token sin mostrarlo en pantalla ni guardarlo en el historial de la shell (pégalo y pulsa Enter); `unset` lo borra de la sesión al terminar:
 
@@ -67,8 +87,9 @@ flux bootstrap github \
   --branch=training/01-gitops-flux-foundations \
   --path=clusters/kind-dev \
   --personal \
-  --private
+  --private=false
 unset GITHUB_TOKEN
+git -C ~/Workspace/cac-gitops-platform pull --ff-only   # trae los commits que subió el bootstrap
 ```
 
 Espera a que `flux get kustomizations -A` muestre todo `Ready`, y mira qué se acaba de crear con el [recorrido post-bootstrap](../../docs/es/reference/recorrido-post-bootstrap.md) antes de empezar los ejercicios de abajo.
@@ -82,7 +103,7 @@ Espera a que `flux get kustomizations -A` muestre todo `Ready`, y mira qué se a
    cat k8s/deployment.yaml
    ```
 
-   Localiza `spec.replicas` (cuántos Pods declara Git), `spec.template.spec.containers[0].image` (qué imagen debe correr), `readinessProbe`/`livenessProbe` (cómo decide Kubernetes si un Pod está listo para recibir tráfico o si hay que reiniciarlo) y `resources.requests`/`resources.limits` (memoria/CPU reservada y el tope máximo). Esto es puro estado deseado tal cual vive en Git — todavía no has tocado Flux ni el clúster, solo estás leyendo el fichero.
+   Localiza `spec.replicas` (cuántos Pods declara Git), `spec.template.spec.containers[0].image` (qué imagen debe correr), `startupProbe`/`readinessProbe`/`livenessProbe` (cómo espera Kubernetes a que arranque la JVM, y cómo decide después si un Pod está listo para recibir tráfico o si hay que reiniciarlo) y `resources.requests`/`resources.limits` (memoria/CPU reservada y el tope máximo). Esto es puro estado deseado tal cual vive en Git — todavía no has tocado Flux ni el clúster, solo estás leyendo el fichero.
 
 2. En la rama de formación de aplicación de tu fork, cambia `replicas` de `2` a `1`, haz commit y push.
 

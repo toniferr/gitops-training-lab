@@ -16,7 +16,7 @@ Selecciona el namespace `java-api`, incluye [ConfigMap](https://kubernetes.io/do
 
 ## `k8s/deployment.yaml`
 
-`Deployment/api-java-gitops` declara dos réplicas deseadas. Su selector y etiquetas de Pod deben coincidir exactamente; el Service usa la misma etiqueta de nombre. `imagePullPolicy: IfNotPresent` permite usar la imagen precargada en Kind. [Readiness](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes) determina cuándo un Pod recibe tráfico; liveness reinicia un proceso no saludable. Las solicitudes reservan 100m CPU y 256Mi de memoria; los límites lo acotan a 500m y 512Mi.
+`Deployment/api-java-gitops` declara dos réplicas deseadas. Su selector y etiquetas de Pod deben coincidir exactamente; el Service usa la misma etiqueta de nombre. `imagePullPolicy: IfNotPresent` permite usar la imagen precargada en Kind. [Readiness](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes) determina cuándo un Pod recibe tráfico; liveness reinicia un proceso no saludable; startup retiene a las dos hasta 3 minutos mientras arranca la JVM, para que un portátil lento no provoque que maten el contenedor a mitad de arranque. Las solicitudes reservan 100m CPU y 256Mi de memoria; los límites lo acotan a 500m y 512Mi.
 
 ## `k8s/service.yaml`
 
