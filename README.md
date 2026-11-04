@@ -39,27 +39,41 @@ kind create cluster --name gitops-lab --config setup/kind/gitops-lab-kind.yaml
 kubectl config use-context kind-gitops-lab
 ```
 
+Fork [`cac-gitops-platform`](https://github.com/toniferr/cac-gitops-platform) and [`java-api-gitops`](https://github.com/toniferr/java-api-gitops) into your account, unticking **"Copy the `main` branch only"**. Then clone your forks beside this repository, on the training branch, and point the platform at your application fork. `<your-github-username>` is a placeholder for your own account:
+
+```bash
+cd ~/Workspace
+git clone --branch training/01-gitops-flux-foundations git@github.com:<your-github-username>/cac-gitops-platform.git
+git clone --branch training/01-gitops-flux-foundations git@github.com:<your-github-username>/java-api-gitops.git
+cd cac-gitops-platform
+sed -i 's|github.com/toniferr/java-api-gitops|github.com/<your-github-username>/java-api-gitops|' clusters/kind-dev/flux-system/apps-source.yaml
+git add clusters/kind-dev/flux-system/apps-source.yaml
+git commit -m "point java-api source at my fork"
+git push
+```
+
 Build the API and make its local image available to the Kind nodes:
 
 ```bash
-cd ../java-api-gitops
+cd ~/Workspace/java-api-gitops
 docker build -t gitops-lab/java-api:0.1.0 .
 kind load docker-image gitops-lab/java-api:0.1.0 --name gitops-lab
 ```
 
-Bootstrap Flux from the **platform** repository. Use a *fine-grained* personal GitHub token, limited to your `cac-gitops-platform` fork and with a short expiry (the [learner guide](training/01-gitops-flux-foundations/learner-guide.md) lists the permissions). `read -rs` asks for it without echoing it or saving it in your shell history; never commit it. `<your-github-username>` is a placeholder — as a learner, this must be your own account (your fork), never `toniferr`; running this with someone else's account fails on push permissions, and pointing your cluster at someone else's repository by accident is exactly what forking avoids. Replace the branch if you are testing a training branch instead of `main`:
+Bootstrap Flux from the **platform** repository. Use a *fine-grained* personal GitHub token, limited to your `cac-gitops-platform` fork and with a short expiry (the [learner guide](training/01-gitops-flux-foundations/learner-guide.md) lists the permissions). `read -rs` asks for it without echoing it or saving it in your shell history; never commit it. As a learner, `<your-github-username>` must be your own account (your fork), never `toniferr`; running this with someone else's account fails on push permissions, and pointing your cluster at someone else's repository by accident is exactly what forking avoids:
 
 ```bash
-cd ../cac-gitops-platform
+cd ~/Workspace/cac-gitops-platform
 read -rs GITHUB_TOKEN && export GITHUB_TOKEN
 flux bootstrap github \
   --owner=<your-github-username> \
   --repository=cac-gitops-platform \
-  --branch=main \
+  --branch=training/01-gitops-flux-foundations \
   --path=clusters/kind-dev \
   --personal \
-  --private
+  --private=false
 unset GITHUB_TOKEN
+git pull --ff-only   # brings back the commits bootstrap pushed
 ```
 
 Verify reconciliation and call the API from a second terminal:
