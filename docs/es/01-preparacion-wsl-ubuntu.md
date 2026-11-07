@@ -32,9 +32,11 @@ Este repositorio se clona directamente (no hace falta fork: es material de lectu
 sh scripts/wsl/check-prerequisites.sh
 ```
 
-No instala nada: informa de qué comandos existen y si el daemon de Docker responde. Es seguro repetirlo cuantas veces quieras.
+No instala nada: informa de qué comandos existen, avisa si kubectl, kind o flux no coinciden con las versiones con las que se probó esta formación y comprueba si el daemon de Docker responde. Es seguro repetirlo cuantas veces quieras.
 
 ## 3. Instalar lo que falta
+
+Hazlo si el paso 2 indica que falta un comando o que hay otra versión. Si todo sale `[ok]`, sáltatelo.
 
 ```bash
 sh scripts/wsl/install-prerequisites.sh
@@ -75,3 +77,4 @@ El clúster es desechable. Elimínalo con `kind delete cluster --name gitops-lab
 | WSL va muy lento o se queda sin memoria | Sin límites, WSL2 puede usar toda la RAM disponible. | Crea `%UserProfile%\.wslconfig` en Windows con un límite, por ejemplo `[wsl2]\nmemory=8GB`, y ejecuta `wsl --shutdown` seguido de reabrir Ubuntu. |
 | Todo se ve raro tras un cambio de red o VPN | WSL2 a veces no se recupera bien de una suspensión o de un cambio de red mientras el portátil dormía. | `wsl --shutdown` desde PowerShell y vuelve a abrir Ubuntu. |
 | `kind create cluster` falla en "Starting control-plane" con `kubeadm`, y el log termina en `connect: connection refused` contra el puerto 6443 (sin ningún aviso de cgroup) | `kube-apiserver` nunca llegó a arrancar. En máquinas con poca RAM física, WSL2 usa por defecto el 50% del total, y eso puede no bastar para los dos nodos del clúster (etcd, apiserver, controller-manager, scheduler, kubelet y containerd anidado, duplicado en control-plane y worker). | Crea o edita `%UserProfile%\.wslconfig` en Windows añadiendo un límite explícito más generoso, por ejemplo `[wsl2]\nmemory=6GB` (deja al menos 1-2GB para Windows). Luego `wsl --shutdown` desde PowerShell, reabre Ubuntu, y reintenta `kind create cluster`. |
+| `kind create cluster` falla en `wait-control-plane` con `unable to create ClusterRoleBinding` y `context deadline exceeded` | `kube-apiserver` arrancó, pero demasiado despacio para `kubeadm`. Es intermitente en máquinas lentas: el mismo comando puede funcionar al siguiente intento. | `kind delete cluster --name gitops-lab` y vuelve a ejecutar `kind create cluster`, las veces que haga falta. No conserves el clúster fallido con `--retain`: puede quedar sin permisos de administrador, y `kubectl` responde `Forbidden`. |

@@ -20,11 +20,7 @@ echo
 
 ARCH="$(dpkg --print-architecture)"
 
-# Versions this training edition was tested with. Override one to try another, e.g.:
-#   KIND_VERSION=v0.34.0 sh scripts/wsl/install-prerequisites.sh
-KUBECTL_VERSION="${KUBECTL_VERSION:-v1.37.1}"
-KIND_VERSION="${KIND_VERSION:-v0.33.0}"
-FLUX_VERSION="${FLUX_VERSION:-2.9.5}"   # same as the Flux components committed on the platform branch
+. "$(dirname "$0")/versions.sh"
 
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
