@@ -1,14 +1,15 @@
 # Publishes the training websites to GitHub Pages.
 #
-# Any push to main or to a training/* branch rebuilds the whole site from all
-# branches (scripts/site/build-pages.sh), so every edition stays published.
+# Any push to a training/* branch rebuilds the whole site from all branches
+# (scripts/site/build-pages.sh), so every edition stays published. Only training/*
+# may deploy: pushes to main don't run this, and they reach the portal and /main/
+# with the next deployment. To run it by hand, pick a training/* branch.
 # One-time setup is described in site/README.md.
 name: Pages
 
 on:
   push:
     branches:
-      - main
       - 'training/**'
   workflow_dispatch:
 
