@@ -43,7 +43,7 @@ In this lab, rollback is done through Git (`git revert`, see [the learning path]
 | Type | Reachable from | Used when |
 | --- | --- | --- |
 | `ClusterIP` (default) | Inside the cluster only | Internal traffic, or fronted by a port-forward/ingress. This lab's `Service/java-api` is `ClusterIP`. |
-| `NodePort` | `<node-ip>:<port>` from outside | Quick external access without a load balancer; the Kind port mapping in `setup/kind/gitops-lab-kind.yaml` is reserved for this in a later exercise. |
+| `NodePort` | `<node-ip>:<port>` from outside | Quick external access without a load balancer; the Kind port mapping in `setup/kind/gitops-lab-kind.yaml` is there for this, though Training 01 doesn't use it. |
 | `LoadBalancer` | An external IP provisioned by the cloud provider | Not meaningful on a local Kind cluster. |
 | `ExternalName` | DNS alias to an external name | Pointing at something outside the cluster. |
 
@@ -51,7 +51,7 @@ A Service finds its Pods through a label selector, never through Pod names — s
 
 ## ConfigMap and Secret
 
-Both [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) and [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) hold configuration outside the container image. A Secret is base64-encoded, not encrypted, at rest by default — treat it the same as a ConfigMap for confidentiality unless the cluster has encryption at rest or a tool like SOPS/Sealed Secrets configured (out of scope for this lab; see Training 04 in [the learning path](../00-learning-path.md)).
+Both [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) and [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) hold configuration outside the container image. A Secret is base64-encoded, not encrypted, at rest by default — treat it the same as a ConfigMap for confidentiality unless the cluster has encryption at rest or a tool like SOPS/Sealed Secrets configured (out of scope for this lab).
 
 Two ways to consume either one:
 

@@ -1,19 +1,10 @@
 # Ruta de aprendizaje
 
-Este laboratorio es incremental por branch de github. Completa una rama de formación antes de avanzar; cada ejercicio posterior presupone el modelo operativo aprendido antes.
+Este laboratorio empieza con la Formación 01, que monta un sistema GitOps completo con tres repositorios.
 
 | Formación | Pregunta que responde |
 | --- | --- |
 | 01 — Fundamentos de [GitOps](https://opengitops.dev/) y [Flux](https://fluxcd.io/flux/) | ¿Cómo se convierte Git en el estado deseado del clúster? |
-| 02 — Kubernetes para GitOps | ¿Qué objetos de Kubernetes gestiona realmente GitOps? |
-| 03 — [Kustomize](https://kustomize.io/) y entornos | ¿Cómo varía una aplicación por entorno (dev/qa/prod) con seguridad? |
-| 04 — Entrega de aplicaciones | ¿Cómo llega una imagen construida a [Kubernetes](https://kubernetes.io/docs/concepts/overview/) a través de Git, y en qué se diferencia de CI? |
-| 05 — Platform GitOps | ¿Cómo gestionas la infraestructura de todo un clúster mediante Git, no solo una app? |
-| 06 — Secretos y seguridad | ¿Cómo proteges valores ([SOPS](https://github.com/getsops/sops), [Sealed Secrets](https://sealed-secrets.netlify.app/)) y limitas cargas (RBAC) en un flujo GitOps? |
-| 07 — Observabilidad y troubleshooting | Dado un despliegue roto, ¿dónde está roto realmente el pipeline GitOps? |
-| 08 — Flux vs [Argo CD](https://argo-cd.readthedocs.io/en/stable/) | Mismo modelo GitOps, distinto controlador — ¿cuándo usar cada uno? |
-| 09 — Enterprise GitOps | ¿Cómo es esto con CI/CD, pull requests, promoción y Azure/OpenShift? |
-| 10 — Reto final (capstone) | ¿Puedes explicar cada flecha desde el commit hasta el Pod en ejecución? |
 
 ## Modelo mental
 

@@ -1,6 +1,6 @@
 # Laboratorio de formación GitOps
 
-Material didáctico bilingüe para una introducción incremental y práctica a [Kubernetes](https://kubernetes.io/docs/concepts/overview/), Configuration as Code (CaC), [GitOps](https://opengitops.dev/) y [Flux](https://fluxcd.io/flux/). Está diseñado para Ubuntu o WSL2 y utiliza exclusivamente repositorios personales de GitHub.
+Material didáctico bilingüe para una introducción práctica a [Kubernetes](https://kubernetes.io/docs/concepts/overview/), Configuration as Code (CaC), [GitOps](https://opengitops.dev/) y [Flux](https://fluxcd.io/flux/). Está diseñado para Ubuntu o WSL2 y utiliza exclusivamente repositorios personales de GitHub.
 
 [Read in English](README.md)
 
@@ -34,7 +34,7 @@ mkdir -p ~/Workspace && cd ~/Workspace
 git clone https://github.com/toniferr/gitops-training-lab.git
 cd gitops-training-lab
 sh scripts/wsl/check-prerequisites.sh
-sh scripts/wsl/install-prerequisites.sh   # solo si falta algo en el paso anterior
+sh scripts/wsl/install-prerequisites.sh   # solo si el paso anterior indica que falta algo o que hay otra versión
 kind create cluster --name gitops-lab --config setup/kind/gitops-lab-kind.yaml
 kubectl config use-context kind-gitops-lab
 ```
@@ -100,8 +100,6 @@ kind delete cluster --name gitops-lab
 
 ```text
 training/01-gitops-flux-foundations
-training/02-kubernetes-foundations
-training/03-kustomize-environments
 ```
 
 La rama de plataforma es la que observa Flux. La rama de aplicación es la versión de la app que consume esa plataforma. La rama de este repositorio documenta el ejercicio y el estado esperado.
@@ -126,7 +124,7 @@ El contenido de la sesión está en `site/content/es.md` y `site/content/en.md` 
 ```text
 docs/          Teoría común y preparación de equipo, en inglés y español.
 docs/*/reference/  Profundizaciones de estudio independientes (Kubernetes, Flux, kubectl), para leer cuando quieras.
-training/      Material de formador y alumnado por formación incremental.
+training/      Material de formador y alumnado de cada formación.
 references/    Explicaciones fichero a fichero de los repositorios canónicos.
 scripts/       Ayudas POSIX de validación para WSL2 y Ubuntu.
 setup/         Configuración de clúster local.

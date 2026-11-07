@@ -1,19 +1,10 @@
 # Learning path
 
-This lab is intentionally incremental: it is the same GitOps system, growing one training at a time, not ten disconnected exercises. Complete one training branch before moving to the next; every later exercise assumes the operational model learned earlier.
+This lab starts with Training 01, which sets up a complete GitOps system across three repositories.
 
 | Training | Question answered |
 | --- | --- |
 | 01 — [GitOps](https://opengitops.dev/) and [Flux](https://fluxcd.io/flux/) foundations | How does Git become desired cluster state? |
-| 02 — Kubernetes foundations for GitOps | What Kubernetes objects does GitOps actually manage? |
-| 03 — [Kustomize](https://kustomize.io/) and environments | How does one app differ safely by environment (dev/qa/prod)? |
-| 04 — Application delivery | How does a built image reach [Kubernetes](https://kubernetes.io/docs/concepts/overview/) through Git, and how is that different from CI? |
-| 05 — Platform GitOps | How do you manage a whole cluster's infrastructure through Git, not just one app? |
-| 06 — Secrets and security | How do you protect values ([SOPS](https://github.com/getsops/sops), [Sealed Secrets](https://sealed-secrets.netlify.app/)) and constrain workloads (RBAC) in a GitOps flow? |
-| 07 — Observability and troubleshooting | Given a broken deployment, where in the GitOps pipeline is it actually broken? |
-| 08 — Flux vs [Argo CD](https://argo-cd.readthedocs.io/en/stable/) | Same GitOps model, different controller — when do you reach for which? |
-| 09 — Enterprise GitOps | How does this look with CI/CD, pull requests, promotion, and Azure/OpenShift? |
-| 10 — Capstone challenge | Can you explain every arrow from commit to running Pod, end to end? |
 
 ## Mental model
 

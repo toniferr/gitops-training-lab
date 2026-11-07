@@ -102,12 +102,12 @@ flux reconcile source git java-api -n flux-system
 flux reconcile kustomization java-api -n flux-system --with-source
 ```
 
-## Controllers already running, but unused until later trainings
+## Controllers already running, but unused
 
 `flux bootstrap github` with no `--components`/`--components-extra` flags — exactly the command above — installs **four** controllers, not two. Check `kubectl get pods -n flux-system` on this lab's real cluster and you'll see `helm-controller` and `notification-controller` sitting there already, alongside `source-controller` and `kustomize-controller`. Training 01 just never creates the objects that would give them anything to do.
 
-| Controller | Purpose | Training |
-| --- | --- | --- |
-| [`helm-controller`](https://fluxcd.io/flux/components/helm/) | Reconciles `HelmRelease` objects against a `HelmRepository`/`OCIRepository` source — for installing Helm charts declaratively. Installed and idle since bootstrap; nothing to reconcile until a `HelmRelease` exists. | Later (packaging) |
-| [`notification-controller`](https://fluxcd.io/flux/components/notification/) | Turns Flux events into alerts (Slack, webhooks) and can receive Git provider webhooks to trigger instant reconciliation instead of waiting for `interval`. Installed and idle since bootstrap; nothing to send until a `Provider`/`Alert` exists. | Later |
-| [`image-reflector-controller` / `image-automation-controller`](https://fluxcd.io/flux/components/image/) | Scan a registry for new image tags and commit the updated tag back to Git automatically. **Not installed** by the bootstrap command above — these two genuinely require `--components-extra=image-reflector-controller,image-automation-controller` at bootstrap time. | Training 03 — image delivery |
+| Controller | Purpose |
+| --- | --- |
+| [`helm-controller`](https://fluxcd.io/flux/components/helm/) | Reconciles `HelmRelease` objects against a `HelmRepository`/`OCIRepository` source — for installing Helm charts declaratively. Installed and idle since bootstrap; nothing to reconcile until a `HelmRelease` exists. |
+| [`notification-controller`](https://fluxcd.io/flux/components/notification/) | Turns Flux events into alerts (Slack, webhooks) and can receive Git provider webhooks to trigger instant reconciliation instead of waiting for `interval`. Installed and idle since bootstrap; nothing to send until a `Provider`/`Alert` exists. |
+| [`image-reflector-controller` / `image-automation-controller`](https://fluxcd.io/flux/components/image/) | Scan a registry for new image tags and commit the updated tag back to Git automatically. **Not installed** by the bootstrap command above — these two genuinely require `--components-extra=image-reflector-controller,image-automation-controller` at bootstrap time. |

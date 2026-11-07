@@ -16,10 +16,10 @@ You'll see four controller Pods, not two:
 | --- | --- |
 | `source-controller-*` | Yes — cloning both `cac-gitops-platform` (itself) and `java-api-gitops` on their `interval`. |
 | `kustomize-controller-*` | Yes — applying `clusters/kind-dev` and `./k8s` from those sources. |
-| `helm-controller-*` | No. Installed by default bootstrap, but idle — nothing to do until a `HelmRelease` object exists (a later training). |
+| `helm-controller-*` | No. Installed by default bootstrap, but idle — nothing to do until a `HelmRelease` object exists. |
 | `notification-controller-*` | No. Same story — idle until a `Provider`/`Alert` object exists. |
 
-See [Flux architecture](flux-architecture.md#controllers-already-running-but-unused-until-later-trainings) for why all four show up even though this training only exercises two.
+See [Flux architecture](flux-architecture.md#controllers-already-running-but-unused) for why all four show up even though this training only exercises two.
 
 ## The sources and Kustomizations actually reconciling
 

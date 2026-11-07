@@ -16,10 +16,10 @@ Verás cuatro Pods de controlador, no dos:
 | --- | --- |
 | `source-controller-*` | Sí — clona tanto `cac-gitops-platform` (a sí mismo) como `java-api-gitops` en su `interval`. |
 | `kustomize-controller-*` | Sí — aplica `clusters/kind-dev` y `./k8s` desde esos orígenes. |
-| `helm-controller-*` | No. Se instala por defecto con el bootstrap, pero está inactivo — nada que hacer hasta que exista un objeto `HelmRelease` (formación posterior). |
+| `helm-controller-*` | No. Se instala por defecto con el bootstrap, pero está inactivo — nada que hacer hasta que exista un objeto `HelmRelease`. |
 | `notification-controller-*` | No. Lo mismo — inactivo hasta que exista un objeto `Provider`/`Alert`. |
 
-Ver [Arquitectura de Flux](arquitectura-flux.md#controladores-que-ya-están-corriendo-pero-sin-usar-hasta-formaciones-posteriores) para entender por qué aparecen los cuatro aunque esta formación solo ejercite dos.
+Ver [Arquitectura de Flux](arquitectura-flux.md#controladores-que-ya-están-corriendo-pero-sin-usar) para entender por qué aparecen los cuatro aunque esta formación solo ejercite dos.
 
 ## Los sources y Kustomizations que realmente reconcilian
 

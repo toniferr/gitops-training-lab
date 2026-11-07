@@ -1,6 +1,6 @@
 # GitOps Training Lab
 
-Bilingual teaching material for an incremental, hands-on introduction to [Kubernetes](https://kubernetes.io/docs/concepts/overview/), Configuration as Code (CaC), [GitOps](https://opengitops.dev/), and [Flux](https://fluxcd.io/flux/). It is designed for Ubuntu or WSL2 and uses personal GitHub repositories only.
+Bilingual teaching material for a hands-on introduction to [Kubernetes](https://kubernetes.io/docs/concepts/overview/), Configuration as Code (CaC), [GitOps](https://opengitops.dev/), and [Flux](https://fluxcd.io/flux/). It is designed for Ubuntu or WSL2 and uses personal GitHub repositories only.
 
 [Leer en español](README.es.md)
 
@@ -34,7 +34,7 @@ mkdir -p ~/Workspace && cd ~/Workspace
 git clone https://github.com/toniferr/gitops-training-lab.git
 cd gitops-training-lab
 sh scripts/wsl/check-prerequisites.sh
-sh scripts/wsl/install-prerequisites.sh   # only if something is missing above
+sh scripts/wsl/install-prerequisites.sh   # only if the step above reports a missing tool or a different version
 kind create cluster --name gitops-lab --config setup/kind/gitops-lab-kind.yaml
 kubectl config use-context kind-gitops-lab
 ```
@@ -100,8 +100,6 @@ kind delete cluster --name gitops-lab
 
 ```text
 training/01-gitops-flux-foundations
-training/02-kubernetes-foundations
-training/03-kustomize-environments
 ```
 
 The platform branch is the branch Flux watches. The application branch is the version of the app consumed by that platform. This repository's branch documents the exact exercise and expected state.
@@ -126,7 +124,7 @@ The session content is in each branch's `site/content/es.md` and `site/content/e
 ```text
 docs/          Shared theory and workstation setup, in English and Spanish.
 docs/*/reference/  Standalone study deep dives (Kubernetes, Flux, kubectl), read anytime.
-training/      Instructor and learner material for each incremental training.
+training/      Instructor and learner material for each training.
 references/    File-by-file explanations of the canonical repositories.
 scripts/       POSIX shell validation helpers for WSL2 and Ubuntu.
 setup/         Local cluster configuration files.

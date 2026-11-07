@@ -167,9 +167,9 @@ kubectl get events -n java-api --sort-by=.lastTimestamp
 kubectl describe deployment/api-java-gitops -n java-api
 ```
 
-## Qué sigue
+## Para profundizar
 
-Si algún comando de los anteriores te ha resultado poco familiar, es normal — profundiza con las [referencias de estudio](../../docs/es/00-ruta-aprendizaje.md#referencias-de-estudio) (conceptos de Kubernetes, arquitectura de Flux, chuleta de kubectl) antes o después de esta sesión. Consulta la [ruta de aprendizaje](../../docs/es/00-ruta-aprendizaje.md) para ver qué añaden las siguientes formaciones sobre esta.
+Si algún comando de los anteriores te ha resultado poco familiar, es normal — profundiza con las [referencias de estudio](../../docs/es/00-ruta-aprendizaje.md#referencias-de-estudio) (conceptos de Kubernetes, arquitectura de Flux, chuleta de kubectl) antes o después de esta sesión.
 
 ## Rollback
 
@@ -189,7 +189,7 @@ Para dejar tu WSL limpio al terminar (o antes de repetir el ejercicio desde cero
    docker rmi gitops-lab/java-api:0.1.0
    ```
 
-Lo que se queda tal cual, a propósito: tus clones de los tres repositorios, la rama `training/01-gitops-flux-foundations` con tus commits, y las herramientas instaladas (`docker`, `kind`, `flux`, `kubectl`, Java/Maven). Nada de eso forma parte del clúster, y lo necesitarás para la próxima formación.
+Lo que se queda tal cual, a propósito: tus clones de los tres repositorios, la rama `training/01-gitops-flux-foundations` con tus commits, y las herramientas instaladas (`docker`, `kind`, `flux`, `kubectl`, Java/Maven). Nada de eso forma parte del clúster.
 
 ## Qué implica tener este ecosistema en tu equipo
 
