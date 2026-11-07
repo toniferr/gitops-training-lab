@@ -48,7 +48,7 @@ kubectl get all -n java-api
 
 - **Dónde:** arquitectura de IOPEDGE, para Inditex
 - **Equipo:** IOP Turing Lee, por Alan Turing y Tim Berners-Lee
-- **Qué proveemos:** un sistema de *locations* donde otros equipos de arquitectura despliegan sus workloads
+- **Qué proveemos:** un sistema de *locations* donde otros equipos despliegan sus workloads
 
 ![Plataforma: el sistema de locations, cuyos microservicios conectan con Azure y con los clústeres de tiendas y almacenes; los equipos de Inditex sacan sus versiones con un push a Git y Flux reconcilia esos clústeres automáticamente](diagrams/iopedge-platform.es.svg "Cada equipo saca sus versiones por su cuenta: hace push a Git y Flux reconcilia automáticamente. Es lo que hoy veremos en pequeño, en un laboratorio.")
 

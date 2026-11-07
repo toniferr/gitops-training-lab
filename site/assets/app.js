@@ -119,6 +119,12 @@
     return el;
   }
 
+  // A section label's trailing " · 13–18 min" is pacing for the instructor, not for the audience.
+  function labelHtml(label) {
+    const m = label.match(/^(.*?)(\s*·\s*\d+\s*[–-]\s*\d+\s*min)$/);
+    return m ? `${inline(m[1])}<span class="instructor-only">${inline(m[2])}</span>` : inline(label);
+  }
+
   function renderSection(section, used) {
     const m = section.heading.match(/^(.*?)\s*\{([^}]*)\}\s*$/);
     const title = m ? m[1] : section.heading;
@@ -131,7 +137,7 @@
     el.dataset.eyebrow = eyebrow;
     const badge = instructor ? `<span class="instructor-badge">${esc(state.ui.instructorOnly)}</span>` : '';
     el.innerHTML = `
-      ${eyebrow || badge ? `<p class="eyebrow">${inline(eyebrow)}${badge}</p>` : ''}
+      ${eyebrow || badge ? `<p class="eyebrow">${labelHtml(eyebrow)}${badge}</p>` : ''}
       <h2>${inline(title)}</h2>
       ${window.marked.parse(section.body)}`;
     return el;
@@ -329,7 +335,7 @@
   function renderToc() {
     const items = slides().map((s) => `
       <li class="${s.classList.contains('instructor-only') ? 'instructor-only' : ''}">
-        <a href="#${s.id}" data-target="${s.id}">${inline(s.dataset.toc)}${s.dataset.eyebrow ? `<small>${inline(s.dataset.eyebrow)}</small>` : ''}</a>
+        <a href="#${s.id}" data-target="${s.id}">${inline(s.dataset.toc)}${s.dataset.eyebrow ? `<small>${labelHtml(s.dataset.eyebrow)}</small>` : ''}</a>
       </li>`).join('');
     toc.innerHTML = `<h2>${esc(state.ui.contents)}</h2><ol>${items}</ol>`;
     $$('a', toc).forEach((a) => a.addEventListener('click', (e) => {
