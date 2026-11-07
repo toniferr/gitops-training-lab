@@ -66,13 +66,13 @@ python3 -m http.server 8000 -d _site
 
 ## Publishing
 
-`.github/workflows/pages.yml` runs on every push to `main` or `training/**`, and rebuilds the whole site from all branches with `scripts/site/build-pages.sh`. Branches without `site/content/training.json` are skipped.
+`.github/workflows/pages.yml` runs on every push to `training/**`, and rebuilds the whole site from all branches with `scripts/site/build-pages.sh`. Branches without `site/content/training.json` are skipped. Pushes to `main` don't deploy: the portal and `/main/` pick them up with the next deployment, so when changing both, push `main` first.
 
 One-time repository setup (GitHub Pages is free for public repositories):
 
 1. **Settings → Pages → Build and deployment → Source: GitHub Actions.**
-2. **Settings → Environments → `github-pages` → Deployment branches and tags:** add a rule for `training/*` next to `main`. Without it, pushes to a training branch fail at the deploy step with *"Branch … is not allowed to deploy to github-pages due to environment protection rules"*.
-3. Run the workflow once from **Actions → Pages → Run workflow**, or push to `main`.
+2. **Settings → Environments → `github-pages` → Deployment branches and tags:** keep `training/*` as the only rule. Without it, pushes to a training branch fail at the deploy step with *"Branch … is not allowed to deploy to github-pages due to environment protection rules"*.
+3. Run the workflow once from **Actions → Pages → Run workflow**, selecting a `training/*` branch (the default, `main`, is rejected at the deploy step), or push to a training branch.
 
 ## Starting the website for a new training
 
