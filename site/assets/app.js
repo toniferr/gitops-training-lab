@@ -302,7 +302,7 @@
 
     main.replaceChildren(...els, renderFooter());
     enhance(main);
-    inlineDiagrams(main);
+    inlineDiagrams(main).then(fitSlide);
 
     const title = localized(state.meta.title);
     document.title = `${state.meta.number} · ${title} — GitOps Training Lab`;
@@ -382,9 +382,35 @@
     const i = list.indexOf(el);
     $('#counter').textContent = `${i + 1} / ${list.length}`;
     $('#progress').style.width = `${((i + 1) / list.length) * 100}%`;
+    fitSlide();
     el.scrollTop = 0;
     markToc(el);
     history.replaceState(history.state, '', `#${el.id}`);
+  }
+
+  // Scales the current slide down just enough to fit the screen, so it never needs a scrollbar.
+  // Below MIN_FIT the text would be too small to read: the slide scrolls instead.
+  const MIN_FIT = 0.55;
+
+  function fitSlide() {
+    const el = state.current;
+    if (!state.presenting || !el) return;
+    const fits = (scale) => {
+      el.style.setProperty('--fit', scale.toFixed(3));
+      return el.scrollHeight <= el.clientHeight;
+    };
+    document.body.classList.add('fitting');
+    if (!fits(1)) {
+      let low = MIN_FIT;
+      let high = 1;
+      for (let i = 0; i < 7; i++) {
+        const middle = (low + high) / 2;
+        if (fits(middle)) low = middle;
+        else high = middle;
+      }
+      fits(low);
+    }
+    document.body.classList.remove('fitting');
   }
 
   function step(delta) {
@@ -481,6 +507,10 @@
     });
 
     document.addEventListener('mousemove', wake, { passive: true });
+
+    // Entering or leaving fullscreen also fires resize. Web fonts change text size when they arrive.
+    window.addEventListener('resize', fitSlide, { passive: true });
+    document.fonts?.addEventListener('loadingdone', fitSlide);
 
     // Horizontal swipe changes slide on touch screens.
     let touch = null;
