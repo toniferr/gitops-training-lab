@@ -12,7 +12,7 @@ Complete the [setup guide](../../docs/en/01-wsl-ubuntu-setup.md): clone this rep
 
 ## Workspace layout
 
-Keep the three repositories beside each other:
+By the end of the next section, the three repositories will sit side by side. For now only `gitops-training-lab` exists; the other two appear when you clone your forks:
 
 ```text
 ~/Workspace/
