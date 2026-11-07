@@ -17,11 +17,10 @@ The canonical repositories are:
 
 ## Start here
 
-1. Read [the learning path](docs/en/00-learning-path.md).
-2. On your existing WSL2/Ubuntu setup, install the required tooling with [the setup guide](docs/en/01-wsl-ubuntu-setup.md).
-3. Follow [Training 01](training/01-gitops-flux-foundations/learner-guide.md).
-4. Use the bilingual references to understand every relevant Kubernetes and Flux file.
-5. Go deeper anytime with the [study references](docs/en/00-learning-path.md#study-references): Kubernetes concepts, Flux architecture, and a kubectl cheatsheet.
+1. On your existing WSL2/Ubuntu setup, install the required tooling with [the setup guide](docs/en/01-wsl-ubuntu-setup.md).
+2. Follow [Training 01](training/01-gitops-flux-foundations/learner-guide.md).
+3. Use the bilingual references to understand every relevant Kubernetes and Flux file.
+4. Go deeper anytime with the [study references](docs/en/00-learning-path.md#study-references): Kubernetes concepts, Flux architecture, and a kubectl cheatsheet.
 
 ## Manual quick start
 
