@@ -50,10 +50,10 @@ kubectl get all -n java-api
 - **Team:** IOP Turing Lee, after Alan Turing and Tim Berners-Lee
 - **What we provide:** a *locations* system where other teams deploy their workloads
 
-![Platform: the locations system, whose microservices connect to Azure and to the store and warehouse clusters; Inditex teams release their versions with a push to Git and Flux reconciles those clusters automatically](diagrams/iopedge-platform.en.svg "Each team releases on its own: it pushes to Git and Flux reconciles automatically. That's what we'll see today, on a small scale, in a lab.")
+![Platform: the locations system spans the microservices, Azure (Cosmos DB, Event Hubs, Kubernetes…) and the store and warehouse clusters; Inditex teams release their versions with a push to Git and Flux reconciles those clusters automatically](diagrams/iopedge-platform.en.svg "Each team releases on its own: it pushes to Git and Flux reconciles automatically. That's what we'll see today, on a small scale, in a lab.")
 
 > [!NOTES]
-> Walk the top row first: what we provide and what it connects to. Finish on the bottom row, the bridge into the training: Inditex teams release versions without depending on us.
+> Walk the blue box first: we work on the microservices, Azure and the clusters. Finish on the bottom row, the bridge into the training: Inditex teams release versions without depending on us.
 
 ## What is a Kubernetes cluster? {Theory · 2–6 min}
 
