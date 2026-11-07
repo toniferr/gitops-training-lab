@@ -60,7 +60,7 @@ Two ways to consume either one:
 | `envFrom` / `env` (what `api-java-gitops` uses) | The Pod's environment is set once at container start. Changing the ConfigMap does **not** restart or update a running Pod. |
 | Mounted volume | The file inside the Pod is updated automatically (kubelet sync delay applies), but the running process still has to notice and reload it. |
 
-This is why the instructor runbook avoids a ConfigMap edit as the visible Training 01 demo — nothing observable happens until the Pod restarts for another reason.
+This is why a ConfigMap edit makes a poor visible demo — nothing observable happens until the Pod restarts for another reason.
 
 ## Namespace
 

@@ -2,7 +2,7 @@
 
 [Read in English](../../en/reference/kubectl-cheatsheet.md)
 
-Organizada por tarea, no alfabéticamente. Los comandos usan los nombres reales de este laboratorio (namespace `java-api`, Deployment `api-java-gitops`) para que puedas ejecutarlos tal cual contra el clúster Kind. Todos los comandos de esta página aparecen también en el [runbook de instructor](../../training/01-gitops-flux-foundations/instructor-runbook.es.md) o en la [guía de alumno](../../training/01-gitops-flux-foundations/learner-guide.es.md) de la Formación 01; esta página es el índice hacia ellos.
+Organizada por tarea, no alfabéticamente. Los comandos usan los nombres reales de este laboratorio (namespace `java-api`, Deployment `api-java-gitops`) para que puedas ejecutarlos tal cual contra el clúster Kind.
 
 ## Contexto y clúster
 
@@ -43,7 +43,7 @@ kubectl exec -it deployment/api-java-gitops -n java-api -- sh
 kubectl port-forward -n java-api svc/java-api 8080:80
 ```
 
-`port-forward` bloquea la terminal — ejecútalo en una segunda terminal, como hace el runbook de la Formación 01, y haz `curl http://localhost:8080` desde la primera.
+`port-forward` bloquea la terminal — ejecútalo en una segunda terminal, y haz `curl http://localhost:8080` desde la primera.
 
 ## Aplicar y comparar (declarativo)
 

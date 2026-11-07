@@ -19,7 +19,7 @@ The canonical repositories are:
 
 1. Read [the learning path](docs/en/00-learning-path.md).
 2. On your existing WSL2/Ubuntu setup, install the required tooling with [the setup guide](docs/en/01-wsl-ubuntu-setup.md).
-3. Follow [Training 01 as an instructor](training/01-gitops-flux-foundations/instructor-runbook.md), or [as a learner](training/01-gitops-flux-foundations/learner-guide.md). The session is delivered with its [training website](https://toniferr.github.io/gitops-training-lab/).
+3. Follow [Training 01](training/01-gitops-flux-foundations/learner-guide.md).
 4. Use the bilingual references to understand every relevant Kubernetes and Flux file.
 5. Go deeper anytime with the [study references](docs/en/00-learning-path.md#study-references): Kubernetes concepts, Flux architecture, and a kubectl cheatsheet.
 
@@ -106,18 +106,9 @@ The platform branch is the branch Flux watches. The application branch is the ve
 
 ### Which branch should I use?
 
-| Role | Branch workflow |
-| --- | --- |
-| Learner | Fork the repositories and use the matching `training/01-gitops-flux-foundations` branch in the fork. It is safe to commit experiments there because the fork is personal; use `git revert` to return to the starting state. |
-| Instructor preparing a repeatable session | Work in the matching `training/*` branch in all three repositories. Flux watches the platform branch with that same name. |
+Fork the repositories and use the `training/01-gitops-flux-foundations` branch in your fork. It is safe to commit experiments there because the fork is personal; use `git revert` to return to the starting state.
 
 A finished edition is also tagged in the three repositories, for example `training-01-v1.0.0`.
-
-## Training website
-
-Each training is delivered with a static website instead of slides, published on GitHub Pages: [toniferr.github.io/gitops-training-lab](https://toniferr.github.io/gitops-training-lab/). The portal lists every published `training/*` branch, and each one lives on its own path (for example `/01-gitops-flux-foundations/`), frozen together with its branch. It has a presentation mode, an instructor mode with notes and a timer, and Spanish and English versions.
-
-The session content is in each branch's `site/content/es.md` and `site/content/en.md`. See [site/README.md](site/README.md) to write it, preview it locally, and for the one-time GitHub Pages setup.
 
 ## Directory map
 

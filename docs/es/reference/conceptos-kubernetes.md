@@ -60,7 +60,7 @@ Dos formas de consumir cualquiera de los dos:
 | `envFrom` / `env` (lo que usa `api-java-gitops`) | El entorno del Pod se fija una sola vez al arrancar el contenedor. Cambiar el ConfigMap **no** reinicia ni actualiza un Pod en ejecución. |
 | Volumen montado | El fichero dentro del Pod se actualiza automáticamente (con el retraso de sincronización del kubelet), pero el proceso en ejecución todavía tiene que darse cuenta y recargarlo. |
 
-Por eso el runbook de instructor evita usar un cambio de ConfigMap como demo visible en la Formación 01 — no ocurre nada observable hasta que el Pod se reinicia por otro motivo.
+Por eso un cambio de ConfigMap no sirve como demo visible — no ocurre nada observable hasta que el Pod se reinicia por otro motivo.
 
 ## Namespace
 
