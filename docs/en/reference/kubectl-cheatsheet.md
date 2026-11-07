@@ -2,7 +2,7 @@
 
 [Versión en español](../../es/reference/chuleta-kubectl.md)
 
-Organized by task, not alphabetically. Commands use this lab's real names (`java-api` namespace, `api-java-gitops` Deployment) so you can run them as-is against the Kind cluster. Every command below also appears somewhere in the [Training 01 instructor runbook](../../training/01-gitops-flux-foundations/instructor-runbook.md) or [learner guide](../../training/01-gitops-flux-foundations/learner-guide.md); this page is the index into them.
+Organized by task, not alphabetically. Commands use this lab's real names (`java-api` namespace, `api-java-gitops` Deployment) so you can run them as-is against the Kind cluster.
 
 ## Context and cluster
 
@@ -43,7 +43,7 @@ kubectl exec -it deployment/api-java-gitops -n java-api -- sh
 kubectl port-forward -n java-api svc/java-api 8080:80
 ```
 
-`port-forward` blocks the terminal — run it in a second terminal, as the Training 01 runbook does, and `curl http://localhost:8080` from the first.
+`port-forward` blocks the terminal — run it in a second terminal, and `curl http://localhost:8080` from the first.
 
 ## Applying and diffing (declarative)
 

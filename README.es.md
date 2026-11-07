@@ -19,7 +19,7 @@ Los repositorios canónicos, y que deberías hacer fork, son:
 
 1. Lee [la ruta de aprendizaje](docs/es/00-ruta-aprendizaje.md).
 2. Sobre tu WSL2/Ubuntu ya existente, instala las herramientas necesarias con [la guía de preparación](docs/es/01-preparacion-wsl-ubuntu.md).
-3. Sigue la [formación 01 como formador](training/01-gitops-flux-foundations/instructor-runbook.es.md) o [como alumno](training/01-gitops-flux-foundations/learner-guide.es.md). La sesión se imparte con su [web de formación](https://toniferr.github.io/gitops-training-lab/).
+3. Sigue la [formación 01](training/01-gitops-flux-foundations/learner-guide.es.md).
 4. Utiliza las referencias bilingües para entender cada fichero relevante de Kubernetes y Flux.
 5. Profundiza cuando quieras con las [referencias de estudio](docs/es/00-ruta-aprendizaje.md#referencias-de-estudio): conceptos de Kubernetes, arquitectura de Flux y una chuleta de kubectl.
 
@@ -106,18 +106,9 @@ La rama de plataforma es la que observa Flux. La rama de aplicación es la versi
 
 ### ¿Qué rama debo usar?
 
-| Rol | Flujo de ramas |
-| --- | --- |
-| Alumno | Haz fork de los repositorios y usa la rama correspondiente `training/01-gitops-flux-foundations` en el fork. Es seguro confirmar experimentos ahí porque el fork es personal; usa `git revert` para volver al estado inicial. |
-| Formador que prepara una sesión reproducible | Trabaja en la rama `training/*` correspondiente de los tres repositorios. Flux observa la rama de plataforma con ese mismo nombre. |
+Haz fork de los repositorios y usa la rama `training/01-gitops-flux-foundations` en tu fork. Es seguro confirmar experimentos ahí porque el fork es personal; usa `git revert` para volver al estado inicial.
 
 Cada edición terminada se etiqueta además en los tres repositorios, por ejemplo `training-01-v1.0.0`.
-
-## Web de la formación
-
-Cada formación se imparte con una web estática en lugar de diapositivas, publicada en GitHub Pages: [toniferr.github.io/gitops-training-lab](https://toniferr.github.io/gitops-training-lab/). La portada lista todas las ramas `training/*` publicadas, y cada una vive en su propia ruta (por ejemplo `/01-gitops-flux-foundations/`), congelada junto con su rama. Tiene modo presentación, modo formador con notas y cronómetro, y versión en español e inglés.
-
-El contenido de la sesión está en `site/content/es.md` y `site/content/en.md` de cada rama. Consulta [site/README.md](site/README.md) para escribirlo, previsualizarlo en local y la configuración única de GitHub Pages.
 
 ## Mapa de directorios
 
