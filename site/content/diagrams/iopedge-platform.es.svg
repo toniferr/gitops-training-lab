@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 392">
+  <title>Nuestra plataforma de locations</title>
+  <!-- Standalone colours (e.g. viewed on GitHub). The training page strips this block and applies its theme. -->
+  <style>
+    .dg-bg { fill: #ffffff; }
+    .dg-grp { stroke-width: 1.5; }
+    .k8s { fill: #e9eeff; stroke: #3b5bdb; }
+    .node { fill: #e5f5ed; stroke: #1f8a5b; }
+    .flux { fill: #f2ecff; stroke: #7a4fd6; }
+    .git { fill: #fdf1e2; stroke: #b25e09; }
+    .dg-box { fill: #ffffff; stroke: #d5dae3; stroke-width: 1.2; }
+    .dg-box.hl { stroke: #3b5bdb; stroke-width: 2; }
+    .dg-box.pod { stroke: #1f8a5b; stroke-width: 1.5; }
+    .dg-arrow { fill: none; stroke: #5a6376; stroke-width: 1.8; }
+    .dg-head { fill: #5a6376; }
+    text { font-family: Inter, system-ui, sans-serif; fill: #151922; }
+    .dg-t { font-size: 17px; font-weight: 600; }
+    .dg-s { font-size: 13px; fill: #5a6376; }
+    .dg-d { font-size: 12.5px; fill: #5a6376; }
+  </style>
+  <defs>
+    <marker id="dgi-head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="dg-head" d="M0 0L10 5L0 10z"/>
+    </marker>
+  </defs>
+  <rect class="dg-bg" width="960" height="392"/>
+
+  <!-- Who uses the platform -->
+  <rect class="dg-box" x="10" y="153" width="200" height="96" rx="12"/>
+  <text class="dg-t" x="26" y="184">Equipos de</text>
+  <text class="dg-t" x="26" y="205">arquitectura</text>
+  <text class="dg-d" x="26" y="228">despliegan apps y workloads</text>
+
+  <!-- What we provide -->
+  <rect class="dg-grp k8s" x="290" y="92" width="290" height="170" rx="14"/>
+  <text class="dg-t" x="308" y="120">Sistema de locations</text>
+  <text class="dg-s" x="308" y="140">IOPEDGE · equipo IOP Turing Lee</text>
+  <rect class="dg-box hl" x="308" y="156" width="254" height="90" rx="10"/>
+  <text class="dg-t" x="324" y="195">Microservicios</text>
+  <text class="dg-d" x="324" y="217">conectan Azure y los clústeres</text>
+
+  <!-- What the microservices connect to -->
+  <rect class="dg-box" x="650" y="20" width="300" height="56" rx="10"/>
+  <text class="dg-t" x="668" y="54">Azure</text>
+
+  <rect class="dg-grp node" x="650" y="92" width="300" height="170" rx="14"/>
+  <text class="dg-t" x="668" y="120">Clústeres</text>
+  <text class="dg-s" x="668" y="140">donde corren las apps y workloads</text>
+  <rect class="dg-box pod" x="668" y="156" width="126" height="90" rx="10"/>
+  <text class="dg-t" x="731" y="207" text-anchor="middle">Tiendas</text>
+  <rect class="dg-box pod" x="806" y="156" width="126" height="90" rx="10"/>
+  <text class="dg-t" x="869" y="207" text-anchor="middle">Almacenes</text>
+
+  <!-- How the environment is operated -->
+  <text class="dg-t" x="26" y="335">GitOps con Flux</text>
+  <text class="dg-s" x="26" y="356">cómo operamos este entorno</text>
+
+  <rect class="dg-grp git" x="290" y="306" width="290" height="70" rx="12"/>
+  <text class="dg-t" x="308" y="336">Git</text>
+  <text class="dg-d" x="308" y="358">estado deseado</text>
+
+  <rect class="dg-grp flux" x="650" y="306" width="300" height="70" rx="12"/>
+  <text class="dg-t" x="668" y="336">Flux</text>
+  <text class="dg-d" x="668" y="358">reconcilia los clústeres con Git</text>
+
+  <!-- Arrows, drawn last so the arrowheads stay on top -->
+  <path class="dg-arrow" d="M210 201H306" marker-end="url(#dgi-head)"/>
+  <path class="dg-arrow" d="M562 186C610 186 604 48 648 48" marker-end="url(#dgi-head)"/>
+  <path class="dg-arrow" d="M562 201H648" marker-end="url(#dgi-head)"/>
+  <path class="dg-arrow" d="M580 341H648" marker-end="url(#dgi-head)"/>
+  <path class="dg-arrow" d="M800 306V264" marker-end="url(#dgi-head)"/>
+</svg>
