@@ -44,6 +44,15 @@ kubectl get all -n java-api
 > - [Kind cluster tour](repo:docs/en/reference/kind-cluster-tour.md)
 > - [Flux bootstrap for GitHub](https://fluxcd.io/flux/installation/bootstrap/github/)
 
+## Introduction {Context}
+
+I work in the **IOPEDGE** architecture team for **Inditex**. My team is **IOP Turing Lee**, after Alan Turing and Tim Berners-Lee. We provide a *locations* system so that different architecture teams can deploy their apps and workloads.
+
+![Platform: architecture teams deploy apps and workloads through the locations system, whose microservices connect to Azure and to the store and warehouse clusters; Flux reconciles those clusters with Git](diagrams/iopedge-platform.en.svg "We run this environment with GitOps and Flux. That's what we'll see today, on a small scale, in a lab.")
+
+> [!NOTES]
+> Walk the diagram from left to right: who uses it, what we provide and what it connects to. Finish on the bottom row: it's the bridge into the training.
+
 ## What is a Kubernetes cluster? {Theory · 0–5 min}
 
 A **cluster** is a group of machines, called **nodes**, that work as if they were one. [Kubernetes](https://kubernetes.io/docs/concepts/overview/) is the software that coordinates them: you tell it *what* you want to run, and it decides *where* and keeps it running.
@@ -323,20 +332,3 @@ Environment | [WSL2/Ubuntu setup](repo:docs/en/01-wsl-ubuntu-setup.md) and a `ki
 > [!DOCS]
 > - [Kind: quick start](https://kind.sigs.k8s.io/docs/user/quick-start/)
 > - [Post-bootstrap tour](repo:docs/en/reference/post-bootstrap-tour.md)
-
-## What's next {After today}
-
-```cards
-02 · Kubernetes for GitOps | Which Kubernetes objects does GitOps actually manage?
-03 · Kustomize and environments | How does an application vary per environment (dev/qa/prod) safely?
-04 · Application delivery | How does a built image reach the cluster through Git?
-```
-
-Study references, to read whenever you like:
-
-- [Kind cluster tour](repo:docs/en/reference/kind-cluster-tour.md)
-- [Post-bootstrap tour](repo:docs/en/reference/post-bootstrap-tour.md)
-- [Kubernetes concepts](repo:docs/en/reference/kubernetes-concepts.md)
-- [Flux architecture](repo:docs/en/reference/flux-architecture.md)
-- [kubectl cheatsheet](repo:docs/en/reference/kubectl-cheatsheet.md)
-- [Full learning path](repo:docs/en/00-learning-path.md)

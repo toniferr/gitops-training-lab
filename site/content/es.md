@@ -44,6 +44,15 @@ kubectl get all -n java-api
 > - [Recorrido por el clúster Kind](repo:docs/es/reference/recorrido-cluster-kind.md)
 > - [Bootstrap de Flux con GitHub](https://fluxcd.io/flux/installation/bootstrap/github/)
 
+## Introducción {Contexto}
+
+Trabajo en el equipo de arquitectura de **IOPEDGE** para **Inditex**. Mi equipo es **IOP Turing Lee**, por Alan Turing y Tim Berners-Lee. Proveemos un sistema de *locations* para que distintos equipos de arquitectura desplieguen sus apps y workloads.
+
+![Plataforma: los equipos de arquitectura despliegan apps y workloads mediante el sistema de locations, cuyos microservicios conectan con Azure y con los clústeres de tiendas y almacenes; Flux reconcilia esos clústeres con Git](diagrams/iopedge-platform.es.svg "Este entorno lo operamos con GitOps y Flux. Es lo que hoy veremos en pequeño, en un laboratorio.")
+
+> [!NOTES]
+> Recorre el esquema de izquierda a derecha: quién lo usa, qué proveemos y a qué se conecta. Termina en la fila de abajo: es el puente hacia la formación.
+
 ## ¿Qué es un clúster de Kubernetes? {Teoría · 0–5 min}
 
 Un **clúster** es un grupo de máquinas, llamadas **nodos**, que trabajan como si fueran una sola. [Kubernetes](https://kubernetes.io/docs/concepts/overview/) es el software que las coordina: tú le dices *qué* quieres ejecutar, y él decide *dónde* y se encarga de que siga funcionando.
@@ -323,20 +332,3 @@ Entorno | [Preparación de WSL2/Ubuntu](repo:docs/es/01-preparacion-wsl-ubuntu.m
 > [!DOCS]
 > - [Kind: quick start](https://kind.sigs.k8s.io/docs/user/quick-start/)
 > - [Recorrido post-bootstrap](repo:docs/es/reference/recorrido-post-bootstrap.md)
-
-## Qué sigue {Después de hoy}
-
-```cards
-02 · Kubernetes para GitOps | ¿Qué objetos de Kubernetes gestiona realmente GitOps?
-03 · Kustomize y entornos | ¿Cómo varía una aplicación por entorno (dev/qa/prod) con seguridad?
-04 · Entrega de aplicaciones | ¿Cómo llega una imagen construida al clúster a través de Git?
-```
-
-Referencias de estudio, para leer cuando quieras:
-
-- [Recorrido por el clúster Kind](repo:docs/es/reference/recorrido-cluster-kind.md)
-- [Recorrido post-bootstrap](repo:docs/es/reference/recorrido-post-bootstrap.md)
-- [Conceptos de Kubernetes](repo:docs/es/reference/conceptos-kubernetes.md)
-- [Arquitectura de Flux](repo:docs/es/reference/arquitectura-flux.md)
-- [Chuleta de kubectl](repo:docs/es/reference/chuleta-kubectl.md)
-- [Ruta de aprendizaje completa](repo:docs/es/00-ruta-aprendizaje.md)
