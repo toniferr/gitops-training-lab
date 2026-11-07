@@ -32,9 +32,11 @@ This repository is cloned directly (no fork needed: it's reading material, not s
 sh scripts/wsl/check-prerequisites.sh
 ```
 
-Installs nothing: it reports which commands exist and whether the Docker daemon responds. Safe to run as many times as you like.
+Installs nothing: it reports which commands exist, warns if kubectl, kind, or flux differ from the versions this training was tested with, and checks whether the Docker daemon responds. Safe to run as many times as you like.
 
 ## 3. Install what's missing
+
+Run this if step 2 reports a missing command or a different version. If everything is `[ok]`, skip it.
 
 ```bash
 sh scripts/wsl/install-prerequisites.sh
@@ -75,3 +77,4 @@ The cluster is disposable. Delete it with `kind delete cluster --name gitops-lab
 | WSL is very slow or runs out of memory | Unconstrained, WSL2 can use all available RAM. | Create `%UserProfile%\.wslconfig` on Windows with a limit, e.g. `[wsl2]\nmemory=8GB`, then `wsl --shutdown` and reopen Ubuntu. |
 | Everything looks broken after a network change or sleep/VPN switch | WSL2 sometimes doesn't recover cleanly from sleep or a network change while the laptop was asleep. | `wsl --shutdown` from PowerShell, then reopen Ubuntu. |
 | `kind create cluster` fails at "Starting control-plane" during `kubeadm`, and the log ends in `connect: connection refused` against port 6443 (no cgroup warning at all) | `kube-apiserver` never actually came up. On hosts with limited physical RAM, WSL2 defaults to 50% of it, which can be too tight for the cluster's two nodes (etcd, apiserver, controller-manager, scheduler, kubelet, and nested containerd, doubled across control-plane and worker). | Create or edit `%UserProfile%\.wslconfig` on Windows with a more generous explicit limit, e.g. `[wsl2]\nmemory=6GB` (leave at least 1-2GB for Windows). Then `wsl --shutdown` from PowerShell, reopen Ubuntu, and retry `kind create cluster`. |
+| `kind create cluster` fails at `wait-control-plane` with `unable to create ClusterRoleBinding` and `context deadline exceeded` | `kube-apiserver` started, but too slowly for `kubeadm`. This is intermittent on slower machines: the same command can work on the next attempt. | `kind delete cluster --name gitops-lab` and run `kind create cluster` again, as many times as it takes. Don't keep the failed cluster with `--retain`: it can be left without admin permissions, and `kubectl` answers `Forbidden`. |

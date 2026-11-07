@@ -5,7 +5,7 @@ nodes:
   - role: control-plane
     extraPortMappings:
       - containerPort: 30080
-        hostPort: 8080
+        hostPort: 30080              # not 8080: the trainings use it for kubectl port-forward
         listenAddress: "127.0.0.1"   # reachable from this machine only, not from the network
         protocol: TCP
   - role: worker
