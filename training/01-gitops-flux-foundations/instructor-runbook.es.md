@@ -1,6 +1,6 @@
 # Formación 01 — Guion del formador
 
-Duración: 30–40 minutos. Resultado: el alumnado distingue estado deseado de estado de ejecución y demuestra la reconciliación de Flux.
+Duración: 25 minutos. Resultado: el alumnado distingue estado deseado de estado de ejecución y demuestra la reconciliación de Flux.
 
 [English version](instructor-runbook.md)
 
@@ -29,13 +29,13 @@ kubectl get all -n java-api
 
 | Minutos | Explicar | Mostrar |
 | ---: | --- | --- |
-| Inicio | Quiénes somos y la plataforma que operamos con GitOps y Flux. | La diapositiva de introducción. |
-| 0–5 | Qué es un clúster (plano de control, nodos y Pods) y por qué Kubernetes reconcilia estado. | El diagrama del clúster. |
-| 5–12 | Los objetos básicos de cualquier aplicación: [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/), [Service](https://kubernetes.io/docs/concepts/services-networking/service/), [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/), `spec` y `status`. Qué es GitOps. | Un manifiesto genérico y los principios de OpenGitOps. |
-| 12–18 | Nuestro escenario: los cambios en edge deben ser repetibles y auditables. | Los dos repositorios, el diagrama completo, `GitRepository` y [`Kustomization`](https://fluxcd.io/flux/components/kustomize/kustomizations/). |
-| 18–27 | Un cambio Git se convierte en estado de ejecución. | Commit de `replicas: 2` a `1`, push y reconciliación. |
-| 27–34 | El drift no es estado deseado. | Escalado manual a `3`; Flux lo devuelve a `1`. |
-| 34–40 | Rollback y límites. | `git revert`. |
+| 0–2 | Quiénes somos y la plataforma que operamos con GitOps y Flux. | La diapositiva de introducción. |
+| 2–6 | Qué es un clúster (plano de control, nodos y Pods) y por qué Kubernetes reconcilia estado. | El diagrama del clúster. |
+| 6–10 | La anatomía de un manifiesto: `spec` y `status`. Qué es GitOps. | Un manifiesto genérico y los principios de OpenGitOps. |
+| 10–13 | Nuestro escenario: los cambios en edge deben ser repetibles y auditables. | Los dos repositorios y el diagrama completo. |
+| 13–18 | Un cambio Git se convierte en estado de ejecución. | Commit de `replicas: 2` a `1`, push y reconciliación. |
+| 18–21 | El drift no es estado deseado. | Escalado manual a `3`; Flux lo devuelve a `1`. |
+| 21–25 | Rollback y límites. | `git revert` y dónde practicar. |
 
 ## Comandos en directo
 
@@ -49,7 +49,6 @@ curl http://localhost:8080
 Después de subir el cambio de manifiesto de la app:
 
 ```bash
-flux reconcile source git java-api -n flux-system
 flux reconcile kustomization java-api -n flux-system --with-source
 kubectl rollout status deployment/api-java-gitops -n java-api
 ```

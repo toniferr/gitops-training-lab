@@ -17,6 +17,7 @@
     .dg-t { font-size: 17px; font-weight: 600; }
     .dg-s { font-size: 13px; fill: #5a6376; }
     .dg-d { font-size: 12.5px; fill: #5a6376; }
+    .dg-l { font-size: 12.5px; font-weight: 600; fill: #3b5bdb; paint-order: stroke; stroke: #ffffff; stroke-width: 4px; }
   </style>
   <defs>
     <marker id="dgi-head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -24,12 +25,6 @@
     </marker>
   </defs>
   <rect class="dg-bg" width="960" height="392"/>
-
-  <!-- Who uses the platform -->
-  <rect class="dg-box" x="10" y="153" width="200" height="96" rx="12"/>
-  <text class="dg-t" x="26" y="184">Architecture</text>
-  <text class="dg-t" x="26" y="205">teams</text>
-  <text class="dg-d" x="26" y="228">deploy apps and workloads</text>
 
   <!-- What we provide -->
   <rect class="dg-grp k8s" x="290" y="92" width="290" height="170" rx="14"/>
@@ -45,15 +40,16 @@
 
   <rect class="dg-grp node" x="650" y="92" width="300" height="170" rx="14"/>
   <text class="dg-t" x="668" y="120">Clusters</text>
-  <text class="dg-s" x="668" y="140">where the apps and workloads run</text>
+  <text class="dg-s" x="668" y="140">where the workloads run</text>
   <rect class="dg-box pod" x="668" y="156" width="126" height="90" rx="10"/>
   <text class="dg-t" x="731" y="207" text-anchor="middle">Stores</text>
   <rect class="dg-box pod" x="806" y="156" width="126" height="90" rx="10"/>
   <text class="dg-t" x="869" y="207" text-anchor="middle">Warehouses</text>
 
-  <!-- How the environment is operated -->
-  <text class="dg-t" x="26" y="335">GitOps with Flux</text>
-  <text class="dg-s" x="26" y="356">how we run this environment</text>
+  <!-- How the environment is operated: teams release on their own, through Git -->
+  <rect class="dg-box" x="10" y="306" width="200" height="70" rx="12"/>
+  <text class="dg-t" x="26" y="336">Inditex teams</text>
+  <text class="dg-d" x="26" y="358">release their versions</text>
 
   <rect class="dg-grp git" x="290" y="306" width="290" height="70" rx="12"/>
   <text class="dg-t" x="308" y="336">Git</text>
@@ -61,12 +57,13 @@
 
   <rect class="dg-grp flux" x="650" y="306" width="300" height="70" rx="12"/>
   <text class="dg-t" x="668" y="336">Flux</text>
-  <text class="dg-d" x="668" y="358">reconciles the clusters with Git</text>
+  <text class="dg-d" x="668" y="358">reconciles the clusters automatically</text>
 
   <!-- Arrows, drawn last so the arrowheads stay on top -->
-  <path class="dg-arrow" d="M210 201H306" marker-end="url(#dgi-head)"/>
   <path class="dg-arrow" d="M562 186C610 186 604 48 648 48" marker-end="url(#dgi-head)"/>
   <path class="dg-arrow" d="M562 201H648" marker-end="url(#dgi-head)"/>
+  <path class="dg-arrow" d="M210 341H288" marker-end="url(#dgi-head)"/>
+  <text class="dg-l" x="249" y="331" text-anchor="middle">push</text>
   <path class="dg-arrow" d="M580 341H648" marker-end="url(#dgi-head)"/>
   <path class="dg-arrow" d="M800 306V264" marker-end="url(#dgi-head)"/>
 </svg>

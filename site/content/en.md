@@ -44,16 +44,18 @@ kubectl get all -n java-api
 > - [Kind cluster tour](repo:docs/en/reference/kind-cluster-tour.md)
 > - [Flux bootstrap for GitHub](https://fluxcd.io/flux/installation/bootstrap/github/)
 
-## Introduction {Context}
+## Introduction {Context · 0–2 min}
 
-I work in the **IOPEDGE** architecture team for **Inditex**. My team is **IOP Turing Lee**, after Alan Turing and Tim Berners-Lee. We provide a *locations* system so that different architecture teams can deploy their apps and workloads.
+- **Where:** IOPEDGE architecture, for Inditex
+- **Team:** IOP Turing Lee, after Alan Turing and Tim Berners-Lee
+- **What we provide:** a *locations* system where other architecture teams deploy their workloads
 
-![Platform: architecture teams deploy apps and workloads through the locations system, whose microservices connect to Azure and to the store and warehouse clusters; Flux reconciles those clusters with Git](diagrams/iopedge-platform.en.svg "We run this environment with GitOps and Flux. That's what we'll see today, on a small scale, in a lab.")
+![Platform: the locations system, whose microservices connect to Azure and to the store and warehouse clusters; Inditex teams release their versions with a push to Git and Flux reconciles those clusters automatically](diagrams/iopedge-platform.en.svg "Each team releases on its own: it pushes to Git and Flux reconciles automatically. That's what we'll see today, on a small scale, in a lab.")
 
 > [!NOTES]
-> Walk the diagram from left to right: who uses it, what we provide and what it connects to. Finish on the bottom row: it's the bridge into the training.
+> Walk the top row first: what we provide and what it connects to. Finish on the bottom row, the bridge into the training: Inditex teams release versions without depending on us.
 
-## What is a Kubernetes cluster? {Theory · 0–5 min}
+## What is a Kubernetes cluster? {Theory · 2–6 min}
 
 A **cluster** is a group of machines, called **nodes**, that work as if they were one. [Kubernetes](https://kubernetes.io/docs/concepts/overview/) is the software that coordinates them: you tell it *what* you want to run, and it decides *where* and keeps it running.
 
@@ -68,7 +70,7 @@ A **cluster** is a group of machines, called **nodes**, that work as if they wer
 > - [Kind cluster tour](repo:docs/en/reference/kind-cluster-tour.md)
 > - [Kind](https://kind.sigs.k8s.io/)
 
-## Kubernetes doesn't run commands: it reconciles state {Theory · 0–5 min}
+## Kubernetes doesn't run commands: it reconciles state {Theory · 2–6 min}
 
 This idea sets up everything else: GitOps uses **the same pattern**, just with Git as a stable input.
 
@@ -89,25 +91,7 @@ The controller repeats this loop forever: compare `spec` with `status`, and act 
 > - [Kubernetes: controllers](https://kubernetes.io/docs/concepts/architecture/controller/)
 > - [Kubernetes: objects](https://kubernetes.io/docs/concepts/overview/working-with-objects/)
 
-## The basic objects of any application {Theory · 5–12 min}
-
-Whether it's a Java API, a Python service or a frontend, Kubernetes describes almost any application with the same objects. What changes is the container image; what surrounds it doesn't.
-
-```cards
-[Namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) | A named space inside the cluster that groups and isolates the resources of an application or a team.
-[Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) | Which image to run and how many copies (replicas), and how to update them without downtime.
-[Service](https://kubernetes.io/docs/concepts/services-networking/service/) | A stable address that spreads traffic across the Pods, even as they are created and destroyed.
-[ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) | Configuration kept outside the image (URLs, options…), as environment variables or files. Sensitive data goes in a [Secret](https://kubernetes.io/docs/concepts/configuration/secret/).
-```
-
-> [!NOTES]
-> Ask which technologies their teams use: they all fit this pattern. Our Java API's concrete objects come later, in "Two repositories".
-
-> [!DOCS]
-> - [Kubernetes concepts](repo:docs/en/reference/kubernetes-concepts.md)
-> - [Kubernetes: Secrets](https://kubernetes.io/docs/concepts/configuration/secret/)
-
-## Anatomy of a manifest {Theory · 5–12 min}
+## Anatomy of a manifest {Theory · 6–10 min}
 
 Every object tells the same story: who I am, what I want, what is happening.
 
@@ -139,7 +123,7 @@ status | State **observed** by the cluster — what `kubectl` reports.
 > - [Labels and selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
 > - [Kubernetes concepts](repo:docs/en/reference/kubernetes-concepts.md)
 
-## GitOps: Git as the operating contract {Theory · 5–12 min}
+## GitOps: Git as the operating contract {Theory · 6–10 min}
 
 Git stops being just history and becomes the input the cluster obeys.
 
@@ -163,7 +147,7 @@ Continuously reconciled | The agent compares and corrects drift every interval.
 > - [OpenGitOps principles](https://opengitops.dev/)
 > - [Flux: core concepts](https://fluxcd.io/flux/concepts/)
 
-## Two repositories, two responsibilities {Our scenario · 12–18 min}
+## Two repositories, two responsibilities {Our scenario · 10–13 min}
 
 From theory to our scenario. Changes to a cluster must be **repeatable and auditable**; that is why we separate who decides what runs in the cluster and who describes the application.
 
@@ -172,7 +156,7 @@ cac-gitops-platform | Flux bootstrap, namespaces, and which applications the clu
 java-api-gitops | Spring Boot source, `Dockerfile`, and the API's Kubernetes manifests.
 ```
 
-The manifests in `java-api-gitops/k8s/` are exactly the objects from the theory: the `api-java-gitops` Deployment, the `java-api` Service and the `java-api-config` ConfigMap, inside the `java-api` namespace that the platform creates.
+The manifests in `java-api-gitops/k8s/` are the `api-java-gitops` [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/), the `java-api` [Service](https://kubernetes.io/docs/concepts/services-networking/service/) and the `java-api-config` [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/), inside the `java-api` namespace that the platform creates.
 
 > [!NOTES]
 > Idea to land: `cac-gitops-platform` is the cluster's source of truth (what runs in it); `java-api-gitops` describes the application. Each team changes its own repository without touching the other's.
@@ -182,7 +166,7 @@ The manifests in `java-api-gitops/k8s/` are exactly the objects from the theory:
 > - [`cac-gitops-platform`, file by file](repo:references/en/cac-gitops-platform.md)
 > - [`java-api-gitops`, file by file](repo:references/en/java-api-gitops.md)
 
-## How it all fits together: Git, Flux and Kubernetes {Our scenario · 12–18 min}
+## How it all fits together: Git, Flux and Kubernetes {Our scenario · 10–13 min}
 
 [Flux](https://fluxcd.io/flux/) is a set of controllers that live **inside** the cluster. They watch your Git repositories and apply what they find to Kubernetes, again and again. You only change Git.
 
@@ -193,50 +177,15 @@ The manifests in `java-api-gitops/k8s/` are exactly the objects from the theory:
 
 > [!DOCS]
 > - [Flux: components](https://fluxcd.io/flux/components/)
-> - [Flux architecture](repo:docs/en/reference/flux-architecture.md)
-> - [Post-bootstrap tour](repo:docs/en/reference/post-bootstrap-tour.md)
-
-## Flux in this lab {Our scenario · 12–18 min}
-
-Flux is best understood as small, specialised controllers. Two of them do all of today's work:
-
-```steps
-source-controller | Reads the `java-api` [`GitRepository`](https://fluxcd.io/flux/components/source/gitrepositories/) every **1 min** and fetches `java-api-gitops`.
-kustomize-controller | Applies `./k8s` through the `java-api` [`Kustomization`](https://fluxcd.io/flux/components/kustomize/kustomizations/) every **5 min**, with `prune`, `wait` and `timeout: 2m`.
-```
-
-```yaml
-# cac-gitops-platform/clusters/kind-dev/apps/java-api.yaml
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: java-api
-  namespace: flux-system
-spec:
-  interval: 5m
-  path: ./k8s
-  prune: true
-  wait: true
-  timeout: 2m
-  sourceRef:
-    kind: GitRepository
-    name: java-api
-  targetNamespace: java-api
-```
-
-> [!NOTE]
-> `helm-controller` and `notification-controller` are installed too, but idle. Only the image automation controllers arrive in later trainings.
-
-> [!DOCS]
-> - [Flux architecture](repo:docs/en/reference/flux-architecture.md)
-> - [Post-bootstrap tour](repo:docs/en/reference/post-bootstrap-tour.md)
 > - [`GitRepository`](https://fluxcd.io/flux/components/source/gitrepositories/)
 > - [`Kustomization`](https://fluxcd.io/flux/components/kustomize/kustomizations/)
+> - [Flux architecture](repo:docs/en/reference/flux-architecture.md)
+> - [Post-bootstrap tour](repo:docs/en/reference/post-bootstrap-tour.md)
 
-## Demo 1 — A commit becomes cluster state {Live demo · 18–27 min}
+## Demo 1 — A commit becomes cluster state {Live demo · 13–18 min}
 
 ```steps
-Edit | In `java-api-gitops/k8s/deployment.yaml`, change `replicas: 2` → `1`.
+Edit | In `k8s/deployment.yaml`, change `replicas: 2` → `1`.
 Commit + push | To the `training/01-gitops-flux-foundations` branch.
 Reconcile | Ask Flux to re-read Git and apply now, without waiting for the interval.
 Verify | The Deployment goes to `1/1`.
@@ -247,7 +196,6 @@ git add k8s/deployment.yaml
 git commit -m "scale java-api to 1 replica"
 git push
 
-flux reconcile source git java-api -n flux-system
 flux reconcile kustomization java-api -n flux-system --with-source
 kubectl rollout status deployment/api-java-gitops -n java-api
 ```
@@ -260,7 +208,7 @@ kubectl rollout status deployment/api-java-gitops -n java-api
 > - [`kubectl rollout`](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_rollout/)
 > - [Learner guide](repo:training/01-gitops-flux-foundations/learner-guide.md)
 
-## Demo 2 — Cause drift and watch it self-correct {Live demo · 27–34 min}
+## Demo 2 — Cause drift and watch it self-correct {Live demo · 18–21 min}
 
 A manual change in the cluster **is not** desired state.
 
@@ -281,7 +229,7 @@ Kubernetes obeys the `scale` instantly because it doesn't know Git says `1`. On 
 > - [Why drift correction works](repo:docs/en/reference/flux-architecture.md#why-drift-correction-works)
 > - [`kubectl scale`](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_scale/)
 
-## Rollback through Git, and what to avoid {Wrap-up · 34–40 min}
+## Rollback through Git, and what to avoid {Wrap-up · 21–25 min}
 
 ```bash
 git revert HEAD --no-edit
@@ -295,29 +243,11 @@ Flux reconciles the reverted state like any other commit, and the history of wha
 > Avoid `kubectl rollout undo`: it changes the cluster without changing Git, and Flux undoes it on the next cycle. Also avoid a manual `kubectl apply` against `java-api`: Flux already manages it, and doing it by hand blurs the source of truth.
 
 > [!NOTES]
-> Don't use a ConfigMap change as a visible demo: the app consumes it as an environment variable, so an existing Pod does not restart by itself when the ConfigMap changes.
+> Going back to 2 replicas starts a new Pod and, with `wait: true`, `flux reconcile` may wait for close to a minute: use that time to explain the "what to avoid" warning. Don't use a ConfigMap change as a visible demo: the app consumes it as an environment variable, so an existing Pod does not restart by itself when the ConfigMap changes.
 
 > [!DOCS]
 > - [`git revert`](https://git-scm.com/docs/git-revert)
 > - [Flux: `prune`](https://fluxcd.io/flux/components/kustomize/kustomizations/#prune)
-
-## If something fails {Troubleshooting}
-
-Inspect state before guessing, always in this order: source → Kustomization → objects → events.
-
-```bash
-flux get sources git -A
-flux get kustomizations -A
-kubectl get events -n java-api --sort-by=.lastTimestamp
-kubectl describe deployment/api-java-gitops -n java-api
-```
-
-The [kubectl cheatsheet](repo:docs/en/reference/kubectl-cheatsheet.md) has the full troubleshooting recipe.
-
-> [!DOCS]
-> - [Troubleshooting recipe](repo:docs/en/reference/kubectl-cheatsheet.md#troubleshooting-recipe)
-> - [Flux: troubleshooting](https://fluxcd.io/flux/cheatsheets/troubleshooting/)
-> - [Kubernetes: debug applications](https://kubernetes.io/docs/tasks/debug/debug-application/)
 
 ## Practise on your own {Learners}
 
@@ -332,3 +262,4 @@ Environment | [WSL2/Ubuntu setup](repo:docs/en/01-wsl-ubuntu-setup.md) and a `ki
 > [!DOCS]
 > - [Kind: quick start](https://kind.sigs.k8s.io/docs/user/quick-start/)
 > - [Post-bootstrap tour](repo:docs/en/reference/post-bootstrap-tour.md)
+> - [Troubleshooting recipe](repo:docs/en/reference/kubectl-cheatsheet.md#troubleshooting-recipe)
