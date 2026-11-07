@@ -12,7 +12,7 @@ Completa la [guía de preparación](../../docs/es/01-preparacion-wsl-ubuntu.md):
 
 ## Distribución del workspace
 
-Mantén los tres repositorios juntos:
+Al terminar la siguiente sección tendrás los tres repositorios juntos. Por ahora solo existe `gitops-training-lab`; los otros dos aparecen cuando clonas tus forks:
 
 ```text
 ~/Workspace/

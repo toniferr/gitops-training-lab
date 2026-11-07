@@ -15,16 +15,20 @@ The canonical repositories are:
 | [`cac-gitops-platform`](https://github.com/toniferr/cac-gitops-platform) | Flux bootstrap, cluster entry points, namespaces, and application references. |
 | [`java-api-gitops`](https://github.com/toniferr/java-api-gitops) | Spring Boot source, image definition, and the Java API Kubernetes manifests. |
 
-## Start here
+## Getting started
+
+There are two paths, and both set up the same lab. If this is your first time, follow the step-by-step guide.
+
+### Step-by-step guide
+
+Explains each command and includes the exercises.
 
 1. On your existing WSL2/Ubuntu setup, install the required tooling with [the setup guide](docs/en/01-wsl-ubuntu-setup.md).
 2. Follow [Training 01](training/01-gitops-flux-foundations/learner-guide.md).
-3. Use the bilingual references to understand every relevant Kubernetes and Flux file.
-4. Go deeper anytime with the [study references](docs/en/00-learning-path.md#study-references): Kubernetes concepts, Flux architecture, and a kubectl cheatsheet.
 
-## Manual quick start
+### Quick start
 
-This is a manual verification path. Read and run one command at a time from WSL2 or Ubuntu; nothing in this repository starts a cluster automatically.
+The commands in a row, without explanations, until the lab is running. Run them one at a time from WSL2 or Ubuntu.
 
 Keep the three repositories as sibling directories inside your WSL2/Ubuntu (not on a mounted Windows path like `/mnt/c/...`), starting by cloning this repository:
 
@@ -59,7 +63,7 @@ docker build -t gitops-lab/java-api:0.1.0 .
 kind load docker-image gitops-lab/java-api:0.1.0 --name gitops-lab
 ```
 
-Bootstrap Flux from the **platform** repository. Use a *fine-grained* personal GitHub token, limited to your `cac-gitops-platform` fork and with a short expiry (the [learner guide](training/01-gitops-flux-foundations/learner-guide.md) lists the permissions). `read -rs` asks for it without echoing it or saving it in your shell history; never commit it. As a learner, `<your-github-username>` must be your own account (your fork), never `toniferr`; running this with someone else's account fails on push permissions, and pointing your cluster at someone else's repository by accident is exactly what forking avoids:
+Bootstrap Flux from the **platform** repository. Use a *fine-grained* personal GitHub token, limited to your `cac-gitops-platform` fork and with a short expiry (the [learner guide](training/01-gitops-flux-foundations/learner-guide.md) lists the permissions). `read -rs` asks for it without echoing it or saving it in your shell history; never commit it. `<your-github-username>` must be your own account (your fork), never `toniferr`:
 
 ```bash
 cd ~/Workspace/cac-gitops-platform
@@ -75,23 +79,32 @@ unset GITHUB_TOKEN
 git pull --ff-only   # brings back the commits bootstrap pushed
 ```
 
-Verify reconciliation and call the API from a second terminal:
+Verify reconciliation:
 
 ```bash
 flux get sources git -A
 flux get kustomizations -A
 kubectl get all -n java-api
+```
+
+Call the API. `port-forward` blocks the terminal, so run `curl` from a second terminal:
+
+```bash
 kubectl port-forward -n java-api svc/java-api 8080:80
+```
+
+```bash
 curl http://localhost:8080
 ```
 
 The platform currently fetches `java-api-gitops` as a separate Flux source. It must be readable by the cluster: a public repository works directly; a private repository needs read credentials configured in its `GitRepository` resource. See the [platform reference](references/en/cac-gitops-platform.md) before changing that setup.
 
-Delete the disposable cluster when finished:
+The lab is now running. Continue with the [exercises](training/01-gitops-flux-foundations/learner-guide.md#exercises) in the learner guide, and when you finish, do its [cleanup](training/01-gitops-flux-foundations/learner-guide.md#rollback): deleting the cluster doesn't remove the deploy key from GitHub.
 
-```bash
-kind delete cluster --name gitops-lab
-```
+## Going deeper
+
+- The [`cac-gitops-platform`](references/en/cac-gitops-platform.md) and [`java-api-gitops`](references/en/java-api-gitops.md) references explain every relevant Kubernetes and Flux file.
+- The [study references](docs/en/00-learning-path.md#study-references) cover Kubernetes concepts, Flux architecture, and a kubectl cheatsheet.
 
 ## Training branches
 
