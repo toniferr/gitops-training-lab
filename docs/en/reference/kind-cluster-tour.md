@@ -2,7 +2,7 @@
 
 [Versión en español](../../es/reference/recorrido-cluster-kind.md)
 
-Right after `kind create cluster`, before Flux or the Java API exist, there is already a working Kubernetes cluster with real components running. This is a guided look at what's there and why — using the exact commands you'll rely on throughout every training, on the least risky target possible (nothing here is "yours" yet).
+Right after `kind create cluster`, before Flux or the Java API exist, there is already a working Kubernetes cluster with real components running. This is a guided look at what's there and why — using the exact commands you'll rely on throughout the training, on the least risky target possible (nothing here is "yours" yet).
 
 ## Nodes
 
@@ -57,7 +57,7 @@ Every single one of these is itself a Pod managed by a Deployment or DaemonSet �
 kubectl get storageclass
 ```
 
-`standard` (backed by `local-path-storage`) is marked default — a `PersistentVolumeClaim` with no `storageClassName` uses it automatically. Training 01 doesn't need storage (the Java API is stateless), but now you know why it's there if a later training needs it.
+`standard` (backed by `local-path-storage`) is marked default — a `PersistentVolumeClaim` with no `storageClassName` uses it automatically. Training 01 doesn't need storage (the Java API is stateless), but now you know why it's there.
 
 ## What's missing — on purpose
 

@@ -43,7 +43,7 @@ En este laboratorio, el rollback se hace mediante Git (`git revert`, ver [la rut
 | Tipo | Alcanzable desde | Se usa cuando |
 | --- | --- | --- |
 | `ClusterIP` (por defecto) | Solo dentro del clúster | Tráfico interno, o expuesto mediante port-forward/ingress. El `Service/java-api` de este laboratorio es `ClusterIP`. |
-| `NodePort` | `<ip-del-nodo>:<puerto>` desde fuera | Acceso externo rápido sin balanceador de carga; el mapeo de puertos de Kind en `setup/kind/gitops-lab-kind.yaml` está reservado para esto en un ejercicio posterior. |
+| `NodePort` | `<ip-del-nodo>:<puerto>` desde fuera | Acceso externo rápido sin balanceador de carga; el mapeo de puertos de Kind en `setup/kind/gitops-lab-kind.yaml` está para esto, aunque la Formación 01 no lo usa. |
 | `LoadBalancer` | Una IP externa provisionada por el proveedor cloud | No tiene sentido en un clúster Kind local. |
 | `ExternalName` | Alias DNS hacia un nombre externo | Apuntar a algo fuera del clúster. |
 
@@ -51,7 +51,7 @@ Un Service encuentra sus Pods mediante un selector de labels, nunca por el nombr
 
 ## ConfigMap y Secret
 
-Tanto [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) como [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) guardan configuración fuera de la imagen del contenedor. Un Secret está codificado en base64, no cifrado, en reposo por defecto — trátalo igual que un ConfigMap en cuanto a confidencialidad a menos que el clúster tenga cifrado en reposo o una herramienta como SOPS/Sealed Secrets configurada (fuera del alcance de este laboratorio; ver la Formación 04 en [la ruta de aprendizaje](../00-ruta-aprendizaje.md)).
+Tanto [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) como [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) guardan configuración fuera de la imagen del contenedor. Un Secret está codificado en base64, no cifrado, en reposo por defecto — trátalo igual que un ConfigMap en cuanto a confidencialidad a menos que el clúster tenga cifrado en reposo o una herramienta como SOPS/Sealed Secrets configurada (fuera del alcance de este laboratorio).
 
 Dos formas de consumir cualquiera de los dos:
 

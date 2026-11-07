@@ -2,7 +2,7 @@
 
 [Read in English](../../en/reference/kind-cluster-tour.md)
 
-Justo después de `kind create cluster`, antes de que existan Flux o la API Java, ya hay un clúster de Kubernetes funcionando con componentes reales corriendo. Esto es un recorrido guiado por lo que hay y por qué — usando exactamente los comandos con los que trabajarás en todas las formaciones, sobre el objetivo menos arriesgado posible (nada de esto es "tuyo" todavía).
+Justo después de `kind create cluster`, antes de que existan Flux o la API Java, ya hay un clúster de Kubernetes funcionando con componentes reales corriendo. Esto es un recorrido guiado por lo que hay y por qué — usando exactamente los comandos con los que trabajarás en la formación, sobre el objetivo menos arriesgado posible (nada de esto es "tuyo" todavía).
 
 ## Nodos
 
@@ -57,7 +57,7 @@ Cada uno de estos es a su vez un Pod gestionado por un Deployment o un DaemonSet
 kubectl get storageclass
 ```
 
-`standard` (respaldada por `local-path-storage`) está marcada como predeterminada — un `PersistentVolumeClaim` sin `storageClassName` la usa automáticamente. La Formación 01 no necesita almacenamiento (la API Java no tiene estado), pero ahora ya sabes por qué está ahí si una formación posterior lo necesita.
+`standard` (respaldada por `local-path-storage`) está marcada como predeterminada — un `PersistentVolumeClaim` sin `storageClassName` la usa automáticamente. La Formación 01 no necesita almacenamiento (la API Java no tiene estado), pero ahora ya sabes por qué está ahí.
 
 ## Qué falta — a propósito
 
