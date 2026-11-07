@@ -530,10 +530,15 @@ body.presenting .slide.current {
   height: 100dvh;
   overflow-y: auto;
   margin: 0;
-  padding: 6vh max(24px, calc((100vw - 1180px) / 2)) 96px;
+  padding: calc(5vh * var(--fit, 1)) max(24px, calc((100vw - 1180px) / 2)) 56px;
   border: 0;
-  font-size: clamp(17px, 0.9vw + 9px, 27px);
+  /* --fit is set per slide by fitSlide() in app.js: it scales the slide down until it fits the screen. */
+  font-size: calc(clamp(17px, 0.9vw + 9px, 27px) * var(--fit, 1));
 }
+/* While measuring: speaker notes don't count, so the slide looks the same with instructor mode on or off,
+   and no scrollbar, because its width would change how the text wraps and make the result depend on the order. */
+body.presenting.fitting .callout-notes { display: none; }
+body.presenting.fitting .slide.current { overflow-y: hidden; }
 body.presenting .slide.current > * { flex-shrink: 0; }
 /* Auto margins centre short slides vertically without clipping the top of long ones. */
 body.presenting .slide.current > :first-child { margin-top: auto; }
@@ -546,7 +551,7 @@ body.presenting .code pre { font-size: 0.8em; }
 body.presenting .cards { grid-template-columns: repeat(auto-fit, minmax(13em, 1fr)); }
 body.presenting .copy, body.presenting .code .lang { display: none; }
 body.presenting .callout-docs { font-size: 0.75em; }
-body.presenting .diagram svg { max-height: 54vh; }
+body.presenting .diagram svg { max-height: calc(54vh * var(--fit, 1)); }
 body.presenting .diagram figcaption { font-size: 0.75em; }
 body.presenting .callout-docs a { font-size: 1em; }
 

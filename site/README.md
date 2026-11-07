@@ -42,7 +42,7 @@ Keep it to what is shown during the session. Step-by-step detail belongs in the 
 
 ## Viewing and presenting
 
-- **Presentar / Present** (or `P`): one section per screen. `←` `→`, `Space`, `PageUp`/`PageDown` (presentation clickers) navigate; `F` fullscreen; `Esc` exits.
+- **Presentar / Present** (or `P`): one section per screen, scaled down as needed to fit it without a scrollbar (speaker notes don't count, so in instructor mode they can scroll). `←` `→`, `Space`, `PageUp`/`PageDown` (presentation clickers) navigate; `F` fullscreen; `Esc` exits.
 - **Modo formador / Instructor mode** (or `N`): reveals notes, instructor-only sections and, while presenting, a timer against `minutes` in `training.json` (`T` resets it). Keep it off when sharing your screen with notes you don't want shown.
 - `?present` in the URL opens straight into presentation mode; `?lang=en` picks the language.
 
