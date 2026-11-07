@@ -28,7 +28,7 @@ Standard GitHub Markdown, plus a few conventions:
 
 | Syntax | Result |
 | --- | --- |
-| `## Title {Theory · 5–12 min}` | A section: one screen in presentation mode. The text in braces is the small label above the title and in the table of contents. |
+| `## Title {Theory · 5–12 min}` | A section: one screen in presentation mode. The text in braces is the small label above the title and in the table of contents. A trailing ` · N–M min` is shown only in instructor mode. |
 | `<!-- instructor -->` anywhere in a section | The whole section is shown only in instructor mode (preparation steps, answers). |
 | `> [!NOTES]` | Speaker notes, shown only in instructor mode. |
 | `> [!NOTE]`, `> [!TIP]`, `> [!WARNING]` | Callouts, always visible. |
