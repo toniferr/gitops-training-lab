@@ -50,10 +50,10 @@ kubectl get all -n java-api
 - **Equipo:** IOP Turing Lee, por Alan Turing y Tim Berners-Lee
 - **Qué proveemos:** un sistema de *locations* donde otros equipos despliegan sus workloads
 
-![Plataforma: el sistema de locations, cuyos microservicios conectan con Azure y con los clústeres de tiendas y almacenes; los equipos de Inditex sacan sus versiones con un push a Git y Flux reconcilia esos clústeres automáticamente](diagrams/iopedge-platform.es.svg "Cada equipo saca sus versiones por su cuenta: hace push a Git y Flux reconcilia automáticamente. Es lo que hoy veremos en pequeño, en un laboratorio.")
+![Plataforma: el sistema de locations engloba los microservicios, Azure (Cosmos DB, Event Hubs, Kubernetes…) y los clústeres de tiendas y almacenes; los equipos de Inditex sacan sus versiones con un push a Git y Flux reconcilia esos clústeres automáticamente](diagrams/iopedge-platform.es.svg "Cada equipo saca sus versiones por su cuenta: hace push a Git y Flux reconcilia automáticamente. Es lo que hoy veremos en pequeño, en un laboratorio.")
 
 > [!NOTES]
-> Recorre primero la fila de arriba: qué proveemos y a qué se conecta. Termina en la de abajo, que es el puente hacia la formación: los equipos de Inditex sacan versiones sin depender de nosotros.
+> Recorre primero la caja azul: tocamos los microservicios, Azure y los clústeres. Termina en la fila de abajo, que es el puente hacia la formación: los equipos de Inditex sacan versiones sin depender de nosotros.
 
 ## ¿Qué es un clúster de Kubernetes? {Teoría · 2–6 min}
 
