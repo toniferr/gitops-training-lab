@@ -1,6 +1,6 @@
 # Training 01 — Instructor runbook
 
-Duration: 30–40 minutes. Outcome: learners can distinguish desired state from runtime state and demonstrate Flux reconciliation.
+Duration: 25 minutes. Outcome: learners can distinguish desired state from runtime state and demonstrate Flux reconciliation.
 
 [Versión en español](instructor-runbook.es.md)
 
@@ -29,13 +29,13 @@ kubectl get all -n java-api
 
 | Minutes | Explain | Show |
 | ---: | --- | --- |
-| Start | Who we are and the platform we run with GitOps and Flux. | The introduction slide. |
-| 0–5 | What a cluster is (control plane, nodes and Pods) and why Kubernetes reconciles state. | The cluster diagram. |
-| 5–12 | The basic objects of any application: [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/), [Service](https://kubernetes.io/docs/concepts/services-networking/service/), [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/), `spec`, and `status`. What GitOps is. | A generic manifest and the OpenGitOps principles. |
-| 12–18 | Our scenario: edge changes must be repeatable and auditable. | The two repositories, the big-picture diagram, `GitRepository` and [`Kustomization`](https://fluxcd.io/flux/components/kustomize/kustomizations/). |
-| 18–27 | A Git change becomes runtime state. | Commit `replicas: 2` to `1`, push, reconcile. |
-| 27–34 | Drift is not desired state. | Manual scale to `3`, then let Flux restore `1`. |
-| 34–40 | Rollback and limits. | `git revert`. |
+| 0–2 | Who we are and the platform we run with GitOps and Flux. | The introduction slide. |
+| 2–6 | What a cluster is (control plane, nodes and Pods) and why Kubernetes reconciles state. | The cluster diagram. |
+| 6–10 | The anatomy of a manifest: `spec` and `status`. What GitOps is. | A generic manifest and the OpenGitOps principles. |
+| 10–13 | Our scenario: edge changes must be repeatable and auditable. | The two repositories and the big-picture diagram. |
+| 13–18 | A Git change becomes runtime state. | Commit `replicas: 2` to `1`, push, reconcile. |
+| 18–21 | Drift is not desired state. | Manual scale to `3`, then let Flux restore `1`. |
+| 21–25 | Rollback and limits. | `git revert`, and where to practise. |
 
 ## Live commands
 
@@ -49,7 +49,6 @@ curl http://localhost:8080
 After pushing the app manifest change:
 
 ```bash
-flux reconcile source git java-api -n flux-system
 flux reconcile kustomization java-api -n flux-system --with-source
 kubectl rollout status deployment/api-java-gitops -n java-api
 ```
