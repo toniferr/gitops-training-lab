@@ -17,11 +17,10 @@ Los repositorios canónicos, y que deberías hacer fork, son:
 
 ## Empieza aquí
 
-1. Lee [la ruta de aprendizaje](docs/es/00-ruta-aprendizaje.md).
-2. Sobre tu WSL2/Ubuntu ya existente, instala las herramientas necesarias con [la guía de preparación](docs/es/01-preparacion-wsl-ubuntu.md).
-3. Sigue la [formación 01](training/01-gitops-flux-foundations/learner-guide.es.md).
-4. Utiliza las referencias bilingües para entender cada fichero relevante de Kubernetes y Flux.
-5. Profundiza cuando quieras con las [referencias de estudio](docs/es/00-ruta-aprendizaje.md#referencias-de-estudio): conceptos de Kubernetes, arquitectura de Flux y una chuleta de kubectl.
+1. Sobre tu WSL2/Ubuntu ya existente, instala las herramientas necesarias con [la guía de preparación](docs/es/01-preparacion-wsl-ubuntu.md).
+2. Sigue la [formación 01](training/01-gitops-flux-foundations/learner-guide.es.md).
+3. Utiliza las referencias bilingües para entender cada fichero relevante de Kubernetes y Flux.
+4. Profundiza cuando quieras con las [referencias de estudio](docs/es/00-ruta-aprendizaje.md#referencias-de-estudio): conceptos de Kubernetes, arquitectura de Flux y una chuleta de kubectl.
 
 ## Inicio rápido manual
 
