@@ -541,10 +541,18 @@ body.presenting .slide.current {
   height: 100dvh;
   overflow-y: auto;
   margin: 0;
-  padding: calc(5vh * var(--fit, 1)) max(24px, calc((100vw - 1180px) / 2)) 56px;
+  padding: calc(5vh * var(--fit, 1)) max(24px, calc((100vw - 1400px) / 2)) 56px;
   border: 0;
   /* --fit is set per slide by fitSlide() in app.js: it scales the slide down until it fits the screen. */
   font-size: calc(clamp(17px, 0.9vw + 9px, 27px) * var(--fit, 1));
+}
+/* Wider than 1228px the column grows up to 1400px, and the type grows with it in the same proportion,
+   so every line still breaks where it did with the old 1180px column: same layout, just bigger. */
+@media (min-width: 1228px) {
+  body.presenting .slide.current { font-size: calc((2.764vw - 14px) * var(--fit, 1)); }
+}
+@media (min-width: 1448px) {
+  body.presenting .slide.current { font-size: calc(clamp(20.17px, 1.0678vw + 10.678px, 32.03px) * var(--fit, 1)); }
 }
 /* While measuring: no scrollbar, because its width would change how the text wraps and make the result depend on the order. */
 body.presenting.fitting .slide.current { overflow-y: hidden; }
@@ -560,10 +568,10 @@ body.presenting .code pre { font-size: 0.8em; }
 body.presenting .cards { grid-template-columns: repeat(auto-fit, minmax(13em, 1fr)); }
 body.presenting .cards.row { grid-template-columns: none; }
 body.presenting .copy, body.presenting .code .lang { display: none; }
-body.presenting .callout-docs { font-size: 0.75em; }
-body.presenting .diagram svg { max-height: calc(54vh * var(--fit, 1)); }
+/* Further reading is for the web page, not for the room: hidden while presenting, it frees height for the rest. */
+body.presenting .callout-docs { display: none; }
+body.presenting .diagram svg { max-height: calc(64vh * var(--fit, 1)); }
 body.presenting .diagram figcaption { font-size: 0.75em; }
-body.presenting .callout-docs a { font-size: 1em; }
 
 body.presenting .present-bar {
   display: block;
