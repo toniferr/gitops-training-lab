@@ -34,7 +34,7 @@ Standard GitHub Markdown, plus a few conventions:
 | ` ```flow ` | Boxes joined by arrows. One `Title \| text` per line. |
 | ` ```cards ` / ` ```steps ` | A card grid; `steps` numbers the cards. One `Title \| text` per line; both parts accept inline Markdown. |
 | ` ```row ` | Compact cards kept on a single row (two per row on narrow screens). Same syntax as `cards`; keep the texts short. |
-| ` ```compare ` | Two columns: what the session leaves out (first line, marked ✕) and what it covers (second line, marked ✓). One `Title \| point \| point …` per line. |
+| ` ```compare ` | Two columns: what the session covers (first line, marked ✓) and what it leaves out (second line, marked ✕); points at the same position share a row. One `Title \| point \| point …` per line. |
 | `![description](diagrams/x.es.svg "caption")` | A diagram from `content/diagrams/`. SVGs are inlined into the page so they follow the light/dark theme: draw them with the `dg-*` classes (see `assets/style.css` and the existing diagrams). The description is read by screen readers; the optional title becomes the caption. Keep one file per language with identical geometry. |
 | `[text](repo:docs/es/…)` | Link to that file on GitHub, **on the branch being viewed**. Use it for every link into this repository. |
 

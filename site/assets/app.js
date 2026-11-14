@@ -207,14 +207,16 @@
   }
 
   // ```flow / ```cards / ```steps / ```row: one "Title | text" item per line.
-  // ```compare: two "Title | point | point…" lines, what is left out and what is in.
+  // ```compare: two "Title | point | point…" lines, what is in and what is left out. Points at the same
+  // position share a row, so each pair stays side by side.
   function customBlock(kind, text) {
     const lines = text.split('\n').map((l) => l.trim()).filter(Boolean).map((l) => l.split(' | ').map((p) => p.trim()));
     if (kind === 'compare') {
       const div = document.createElement('div');
       div.className = 'compare';
+      div.style.setProperty('--rows', String(Math.max(...lines.map((l) => l.length))));
       div.innerHTML = lines.map(([title, ...points], i) => `
-        <div class="card ${i ? 'is-in' : 'is-out'}"><h3>${inline(title)}</h3>
+        <div class="card ${i ? 'is-out' : 'is-in'}"><h3>${inline(title)}</h3>
           <ul>${points.map((p) => `<li>${inline(p)}</li>`).join('')}</ul></div>`).join('');
       return div;
     }

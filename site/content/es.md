@@ -6,7 +6,7 @@ Contenido de la web de esta formación. Convenciones (ver site/README.md):
 - "> [!NOTE]", "> [!TIP]", "> [!WARNING]" son avisos.
 - "> [!DOCS]" con una lista de enlaces: documentación para ampliar, al pie de la sección.
 - Bloques ```flow, ```cards, ```steps y ```row: una línea por elemento, "Título | texto".
-- Bloque ```compare: dos líneas, "Título | punto | punto…"; la primera es lo que queda fuera, la segunda lo que entra.
+- Bloque ```compare: dos líneas, "Título | punto | punto…"; la primera es lo que entra, la segunda lo que queda fuera.
 - Enlaces "repo:ruta" apuntan al fichero en GitHub, en la rama publicada.
 -->
 
@@ -15,21 +15,21 @@ Contenido de la web de esta formación. Convenciones (ver site/README.md):
 Cómo llega el software a ejecutarse, **no el software en sí**.
 
 ```compare
-No veremos | Docker | Lenguajes de programación | Interfaces de usuario ni hardware | CI | IaC
-Sí veremos | Kubernetes | Terminal Linux | Git y GitHub | Configuración como código (CaC) | GitOps con Flux
+Sí veremos | Kubernetes | Configuración como código (CaC) | CD con GitOps y Flux | Terminal Linux | Git y GitHub
+No veremos | Docker | Infraestructura como código (IaC) | CI | Lenguajes de programación | Interfaces de usuario ni hardware
 ```
 
 ## Introducción {Contexto}
 
 - **Dónde:** arquitectura de IOPEDGE, para Inditex
-- **Equipo:** IOP Turing Lee, por Alan Turing y Tim Berners-Lee
 - **Qué proveemos:** un sistema de *locations* donde otros equipos despliegan sus workloads
 
-![Plataforma: el sistema de locations engloba los microservicios, Azure (Cosmos DB, Event Hubs, Kubernetes…) y los clústeres de tiendas y almacenes; los equipos de Inditex sacan sus versiones con un push a Git y Flux reconcilia esos clústeres automáticamente](diagrams/iopedge-platform.es.svg "Cada equipo saca sus versiones por su cuenta: hace push a Git y Flux reconcilia automáticamente. Es lo que hoy veremos en pequeño, en un laboratorio.")
+![Plataforma: el sistema de locations engloba los microservicios de ITX, Azure en Europa, Asia y América (Cosmos DB, Event Hubs, Kubernetes…) y los clústeres EDGE de tiendas y almacenes, con su estado actual; los equipos de Inditex sacan sus versiones con un push a Git y Flux reconcilia esos clústeres automáticamente](diagrams/iopedge-platform.es.svg "Cada equipo saca sus versiones por su cuenta: hace push a Git y Flux reconcilia automáticamente. Es lo que hoy veremos en pequeño, en un laboratorio.")
 
 ## ¿Qué es un clúster de Kubernetes? {Teoría}
 
-Un **clúster** es un grupo de máquinas, llamadas **nodos**, que trabajan como si fueran una sola. [Kubernetes](https://kubernetes.io/docs/concepts/overview/) es el software que las coordina: tú le dices *qué* quieres ejecutar, y él decide *dónde* y se encarga de que siga funcionando.
+Un **clúster** es un grupo de máquinas, llamadas **nodos**, que trabajan como si fueran una sola.\
+[Kubernetes](https://kubernetes.io/docs/concepts/overview/) las coordina: tú dices *qué* ejecutar; él decide *dónde* y lo mantiene en marcha.
 
 ![Clúster de Kubernetes: un plano de control con kube-apiserver, etcd, scheduler y controller-manager, y dos nodos worker con kubelet, containerd y Pods](diagrams/cluster.es.svg "Un Pod es uno o varios contenedores que se ejecutan juntos: la unidad mínima de Kubernetes. En este laboratorio, kind simula el clúster entero en tu portátil: cada nodo es un contenedor Docker dentro de WSL2.")
 
@@ -41,7 +41,7 @@ Un **clúster** es un grupo de máquinas, llamadas **nodos**, que trabajan como 
 
 ## Kubernetes no ejecuta órdenes: reconcilia estado {Teoría}
 
-Esta idea prepara todo lo demás: GitOps usa **el mismo patrón**, solo que con Git como entrada estable.
+La base de GitOps: **el mismo patrón**, con Git como entrada.
 
 ```flow
 YAML / spec | Declaras qué quieres, no cómo hacerlo.
@@ -50,7 +50,7 @@ YAML / spec | Declaras qué quieres, no cómo hacerlo.
 Status | Reporta el estado real observado.
 ```
 
-El controlador repite este ciclo sin fin: comparar `spec` con `status`, y actuar si difieren.
+El controlador repite este ciclo sin fin y actúa si difieren.
 
 > [!DOCS]
 > - [Conceptos de Kubernetes](repo:docs/es/reference/conceptos-kubernetes.md)
