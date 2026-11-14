@@ -184,7 +184,7 @@ Flux reconciles the reverted state like any other commit, and the history of wha
 > - [`git revert`](https://git-scm.com/docs/git-revert)
 > - [Flux: `prune`](https://fluxcd.io/flux/components/kustomize/kustomizations/#prune)
 
-## Practise on your own {Learners}
+## Practise on your own {If you've caught the bug}
 
 Repeat the whole exercise on **your own forks** with the [learner guide](repo:training/01-gitops-flux-foundations/learner-guide.md): forking the repositories, initial setup, Flux bootstrap, exercises and rollback.
 
