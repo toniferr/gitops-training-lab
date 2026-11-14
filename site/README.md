@@ -18,7 +18,7 @@ Because each training branch is a frozen edition, its website is frozen with it:
 | --- | --- |
 | `content/training.json` | Number, slug, titles, summary, duration and links of this training. |
 | `content/es.md`, `content/en.md` | The session content, one file per language. A missing language falls back to `defaultLang`. |
-| `index.html`, `assets/app.js` | Training page: renders the Markdown, table of contents, presentation and instructor modes. |
+| `index.html`, `assets/app.js` | Training page: renders the Markdown, table of contents and presentation mode. |
 | `portal.html`, `assets/portal.js` | Portal page, published at the site root from `main` only. |
 | `assets/common.js`, `assets/style.css` | Shared by both pages. |
 
@@ -28,13 +28,13 @@ Standard GitHub Markdown, plus a few conventions:
 
 | Syntax | Result |
 | --- | --- |
-| `## Title {Theory · 5–12 min}` | A section: one screen in presentation mode. The text in braces is the small label above the title and in the table of contents. A trailing ` · N–M min` is shown only in instructor mode. |
-| `<!-- instructor -->` anywhere in a section | The whole section is shown only in instructor mode (preparation steps, answers). |
-| `> [!NOTES]` | Speaker notes, shown only in instructor mode. |
+| `## Title {Theory}` | A section: one screen in presentation mode. The text in braces is the small label above the title and in the table of contents. |
 | `> [!NOTE]`, `> [!TIP]`, `> [!WARNING]` | Callouts, always visible. |
 | `> [!DOCS]` followed by a `> - [text](url)` list | "Further reading" links at the foot of the section: the lab's reference docs (`repo:` links) and official documentation, for anyone who wants to go deeper. Put it last in the section. |
 | ` ```flow ` | Boxes joined by arrows. One `Title \| text` per line. |
 | ` ```cards ` / ` ```steps ` | A card grid; `steps` numbers the cards. One `Title \| text` per line; both parts accept inline Markdown. |
+| ` ```row ` | Compact cards kept on a single row (two per row on narrow screens). Same syntax as `cards`; keep the texts short. |
+| ` ```compare ` | Two columns: what the session leaves out (first line, marked ✕) and what it covers (second line, marked ✓). One `Title \| point \| point …` per line. |
 | `![description](diagrams/x.es.svg "caption")` | A diagram from `content/diagrams/`. SVGs are inlined into the page so they follow the light/dark theme: draw them with the `dg-*` classes (see `assets/style.css` and the existing diagrams). The description is read by screen readers; the optional title becomes the caption. Keep one file per language with identical geometry. |
 | `[text](repo:docs/es/…)` | Link to that file on GitHub, **on the branch being viewed**. Use it for every link into this repository. |
 
@@ -42,8 +42,7 @@ Keep it to what is shown during the session. Step-by-step detail belongs in the 
 
 ## Viewing and presenting
 
-- **Presentar / Present** (or `P`): one section per screen, scaled down as needed to fit it without a scrollbar (speaker notes don't count, so in instructor mode they can scroll). `←` `→`, `Space`, `PageUp`/`PageDown` (presentation clickers) navigate; `F` fullscreen; `Esc` exits.
-- **Modo formador / Instructor mode** (or `N`): reveals notes, instructor-only sections and, while presenting, a timer against `minutes` in `training.json` (`T` resets it). Keep it off when sharing your screen with notes you don't want shown.
+- **Presentar / Present** (or `P`): one section per screen, scaled down as needed to fit it without a scrollbar. `←` `→`, `Space`, `PageUp`/`PageDown` (presentation clickers) navigate; `F` fullscreen; `Esc` exits.
 - `?present` in the URL opens straight into presentation mode; `?lang=en` picks the language.
 
 ## Local preview

@@ -1,0 +1,183 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 442">
+  <title>From Java code to Pods: the five layers of the GitOps chain</title>
+  <!-- Standalone colours (e.g. viewed on GitHub). The training page strips this block and applies its theme. -->
+  <style>
+    .dg-bg { fill: #ffffff; }
+    .dg-grp { stroke-width: 1.5; }
+    .k8s { fill: #e9eeff; stroke: #3b5bdb; }
+    .flux { fill: #f2ecff; stroke: #7a4fd6; }
+    .git { fill: #fdf1e2; stroke: #b25e09; }
+    .oci { fill: #e2f4f6; stroke: #0b7a85; }
+    .dg-box { fill: #ffffff; stroke: #d5dae3; stroke-width: 1.2; }
+    .dg-box.hl { stroke: #3b5bdb; stroke-width: 2; }
+    .dg-box.pod { stroke: #1f8a5b; stroke-width: 1.5; }
+    .dg-box.img { stroke: #0b7a85; stroke-width: 1.5; }
+    .dg-note { fill: none; stroke: #c3c9d4; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    .dg-ico { fill: none; stroke: #5a6376; stroke-width: 1.4; stroke-linejoin: round; }
+    .dg-arrow { fill: none; stroke: #5a6376; stroke-width: 1.8; }
+    .dg-arrow.dash { stroke-dasharray: 6 4; }
+    .dg-head { fill: #5a6376; }
+    text { font-family: Inter, system-ui, sans-serif; fill: #151922; }
+    .dg-t { font-size: 17px; font-weight: 600; }
+    .dg-s { font-size: 13px; fill: #5a6376; }
+    .dg-d { font-size: 12.5px; fill: #5a6376; }
+    .dg-n { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 14px; font-weight: 600; }
+    .dg-m { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 12px; fill: #5a6376; }
+    .dg-l { font-size: 12.5px; font-weight: 600; fill: #3b5bdb; paint-order: stroke; stroke: #ffffff; stroke-width: 4px; }
+  </style>
+  <defs>
+    <marker id="dgp-head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="dg-head" d="M0 0L10 5L0 10z"/>
+    </marker>
+  </defs>
+  <rect class="dg-bg" width="1200" height="442"/>
+
+  <!-- Layer 1 -->
+  <rect class="dg-grp git" x="10" y="10" width="1140" height="70" rx="14"/>
+  <text class="dg-t" x="28" y="36">1 · Code</text>
+  <text class="dg-s" x="28" y="55">java-api-gitops repo</text>
+  <text class="dg-s" x="28" y="71">written by the team</text>
+  <text class="dg-l" x="196" y="36" text-anchor="end">CI</text>
+  <path class="dg-note" d="M208 20V70"/>
+  <path class="dg-arrow" d="M110 80V96" marker-end="url(#dgp-head)"/>
+  <text class="dg-l" x="124" y="93">docker build</text>
+
+  <!-- Layer 2 -->
+  <rect class="dg-grp oci" x="10" y="98" width="1140" height="70" rx="14"/>
+  <text class="dg-t" x="28" y="124">2 · Image</text>
+  <text class="dg-s" x="28" y="143">docker build</text>
+  <text class="dg-s" x="28" y="159">multi-stage Dockerfile</text>
+  <text class="dg-l" x="196" y="124" text-anchor="end">CI</text>
+  <path class="dg-note" d="M208 108V158"/>
+  <path class="dg-arrow" d="M110 168V184" marker-end="url(#dgp-head)"/>
+  <text class="dg-l" x="124" y="181">docker push</text>
+
+  <!-- Layer 3 -->
+  <rect class="dg-grp oci" x="10" y="186" width="1140" height="70" rx="14"/>
+  <text class="dg-t" x="28" y="212">3 · Registry</text>
+  <text class="dg-s" x="28" y="231">docker push</text>
+  <text class="dg-s" x="28" y="247">in the lab: kind load</text>
+  <text class="dg-l" x="196" y="212" text-anchor="end">CI</text>
+  <path class="dg-note" d="M208 196V246"/>
+  <path class="dg-arrow" d="M110 256V272" marker-end="url(#dgp-head)"/>
+  <text class="dg-l" x="124" y="269">tag in the YAML · git push</text>
+
+  <!-- Layer 4 -->
+  <rect class="dg-grp flux" x="10" y="274" width="1140" height="70" rx="14"/>
+  <text class="dg-t" x="28" y="300">4 · GitOps</text>
+  <text class="dg-s" x="28" y="319">Flux in flux-system</text>
+  <text class="dg-s" x="28" y="335">Git → Kubernetes API</text>
+  <text class="dg-l" x="196" y="300" text-anchor="end">CD</text>
+  <path class="dg-note" d="M208 284V334"/>
+  <path class="dg-arrow" d="M110 344V360" marker-end="url(#dgp-head)"/>
+  <text class="dg-l" x="124" y="357">Kubernetes controllers</text>
+
+  <!-- Layer 5 -->
+  <rect class="dg-grp k8s" x="10" y="362" width="1140" height="70" rx="14"/>
+  <text class="dg-t" x="28" y="388">5 · Kubernetes</text>
+  <text class="dg-s" x="28" y="407">namespace java-api</text>
+  <text class="dg-s" x="28" y="423">what actually runs</text>
+  <text class="dg-l" x="196" y="388" text-anchor="end">CD</text>
+  <path class="dg-note" d="M208 372V422"/>
+
+  <!-- 1 · Code -->
+  <rect class="dg-box" x="225" y="18" width="215" height="54" rx="10"/>
+  <path class="dg-ico" d="M241 27h8l4 4v12h-12z M249 27v4h4"/>
+  <text class="dg-n" x="265" y="40">pom.xml</text>
+  <text class="dg-d" x="241" y="60">dependencies · version 0.1.0</text>
+  <rect class="dg-box" x="455" y="18" width="215" height="54" rx="10"/>
+  <path class="dg-ico" d="M471 28h5l2 2h9v11h-16z"/>
+  <text class="dg-n" x="495" y="40">src/</text>
+  <text class="dg-d" x="471" y="60">Spring Boot code (Java 21)</text>
+  <rect class="dg-box" x="685" y="18" width="215" height="54" rx="10"/>
+  <path class="dg-ico" d="M701 27h8l4 4v12h-12z M709 27v4h4"/>
+  <text class="dg-n" x="725" y="40">Dockerfile</text>
+  <text class="dg-d" x="701" y="60">how the app is packaged</text>
+  <rect class="dg-box" x="915" y="18" width="215" height="54" rx="10"/>
+  <path class="dg-ico" d="M931 28h5l2 2h9v11h-16z"/>
+  <text class="dg-n" x="955" y="40">k8s/</text>
+  <text class="dg-d" x="931" y="60">manifests → used by layer 4</text>
+
+  <!-- 2 · Image -->
+  <rect class="dg-box" x="225" y="106" width="270" height="54" rx="10"/>
+  <text class="dg-n" x="241" y="123">build stage</text>
+  <text class="dg-d" x="241" y="140">maven:3.9 + JDK 21</text>
+  <text class="dg-d" x="241" y="154">mvn package → java-api-0.1.0.jar</text>
+  <path class="dg-arrow" d="M497 133H533" marker-end="url(#dgp-head)"/>
+  <rect class="dg-box" x="535" y="106" width="270" height="54" rx="10"/>
+  <text class="dg-n" x="551" y="123">runtime stage</text>
+  <text class="dg-d" x="551" y="140">eclipse-temurin:21-jre</text>
+  <text class="dg-d" x="551" y="154">+ app.jar · USER app · :8080</text>
+  <path class="dg-arrow" d="M807 133H843" marker-end="url(#dgp-head)"/>
+  <rect class="dg-box img" x="845" y="106" width="112" height="16" rx="5"/>
+  <text class="dg-d" x="901" y="118" text-anchor="middle">app.jar</text>
+  <rect class="dg-box img" x="845" y="125" width="112" height="16" rx="5"/>
+  <text class="dg-d" x="901" y="137" text-anchor="middle">app user</text>
+  <rect class="dg-box img" x="845" y="144" width="112" height="16" rx="5"/>
+  <text class="dg-d" x="901" y="156" text-anchor="middle">JRE 21 (base)</text>
+  <text class="dg-t" x="972" y="126">OCI image</text>
+  <text class="dg-d" x="972" y="144">immutable layers</text>
+  <text class="dg-d" x="972" y="159">tag + sha256 digest</text>
+
+  <!-- 3 · Registry -->
+  <rect class="dg-box" x="225" y="194" width="270" height="54" rx="10"/>
+  <text class="dg-n" x="241" y="216">gitops-lab/java-api:0.1.0</text>
+  <text class="dg-d" x="241" y="236">repository : tag</text>
+  <path class="dg-arrow" d="M497 221H543" marker-end="url(#dgp-head)"/>
+  <text class="dg-l" x="520" y="213" text-anchor="middle">push</text>
+  <rect class="dg-box" x="545" y="194" width="185" height="54" rx="10"/>
+  <text class="dg-n" x="561" y="216">Docker Hub</text>
+  <text class="dg-d" x="561" y="236">docker.io · public</text>
+  <rect class="dg-box" x="745" y="194" width="185" height="54" rx="10"/>
+  <text class="dg-n" x="761" y="216">GHCR</text>
+  <text class="dg-d" x="761" y="236">ghcr.io · next to GitHub</text>
+  <rect class="dg-box" x="945" y="194" width="185" height="54" rx="10"/>
+  <text class="dg-n" x="961" y="216">Amazon ECR</text>
+  <text class="dg-d" x="961" y="236">private, in your AWS account</text>
+
+  <!-- 4 · GitOps -->
+  <rect class="dg-box" x="225" y="282" width="220" height="54" rx="10"/>
+  <text class="dg-n" x="241" y="299">k8s/*.yaml</text>
+  <text class="dg-m" x="241" y="316">image: …/java-api:0.1.0</text>
+  <text class="dg-m" x="241" y="330">replicas: 2</text>
+  <path class="dg-arrow" d="M447 309H478" marker-end="url(#dgp-head)"/>
+  <text class="dg-l" x="462" y="301" text-anchor="middle">pull</text>
+  <rect class="dg-box" x="480" y="282" width="180" height="54" rx="10"/>
+  <text class="dg-n" x="496" y="304">source-controller</text>
+  <text class="dg-d" x="496" y="324">fetches Git · every 1 min</text>
+  <path class="dg-arrow" d="M662 309H688" marker-end="url(#dgp-head)"/>
+  <rect class="dg-box" x="690" y="282" width="200" height="54" rx="10"/>
+  <text class="dg-n" x="706" y="304">kustomize-controller</text>
+  <text class="dg-d" x="706" y="324">build + apply · every 5 min</text>
+  <path class="dg-arrow" d="M892 309H928" marker-end="url(#dgp-head)"/>
+  <text class="dg-l" x="910" y="301" text-anchor="middle">apply</text>
+  <rect class="dg-box hl" x="930" y="282" width="200" height="54" rx="10"/>
+  <text class="dg-n" x="946" y="304">kube-apiserver</text>
+  <text class="dg-d" x="946" y="324">stores the state in etcd</text>
+
+  <!-- 5 · Kubernetes -->
+  <rect class="dg-box" x="225" y="370" width="205" height="54" rx="10"/>
+  <text class="dg-n" x="241" y="387">Deployment</text>
+  <text class="dg-d" x="241" y="404">api-java-gitops</text>
+  <text class="dg-d" x="241" y="418">replicas: 2 + template</text>
+  <path class="dg-arrow" d="M432 397H478" marker-end="url(#dgp-head)"/>
+  <text class="dg-l" x="455" y="389" text-anchor="middle">creates</text>
+  <rect class="dg-box" x="480" y="370" width="190" height="54" rx="10"/>
+  <text class="dg-n" x="496" y="387">ReplicaSet</text>
+  <text class="dg-d" x="496" y="404">one per version</text>
+  <text class="dg-d" x="496" y="418">keeps 2 Pods alive</text>
+  <path class="dg-arrow" d="M672 397H718" marker-end="url(#dgp-head)"/>
+  <text class="dg-l" x="695" y="389" text-anchor="middle">creates</text>
+  <rect class="dg-box pod" x="720" y="370" width="195" height="54" rx="10"/>
+  <text class="dg-n" x="736" y="387">Pod</text>
+  <text class="dg-d" x="736" y="404">java-api container</text>
+  <text class="dg-d" x="736" y="418">image 0.1.0 · :8080</text>
+  <rect class="dg-box pod" x="935" y="370" width="195" height="54" rx="10"/>
+  <text class="dg-n" x="951" y="387">Pod</text>
+  <text class="dg-d" x="951" y="404">java-api container</text>
+  <text class="dg-d" x="951" y="418">image 0.1.0 · :8080</text>
+
+  <!-- Image pull -->
+  <path class="dg-arrow dash" d="M1132 221H1170V397H1134" marker-end="url(#dgp-head)"/>
+  <text class="dg-l" x="1178" y="309" text-anchor="middle" transform="rotate(90 1178 309)">kubelet pulls the image</text>
+</svg>

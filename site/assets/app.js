@@ -1,39 +1,39 @@
 // Training page: renders site/content/<lang>.md as sections, with a table of
-// contents, a presentation mode and an instructor mode. Authoring conventions
+// contents and a presentation mode. Authoring conventions
 // are documented in site/README.md.
 (() => {
   'use strict';
 
-  const { $, $$, esc, store, fetchJSON, fetchText, pickLang, rememberLang, translate, bindLangSwitch, initTheme, formatDate } = window.GTL;
+  const { $, $$, esc, fetchJSON, fetchText, pickLang, rememberLang, translate, bindLangSwitch, initTheme, formatDate } = window.GTL;
 
   const UI = {
     es: {
       toc: 'Índice', contents: 'Contenido', language: 'Idioma', theme: 'Cambiar tema',
-      notes: 'Modo formador', present: 'Presentar', exit: 'Salir',
+      present: 'Presentar', exit: 'Salir',
       prev: 'Anterior', next: 'Siguiente', copy: 'Copiar', copied: 'Copiado',
       training: 'Formación', minutes: 'min', branch: 'Rama', start: 'Inicio',
-      allTrainings: 'Todas las formaciones', learner: 'Guía del alumno', runbook: 'Guion del formador',
-      source: 'Material en GitHub', edit: 'Editar esta página', instructorOnly: 'Solo formador',
-      keys: '← → navegar · N notas · F pantalla completa · T reiniciar tiempo · Esc salir',
+      allTrainings: 'Todas las formaciones', learner: 'Guía del alumno',
+      source: 'Material en GitHub', edit: 'Editar esta página',
+      keys: '← → navegar · F pantalla completa · Esc salir',
       fallback: 'Esta formación todavía no está traducida a este idioma; se muestra la versión original.',
       error: 'No se ha podido cargar el contenido de la formación.',
-      callout: { note: 'Nota', tip: 'Consejo', warning: 'Atención', important: 'Importante', caution: 'Cuidado', notes: 'Notas del formador', docs: 'Para saber más' },
+      callout: { note: 'Nota', tip: 'Consejo', warning: 'Atención', important: 'Importante', caution: 'Cuidado', docs: 'Para saber más' },
     },
     en: {
       toc: 'Contents', contents: 'Contents', language: 'Language', theme: 'Toggle theme',
-      notes: 'Instructor mode', present: 'Present', exit: 'Exit',
+      present: 'Present', exit: 'Exit',
       prev: 'Previous', next: 'Next', copy: 'Copy', copied: 'Copied',
       training: 'Training', minutes: 'min', branch: 'Branch', start: 'Start',
-      allTrainings: 'All trainings', learner: 'Learner guide', runbook: 'Instructor runbook',
-      source: 'Material on GitHub', edit: 'Edit this page', instructorOnly: 'Instructor only',
-      keys: '← → navigate · N notes · F fullscreen · T reset timer · Esc exit',
+      allTrainings: 'All trainings', learner: 'Learner guide',
+      source: 'Material on GitHub', edit: 'Edit this page',
+      keys: '← → navigate · F fullscreen · Esc exit',
       fallback: 'This training is not translated into this language yet; showing the original version.',
       error: 'The training content could not be loaded.',
-      callout: { note: 'Note', tip: 'Tip', warning: 'Warning', important: 'Important', caution: 'Caution', notes: 'Instructor notes', docs: 'Further reading' },
+      callout: { note: 'Note', tip: 'Tip', warning: 'Warning', important: 'Important', caution: 'Caution', docs: 'Further reading' },
     },
   };
 
-  const CUSTOM_BLOCKS = new Set(['flow', 'cards', 'steps']);
+  const CUSTOM_BLOCKS = new Set(['flow', 'cards', 'steps', 'row', 'compare']);
 
   const state = {
     meta: null,
@@ -43,8 +43,6 @@
     ui: UI.es,
     presenting: false,
     current: null,      // the section element being read or presented
-    timerStart: null,
-    timerId: null,
     idleId: null,
     observer: null,
     mdCache: {},
@@ -94,9 +92,9 @@
 
   function renderHero(introMd, missingLang) {
     const { meta, ui, lang } = state;
-    const link = (key, cls = '') => {
+    const link = (key) => {
       const path = meta.links?.[key]?.[lang] ?? meta.links?.[key]?.[meta.defaultLang];
-      return path ? `<a class="btn btn-ghost ${cls}" href="repo:${esc(path)}">${esc(ui[key])}</a>` : '';
+      return path ? `<a class="btn btn-ghost" href="repo:${esc(path)}">${esc(ui[key])}</a>` : '';
     };
     const el = document.createElement('section');
     el.className = 'slide hero';
@@ -113,31 +111,22 @@
       </ul>
       <div class="hero-links">
         ${link('learner')}
-        ${link('runbook', 'instructor-only')}
         <a class="btn btn-ghost" href="https://github.com/${esc(meta.repo)}/tree/${esc(state.branch)}">${esc(ui.source)}</a>
       </div>`;
     return el;
-  }
-
-  // A section label's trailing " · 13–18 min" is pacing for the instructor, not for the audience.
-  function labelHtml(label) {
-    const m = label.match(/^(.*?)(\s*·\s*\d+\s*[–-]\s*\d+\s*min)$/);
-    return m ? `${inline(m[1])}<span class="instructor-only">${inline(m[2])}</span>` : inline(label);
   }
 
   function renderSection(section, used) {
     const m = section.heading.match(/^(.*?)\s*\{([^}]*)\}\s*$/);
     const title = m ? m[1] : section.heading;
     const eyebrow = m ? m[2].trim() : '';
-    const instructor = /<!--\s*instructor\s*-->/.test(section.body);
     const el = document.createElement('section');
-    el.className = 'slide' + (instructor ? ' instructor-only' : '');
+    el.className = 'slide';
     el.id = slugify(title, used);
     el.dataset.toc = title;
     el.dataset.eyebrow = eyebrow;
-    const badge = instructor ? `<span class="instructor-badge">${esc(state.ui.instructorOnly)}</span>` : '';
     el.innerHTML = `
-      ${eyebrow || badge ? `<p class="eyebrow">${labelHtml(eyebrow)}${badge}</p>` : ''}
+      ${eyebrow ? `<p class="eyebrow">${inline(eyebrow)}</p>` : ''}
       <h2>${inline(title)}</h2>
       ${window.marked.parse(section.body)}`;
     return el;
@@ -217,12 +206,19 @@
     }));
   }
 
-  // ```flow / ```cards / ```steps: one "Title | text" item per line.
+  // ```flow / ```cards / ```steps / ```row: one "Title | text" item per line.
+  // ```compare: two "Title | point | point…" lines, what is left out and what is in.
   function customBlock(kind, text) {
-    const items = text.split('\n').map((l) => l.trim()).filter(Boolean).map((line) => {
-      const [title, ...rest] = line.split(' | ');
-      return { title: title.trim(), text: rest.join(' | ').trim() };
-    });
+    const lines = text.split('\n').map((l) => l.trim()).filter(Boolean).map((l) => l.split(' | ').map((p) => p.trim()));
+    if (kind === 'compare') {
+      const div = document.createElement('div');
+      div.className = 'compare';
+      div.innerHTML = lines.map(([title, ...points], i) => `
+        <div class="card ${i ? 'is-in' : 'is-out'}"><h3>${inline(title)}</h3>
+          <ul>${points.map((p) => `<li>${inline(p)}</li>`).join('')}</ul></div>`).join('');
+      return div;
+    }
+    const items = lines.map(([title, ...rest]) => ({ title, text: rest.join(' | ') }));
     if (kind === 'flow') {
       const ol = document.createElement('ol');
       ol.className = 'flow';
@@ -230,7 +226,7 @@
       return ol;
     }
     const div = document.createElement('div');
-    div.className = kind === 'steps' ? 'cards numbered' : 'cards';
+    div.className = { steps: 'cards numbered', row: 'cards row' }[kind] ?? 'cards';
     div.innerHTML = items.map((i) => `<div class="card"><h3>${inline(i.title)}</h3>${i.text ? `<p>${inline(i.text)}</p>` : ''}</div>`).join('');
     return div;
   }
@@ -334,9 +330,7 @@
 
   function renderToc() {
     const items = slides().map((s) => `
-      <li class="${s.classList.contains('instructor-only') ? 'instructor-only' : ''}">
-        <a href="#${s.id}" data-target="${s.id}">${inline(s.dataset.toc)}${s.dataset.eyebrow ? `<small>${labelHtml(s.dataset.eyebrow)}</small>` : ''}</a>
-      </li>`).join('');
+      <li><a href="#${s.id}" data-target="${s.id}">${inline(s.dataset.toc)}${s.dataset.eyebrow ? `<small>${inline(s.dataset.eyebrow)}</small>` : ''}</a></li>`).join('');
     toc.innerHTML = `<h2>${esc(state.ui.contents)}</h2><ol>${items}</ol>`;
     $$('a', toc).forEach((a) => a.addEventListener('click', (e) => {
       setTocOpen(false);
@@ -364,19 +358,12 @@
   }
 
   const slides = () => $$('.slide', main);
-  const notesOn = () => document.body.classList.contains('show-notes');
-  const visibleSlides = () => slides().filter((s) => notesOn() || !s.classList.contains('instructor-only'));
 
   // ---------- Presentation mode ----------
 
   function go(target) {
-    const list = visibleSlides();
-    let el = target;
-    if (!list.includes(el)) {
-      // The target is hidden (e.g. instructor-only with notes off): use the next visible one.
-      const all = slides();
-      el = list.find((s) => all.indexOf(s) >= all.indexOf(target)) ?? list[list.length - 1];
-    }
+    const list = slides();
+    const el = list.includes(target) ? target : list[0];
     state.current = el;
     slides().forEach((s) => s.classList.toggle('current', s === el));
     const i = list.indexOf(el);
@@ -414,7 +401,7 @@
   }
 
   function step(delta) {
-    const list = visibleSlides();
+    const list = slides();
     const i = Math.max(0, Math.min(list.length - 1, list.indexOf(state.current) + delta));
     go(list[i]);
   }
@@ -425,27 +412,14 @@
     if (on) {
       setTocOpen(false);
       go(state.current ?? slides()[0]);
-      state.timerStart ??= Date.now();
-      tick();
-      state.timerId = setInterval(tick, 1000);
       wake();
     } else {
-      clearInterval(state.timerId);
       clearTimeout(state.idleId);
       document.body.classList.remove('idle');
       slides().forEach((s) => s.classList.remove('current'));
       if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
       state.current?.scrollIntoView();
     }
-  }
-
-  function tick() {
-    const secs = Math.floor((Date.now() - state.timerStart) / 1000);
-    const fmt = (n) => `${String(Math.floor(n / 60)).padStart(2, '0')}:${String(n % 60).padStart(2, '0')}`;
-    const limit = (state.meta.minutes || 0) * 60;
-    const timer = $('#timer');
-    timer.textContent = limit ? `${fmt(secs)} / ${fmt(limit)}` : fmt(secs);
-    timer.classList.toggle('over', limit > 0 && secs > limit);
   }
 
   // Hide the control bar and cursor after a few seconds without movement.
@@ -460,13 +434,6 @@
     else document.documentElement.requestFullscreen?.().catch(() => {});
   }
 
-  function setNotes(on) {
-    document.body.classList.toggle('show-notes', on);
-    $('#notes-toggle').setAttribute('aria-pressed', String(on));
-    store.set('notes', on ? '1' : '0');
-    if (state.presenting) go(state.current);
-  }
-
   function setTocOpen(open) {
     document.body.classList.toggle('toc-open', open);
     $('#toc-toggle').setAttribute('aria-expanded', String(open));
@@ -478,7 +445,6 @@
     $('#exit').addEventListener('click', () => setPresenting(false));
     $('#prev').addEventListener('click', () => step(-1));
     $('#next').addEventListener('click', () => step(1));
-    $('#notes-toggle').addEventListener('click', () => setNotes(!notesOn()));
     $('#toc-toggle').addEventListener('click', () => setTocOpen(!document.body.classList.contains('toc-open')));
     $('#toc-scrim').addEventListener('click', () => setTocOpen(false));
     initTheme();
@@ -486,7 +452,6 @@
     document.addEventListener('keydown', (e) => {
       if (e.ctrlKey || e.metaKey || e.altKey || e.target.closest('input, textarea, select, [contenteditable]')) return;
       const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-      if (key === 'n') { setNotes(!notesOn()); return; }
       if (!state.presenting) {
         if (key === 'p') setPresenting(true);
         if (key === 'Escape') setTocOpen(false);
@@ -495,9 +460,8 @@
       const actions = {
         ArrowRight: () => step(1), PageDown: () => step(1), ' ': () => step(e.shiftKey ? -1 : 1),
         ArrowLeft: () => step(-1), PageUp: () => step(-1),
-        Home: () => go(visibleSlides()[0]), End: () => go(visibleSlides().at(-1)),
+        Home: () => go(slides()[0]), End: () => go(slides().at(-1)),
         Escape: () => setPresenting(false), f: toggleFullscreen,
-        t: () => { state.timerStart = Date.now(); tick(); },
       };
       if (actions[key]) {
         e.preventDefault();
@@ -528,7 +492,6 @@
 
   async function init() {
     bindControls();
-    if (store.get('notes') === '1') setNotes(true);
     try {
       if (!window.marked) throw new Error('marked.js did not load (CDN blocked?)');
       // Relative image paths in the Markdown are relative to content/, like the Markdown file itself.
@@ -543,7 +506,7 @@
       state.branch = state.build?.branch ?? `training/${state.meta.slug}`;
       const langs = state.meta.languages ?? [state.meta.defaultLang];
       await render(pickLang(langs, state.meta.defaultLang));
-      // ?present opens the page straight into presentation mode (handy as an instructor bookmark).
+      // ?present opens the page straight into presentation mode (handy as a bookmark).
       if (new URLSearchParams(location.search).has('present')) setPresenting(true);
     } catch (err) {
       console.error(err);
