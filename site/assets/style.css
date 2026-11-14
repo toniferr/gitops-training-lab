@@ -548,6 +548,8 @@ body.presenting .layout { display: block; }
 body.presenting main { padding: 0; }
 body.presenting .slide { display: none; }
 body.presenting .slide.current {
+  /* --base is the unscaled type size; --fit (set per slide by fitSlide() in app.js) shrinks the body to fit. */
+  --base: clamp(17px, 0.9vw + 9px, 27px);
   display: flex;
   flex-direction: column;
   max-width: none;
@@ -555,28 +557,26 @@ body.presenting .slide.current {
   height: 100dvh;
   overflow-y: auto;
   margin: 0;
-  padding: calc(5vh * var(--fit, 1)) max(24px, calc((100vw - 1400px) / 2)) 56px;
+  padding: 5vh max(24px, calc((100vw - 1400px) / 2)) 56px;
   border: 0;
-  /* --fit is set per slide by fitSlide() in app.js: it scales the slide down until it fits the screen. */
-  font-size: calc(clamp(17px, 0.9vw + 9px, 27px) * var(--fit, 1));
+  font-size: calc(var(--base) * var(--fit, 1));
 }
 /* Wider than 1228px the column grows up to 1400px, and the type grows with it in the same proportion,
    so every line still breaks where it did with the old 1180px column: same layout, just bigger. */
 @media (min-width: 1228px) {
-  body.presenting .slide.current { font-size: calc((2.764vw - 14px) * var(--fit, 1)); }
+  body.presenting .slide.current { --base: calc(2.764vw - 14px); }
 }
 @media (min-width: 1448px) {
-  body.presenting .slide.current { font-size: calc(clamp(20.17px, 1.0678vw + 10.678px, 32.03px) * var(--fit, 1)); }
+  body.presenting .slide.current { --base: clamp(20.17px, 1.0678vw + 10.678px, 32.03px); }
 }
 /* While measuring: no scrollbar, because its width would change how the text wraps and make the result depend on the order. */
 body.presenting.fitting .slide.current { overflow-y: hidden; }
 body.presenting .slide.current > * { flex-shrink: 0; }
-/* Auto margins centre short slides vertically without clipping the top of long ones. */
-body.presenting .slide.current > :first-child { margin-top: auto; }
-body.presenting .slide.current > :last-child { margin-bottom: auto; }
-body.presenting .slide h1 { font-size: 3.1em; }
-body.presenting .slide h2 { font-size: 2.1em; margin-bottom: 0.8em; }
-body.presenting .eyebrow { font-size: 0.7em; }
+/* Every slide starts at the top and its header (label + title) keeps the same size whatever --fit is,
+   so the header sits in exactly the same place on every slide; only the body below it shrinks. */
+body.presenting .slide h1 { font-size: calc(var(--base) * 3.1); }
+body.presenting .slide h2 { font-size: calc(var(--base) * 2.1); margin-bottom: 0.8em; }
+body.presenting .slide .eyebrow { font-size: calc(var(--base) * 0.7); }
 body.presenting .lead { font-size: 1.25em; }
 /* The hero subtitle stays on one line when presenting (the type scales with the column, so it always fits);
    on narrow screens it may wrap again, see the 900px breakpoint. */
