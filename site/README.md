@@ -16,7 +16,7 @@ Because each training branch is a frozen edition, its website is frozen with it:
 
 | Path | Purpose |
 | --- | --- |
-| `content/training.json` | Number, slug, titles, summary, duration and links of this training. |
+| `content/training.json` | Number, slug, titles, summary, duration and links of this training, plus an optional `event` (per language, e.g. company · date) shown above the title instead of "Training NN · N min". |
 | `content/es.md`, `content/en.md` | The session content, one file per language. A missing language falls back to `defaultLang`. |
 | `index.html`, `assets/app.js` | Training page: renders the Markdown, table of contents and presentation mode. |
 | `portal.html`, `assets/portal.js` | Portal page, published at the site root from `main` only. |

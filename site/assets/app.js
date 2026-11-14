@@ -102,7 +102,7 @@
     el.dataset.toc = ui.start;
     el.innerHTML = `
       ${missingLang ? `<aside class="callout callout-warning"><p>${esc(ui.fallback)}</p></aside>` : ''}
-      <p class="eyebrow">${esc(ui.training)} ${esc(meta.number)} · ${esc(meta.duration)} ${esc(ui.minutes)}</p>
+      <p class="eyebrow">${esc(meta.event ? localized(meta.event) : `${ui.training} ${meta.number} · ${meta.duration} ${ui.minutes}`)}</p>
       <h1>${esc(localized(meta.title))}</h1>
       <p class="lead">${esc(localized(meta.summary))}</p>
       ${window.marked.parse(introMd)}
