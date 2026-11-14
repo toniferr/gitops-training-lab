@@ -16,7 +16,7 @@ Cómo llega el software a ejecutarse, **no el software en sí**.
 
 ```compare
 Sí veremos | Kubernetes | Configuración como código (CaC) | CD con GitOps y Flux | Arquitectura de plataforma
-No veremos | Docker | Infraestructura como código (IaC) | CI | Lenguajes de programación | Interfaces de usuario ni hardware
+No veremos | Docker | Infraestructura como código (IaC) | CI | IA ni lenguajes de programación | Interfaces de usuario ni hardware
 ```
 
 ## Introducción {Contexto}
