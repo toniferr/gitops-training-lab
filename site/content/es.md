@@ -184,7 +184,7 @@ Flux reconcilia el estado revertido igual que cualquier otro commit, y el histor
 > - [`git revert`](https://git-scm.com/docs/git-revert)
 > - [Flux: `prune`](https://fluxcd.io/flux/components/kustomize/kustomizations/#prune)
 
-## Practica por tu cuenta {Alumnado}
+## Practica por tu cuenta {Si te pica el gusanillo}
 
 Repite el ejercicio completo en **tus propios forks**, con la [guía del alumno](repo:training/01-gitops-flux-foundations/learner-guide.es.md): fork de los repositorios, configuración inicial, bootstrap de Flux, ejercicios y rollback.
 
