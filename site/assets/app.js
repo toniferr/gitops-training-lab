@@ -377,19 +377,19 @@
     history.replaceState(history.state, '', `#${el.id}`);
   }
 
-  // Scales the current slide down just enough to fit the screen, so it never needs a scrollbar.
-  // Below MIN_FIT the text would be too small to read: the slide scrolls instead.
+  // Fits the current slide to the screen without a scrollbar, in two steps, so body text keeps the same size
+  // on every slide: first only diagrams and code blocks shrink (--fit); if that is not enough, the text
+  // shrinks too (--text-fit). Below MIN_FIT things would be too small to read: the slide scrolls instead.
   const MIN_FIT = 0.55;
 
   function fitSlide() {
     const el = state.current;
     if (!state.presenting || !el) return;
-    const fits = (scale) => {
-      el.style.setProperty('--fit', scale.toFixed(3));
+    const fitsWith = (prop) => (scale) => {
+      el.style.setProperty(prop, scale.toFixed(3));
       return el.scrollHeight <= el.clientHeight;
     };
-    document.body.classList.add('fitting');
-    if (!fits(1)) {
+    const shrink = (fits) => {
       let low = MIN_FIT;
       let high = 1;
       for (let i = 0; i < 7; i++) {
@@ -398,6 +398,13 @@
         else high = middle;
       }
       fits(low);
+    };
+    document.body.classList.add('fitting');
+    el.style.setProperty('--text-fit', '1');
+    const fitGraphics = fitsWith('--fit');
+    if (!fitGraphics(1)) {
+      if (fitGraphics(MIN_FIT)) shrink(fitGraphics);
+      else shrink(fitsWith('--text-fit')); // graphics stay at MIN_FIT
     }
     document.body.classList.remove('fitting');
   }

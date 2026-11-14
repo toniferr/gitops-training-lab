@@ -88,11 +88,9 @@ status | Estado **observado** por el clúster — lo que reporta `kubectl`.
 
 ## GitOps: Git como contrato operativo {Teoría}
 
-Git deja de ser solo historial y pasa a ser la entrada que el clúster obedece.
+Git pasa a ser la entrada que el clúster obedece, según [OpenGitOps](https://opengitops.dev/).
 
 ![Las cinco capas, de arriba abajo: 1, el código (pom.xml, src/, Dockerfile y k8s/ en java-api-gitops); 2, docker build crea una imagen OCI en dos etapas, build con Maven y runtime con el JRE 21; 3, docker push la publica en un registry como Docker Hub, GHCR o Amazon ECR; 4, el YAML de Git fija la etiqueta y Flux, con source-controller y kustomize-controller, lo aplica en kube-apiserver; 5, Kubernetes crea el Deployment, su ReplicaSet y dos Pods, y el kubelet descarga la imagen del registry](diagrams/gitops-pipeline.es.svg)
-
-Los cuatro principios de [OpenGitOps](https://opengitops.dev/):
 
 ```row
 Declarativo | Estado deseado, no pasos.
@@ -107,13 +105,13 @@ Reconciliación continua | Corrige el drift en cada intervalo.
 
 ## Cómo encaja todo: Git, Flux y Kubernetes {Nuestro escenario}
 
-[Flux](https://fluxcd.io/flux/) es un conjunto de controladores que viven **dentro** del clúster. Vigilan tus repositorios de Git y aplican en Kubernetes lo que encuentran, una y otra vez. Tú solo cambias Git, repartido en dos repositorios con responsabilidades separadas para que cada cambio sea **repetible y auditable**.
+[Flux](https://fluxcd.io/flux/) vive **dentro** del clúster: vigila Git y aplica lo que encuentra, una y otra vez. Tú solo cambias Git, en dos repos separados, para que cada cambio sea **repetible y auditable**.
 
-![Git, Flux y Kubernetes: haces push a GitHub; cac-gitops-platform le dice a Flux qué repositorios vigilar; source-controller hace pull de los dos; kustomize-controller aplica los manifiestos en kube-apiserver; Kubernetes ejecuta el Deployment, los Pods y el Service de java-api](diagrams/gitops-flux.es.svg "Si alguien cambia el clúster a mano, en el siguiente ciclo Flux lo devuelve a lo que dice Git.")
+![Git, Flux y Kubernetes: haces push a GitHub; cac-gitops-platform le dice a Flux qué repositorios vigilar; source-controller hace pull de los dos; kustomize-controller aplica los manifiestos en kube-apiserver; Kubernetes ejecuta el Deployment, los Pods y el Service de java-api](diagrams/gitops-flux.es.svg)
 
 ```row
-cac-gitops-platform | Qué corre en el clúster: bootstrap de Flux, el namespace `java-api` y qué aplicaciones vigila.
-java-api-gitops | La aplicación: código Spring Boot, `Dockerfile` y sus manifiestos (Deployment, Service y ConfigMap).
+cac-gitops-platform | Qué corre en el clúster: Flux, namespaces y apps vigiladas.
+java-api-gitops | La app: código, `Dockerfile` y manifiestos.
 ```
 
 > [!DOCS]
