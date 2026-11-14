@@ -33,6 +33,8 @@
   --warn-soft: #fdf1e2;
   --notes: #7a4fd6;
   --notes-soft: #f2ecff;
+  --oci: #0b7a85;
+  --oci-soft: #e2f4f6;
   --code-bg: #0f141d;
   --code-text: #e3e8f0;
   --code-border: #1e2533;
@@ -63,6 +65,8 @@
     --warn-soft: #2b1f0f;
     --notes: #b392ff;
     --notes-soft: #211a38;
+    --oci: #3cc3cf;
+    --oci-soft: #0d2528;
     --code-bg: #080b11;
     --code-border: #1c2230;
     --shadow: 0 1px 2px rgb(0 0 0 / 0.4);
@@ -87,6 +91,8 @@
   --warn-soft: #2b1f0f;
   --notes: #b392ff;
   --notes-soft: #211a38;
+  --oci: #3cc3cf;
+  --oci-soft: #0d2528;
   --code-bg: #080b11;
   --code-border: #1c2230;
   --shadow: 0 1px 2px rgb(0 0 0 / 0.4);
@@ -149,7 +155,6 @@ svg .fill { fill: currentColor; stroke: none; }
 .btn-primary:hover { background: var(--accent-strong); }
 .btn-ghost { border-color: var(--border); background: var(--surface); }
 .btn-ghost:hover, .icon-btn:hover { background: var(--surface-2); }
-.btn[aria-pressed="true"] { background: var(--notes-soft); border-color: var(--notes); color: var(--notes); }
 .btn svg { width: 17px; height: 17px; }
 .icon-btn { padding: 7px; }
 
@@ -207,7 +212,6 @@ svg .fill { fill: currentColor; stroke: none; }
 .toc a small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
 .toc a:hover { background: var(--surface-2); }
 .toc a[aria-current="true"] { background: var(--accent-soft); color: var(--accent); }
-.toc li.instructor-only a { border-left-color: var(--notes); border-radius: 0 8px 8px 0; }
 .toc-scrim { display: none; }
 
 main { min-width: 0; padding: 0 clamp(16px, 5vw, 64px) 96px; }
@@ -256,29 +260,6 @@ main:focus { outline: none; }
 .chip code { border: 0; background: none; padding: 0; color: var(--text); }
 .hero-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
 .hero-links a { text-decoration: none; }
-
-.instructor-badge {
-  display: inline-block;
-  margin-left: 8px;
-  padding: 1px 8px;
-  border-radius: 999px;
-  background: var(--notes-soft);
-  color: var(--notes);
-  letter-spacing: 0.04em;
-}
-
-body:not(.show-notes) .instructor-only,
-body:not(.show-notes) .callout-notes { display: none; }
-.slide.instructor-only { position: relative; }
-.slide.instructor-only::before {
-  content: "";
-  position: absolute;
-  left: -24px;
-  top: 56px;
-  bottom: 56px;
-  border-left: 3px dashed var(--notes);
-}
-body.presenting .slide.instructor-only::before { display: none; }
 
 /* ---------- Code ---------- */
 
@@ -364,7 +345,6 @@ tr:last-child td { border-bottom: 0; }
 }
 .callout-tip { --c: var(--tip); --c-soft: var(--tip-soft); }
 .callout-warning, .callout-caution, .callout-important { --c: var(--warn); --c-soft: var(--warn-soft); }
-.callout-notes { --c: var(--notes); --c-soft: var(--notes-soft); border-left-style: dashed; }
 
 /* > [!DOCS]: optional further reading, a quiet row of links at the foot of a section. */
 .callout-docs {
@@ -451,6 +431,32 @@ tr:last-child td { border-bottom: 0; }
 .card h3 { margin: 0 0 6px; font-size: 1.02em; }
 .card h3 a { color: inherit; text-decoration-color: var(--border); }
 .card p { margin: 0; color: var(--muted); font-size: 0.93em; line-height: 1.5; }
+.cards.row {
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 10px;
+}
+.cards.row .card { padding: 8px 12px; }
+.cards.row .card h3 { margin-bottom: 0; font-size: 0.82em; }
+.cards.row .card p { font-size: 0.76em; line-height: 1.4; }
+/* ```compare: what is left out (first column) and what is in (second). */
+.compare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 8px 0 24px;
+}
+.compare .card { border-top: 3px solid var(--c); }
+.compare .is-out { --c: var(--warn); }
+.compare .is-in { --c: var(--tip); }
+.compare h3 { color: var(--c); }
+.compare ul { list-style: none; margin: 0; padding: 0; }
+.compare li { position: relative; margin: 0.5em 0 0; padding-left: 1.5em; line-height: 1.4; }
+.compare li::before { position: absolute; left: 0; color: var(--c); font-weight: 700; }
+.compare .is-out li { color: var(--muted); }
+.compare .is-out li::before { content: "✕"; }
+.compare .is-in li::before { content: "✓"; }
 .cards.numbered .card { counter-increment: card; }
 .cards.numbered .card h3::before {
   content: counter(card);
@@ -486,17 +492,22 @@ tr:last-child td { border-bottom: 0; }
 .diagram .node { fill: var(--tip-soft); stroke: var(--tip); }
 .diagram .flux { fill: var(--notes-soft); stroke: var(--notes); }
 .diagram .git { fill: var(--warn-soft); stroke: var(--warn); }
+.diagram .oci { fill: var(--oci-soft); stroke: var(--oci); }
 .diagram .dg-box { fill: var(--surface); stroke: var(--border); stroke-width: 1.2; }
 .diagram .dg-box.hl { stroke: var(--accent); stroke-width: 2; }
 .diagram .dg-box.pod { stroke: var(--tip); stroke-width: 1.5; }
+.diagram .dg-box.img { stroke: var(--oci); stroke-width: 1.5; }
 .diagram .dg-note { fill: none; stroke: var(--border); stroke-width: 1.2; stroke-dasharray: 4 4; }
+.diagram .dg-ico { fill: none; stroke: var(--muted); stroke-width: 1.4; stroke-linejoin: round; }
 .diagram .dg-arrow { fill: none; stroke: var(--muted); stroke-width: 1.8; }
+.diagram .dg-arrow.dash { stroke-dasharray: 6 4; }
 .diagram .dg-head { fill: var(--muted); }
 .diagram text { font-family: var(--font); fill: var(--text); }
 .diagram .dg-t { font-size: 17px; font-weight: 600; }
 .diagram .dg-s { font-size: 13px; fill: var(--muted); }
 .diagram .dg-d { font-size: 12.5px; fill: var(--muted); }
 .diagram .dg-n { font-family: var(--mono); font-size: 14px; font-weight: 600; }
+.diagram .dg-m { font-family: var(--mono); font-size: 12px; fill: var(--muted); }
 .diagram .dg-l { font-size: 12.5px; font-weight: 600; fill: var(--accent); paint-order: stroke; stroke: var(--bg); stroke-width: 4px; }
 
 /* ---------- Footer ---------- */
@@ -535,9 +546,7 @@ body.presenting .slide.current {
   /* --fit is set per slide by fitSlide() in app.js: it scales the slide down until it fits the screen. */
   font-size: calc(clamp(17px, 0.9vw + 9px, 27px) * var(--fit, 1));
 }
-/* While measuring: speaker notes don't count, so the slide looks the same with instructor mode on or off,
-   and no scrollbar, because its width would change how the text wraps and make the result depend on the order. */
-body.presenting.fitting .callout-notes { display: none; }
+/* While measuring: no scrollbar, because its width would change how the text wraps and make the result depend on the order. */
 body.presenting.fitting .slide.current { overflow-y: hidden; }
 body.presenting .slide.current > * { flex-shrink: 0; }
 /* Auto margins centre short slides vertically without clipping the top of long ones. */
@@ -549,6 +558,7 @@ body.presenting .eyebrow { font-size: 0.7em; }
 body.presenting .lead { font-size: 1.25em; }
 body.presenting .code pre { font-size: 0.8em; }
 body.presenting .cards { grid-template-columns: repeat(auto-fit, minmax(13em, 1fr)); }
+body.presenting .cards.row { grid-template-columns: none; }
 body.presenting .copy, body.presenting .code .lang { display: none; }
 body.presenting .callout-docs { font-size: 0.75em; }
 body.presenting .diagram svg { max-height: calc(54vh * var(--fit, 1)); }
@@ -567,9 +577,6 @@ body.presenting .present-bar {
 .progress span { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.25s ease; }
 .present-controls { display: flex; align-items: center; gap: 10px; padding: 8px 16px; font-size: 13px; color: var(--muted); }
 .counter { font-variant-numeric: tabular-nums; min-width: 4.5em; text-align: center; }
-.timer { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--notes); }
-body:not(.show-notes) .timer { display: none; }
-.timer.over { color: var(--warn); }
 .keys { margin-left: auto; }
 #exit { margin-left: 8px; }
 
@@ -638,11 +645,12 @@ body.presenting.idle { cursor: none; }
   body.toc-open .toc { transform: none; box-shadow: var(--shadow); }
   body.toc-open .toc-scrim { display: block; position: fixed; inset: var(--topbar-h) 0 0 0; z-index: 24; background: rgb(0 0 0 / 0.35); }
   .flow { grid-auto-flow: row; gap: 26px; }
+  .cards.row, body.presenting .cards.row { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .flow li:not(:last-child)::after { top: auto; right: auto; bottom: -24px; left: 50%; transform: translateX(-50%) rotate(90deg); }
-  .slide.instructor-only::before { left: -10px; }
 }
 
 @media (max-width: 640px) {
+  .compare { grid-template-columns: 1fr; }
   .crumb, .brand span, .btn span { display: none; }
   .topbar { gap: 8px; padding: 0 12px; }
   .actions { gap: 6px; }

@@ -3,7 +3,6 @@
   "slug": "01-gitops-flux-foundations",
   "repo": "toniferr/gitops-training-lab",
   "duration": "25",
-  "minutes": 25,
   "defaultLang": "es",
   "languages": ["es", "en"],
   "title": {
@@ -18,10 +17,6 @@
     "learner": {
       "es": "training/01-gitops-flux-foundations/learner-guide.es.md",
       "en": "training/01-gitops-flux-foundations/learner-guide.md"
-    },
-    "runbook": {
-      "es": "training/01-gitops-flux-foundations/instructor-runbook.es.md",
-      "en": "training/01-gitops-flux-foundations/instructor-runbook.md"
     }
   }
 }

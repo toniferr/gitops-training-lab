@@ -42,6 +42,10 @@
   <text class="dg-n" x="44" y="214">java-api-gitops</text>
   <text class="dg-d" x="44" y="232">the app and its manifests</text>
 
+  <!-- The platform repo declares the app repo as a Flux source (apps-source.yaml) -->
+  <path class="dg-arrow dash" d="M48 172V190" marker-end="url(#dgg-head)"/>
+  <text class="dg-d" x="60" y="186">tells Flux what to watch</text>
+
   <!-- You change Git, never the cluster -->
   <rect class="dg-box" x="10" y="300" width="260" height="64" rx="12"/>
   <text class="dg-t" x="28" y="327">You</text>
@@ -60,7 +64,7 @@
 
   <rect class="dg-box" x="338" y="118" width="214" height="54" rx="10"/>
   <text class="dg-n" x="354" y="140">source-controller</text>
-  <text class="dg-d" x="354" y="158">fetches Git every 1 min</text>
+  <text class="dg-d" x="354" y="158">fetches both repos every 1 min</text>
 
   <rect class="dg-box" x="338" y="192" width="214" height="54" rx="10"/>
   <text class="dg-n" x="354" y="214">kustomize-controller</text>
@@ -68,10 +72,11 @@
 
   <path class="dg-arrow" d="M445 172V190" marker-end="url(#dgg-head)"/>
 
-  <!-- Flux pulls from Git -->
-  <path class="dg-arrow" d="M252 145H336" marker-end="url(#dgg-head)"/>
-  <path class="dg-arrow" d="M252 219C296 219 292 158 336 158" marker-end="url(#dgg-head)"/>
-  <text class="dg-l" x="284" y="136" text-anchor="middle">pull</text>
+  <!-- source-controller pulls each repo: GitRepository flux-system and GitRepository java-api -->
+  <path class="dg-arrow" d="M252 138H336" marker-end="url(#dgg-head)"/>
+  <text class="dg-l" x="294" y="130" text-anchor="middle">pull</text>
+  <path class="dg-arrow" d="M252 219H296V160H336" marker-end="url(#dgg-head)"/>
+  <text class="dg-l" x="274" y="211" text-anchor="middle">pull</text>
 
   <!-- Pull, not push -->
   <rect class="dg-note" x="610" y="56" width="320" height="116" rx="12"/>
