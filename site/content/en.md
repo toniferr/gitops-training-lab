@@ -46,7 +46,7 @@ The basis of GitOps: **the same pattern**, with Git as the input.
 ```flow
 YAML / spec | You declare what you want, not how.
 `kube-apiserver` | Validates it and stores it in `etcd` as desired state.
-`controller-manager` | Its controllers compare desired and actual, and act.
+`controller-manager` | Its controllers compare desired and actual, and create or delete Pods; the `scheduler` picks their node.
 Status | Reports the observed real state.
 ```
 
