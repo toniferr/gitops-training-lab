@@ -15,7 +15,7 @@ Contenido de la web de esta formación. Convenciones (ver site/README.md):
 Cómo llega el software a ejecutarse, **no el software en sí**.
 
 ```compare
-Sí veremos | Kubernetes | Configuración como código (CaC) | CD con GitOps y Flux | Terminal Linux | Git y GitHub
+Sí veremos | Kubernetes | Configuración como código (CaC) | CD con GitOps y Flux | Arquitectura de plataforma
 No veremos | Docker | Infraestructura como código (IaC) | CI | Lenguajes de programación | Interfaces de usuario ni hardware
 ```
 
