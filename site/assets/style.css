@@ -446,14 +446,22 @@ tr:last-child td { border-bottom: 0; }
 .cards.row .card { padding: 8px 12px; }
 .cards.row .card h3 { margin-bottom: 0; font-size: 0.82em; }
 .cards.row .card p { font-size: 0.76em; line-height: 1.4; }
-/* ```compare: what is left out (first column) and what is in (second). */
+/* ```compare: what is in (first column) and what is left out (second). Both cards share the parent's rows
+   (subgrid; --rows is set in app.js), so the points at the same position stay on the same line. */
 .compare {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: 0 16px;
   margin: 8px 0 24px;
 }
-.compare .card { border-top: 3px solid var(--c); }
+.compare .card {
+  display: grid;
+  grid-row: span var(--rows, 1);
+  grid-template-rows: subgrid;
+  align-content: start;
+  border-top: 3px solid var(--c);
+}
+.compare ul { display: contents; }
 .compare .is-out { --c: var(--warn); }
 .compare .is-in { --c: var(--tip); }
 .compare h3 { color: var(--c); }
@@ -570,6 +578,9 @@ body.presenting .slide h1 { font-size: 3.1em; }
 body.presenting .slide h2 { font-size: 2.1em; margin-bottom: 0.8em; }
 body.presenting .eyebrow { font-size: 0.7em; }
 body.presenting .lead { font-size: 1.25em; }
+/* The hero subtitle stays on one line when presenting (the type scales with the column, so it always fits);
+   on narrow screens it may wrap again, see the 900px breakpoint. */
+body.presenting .hero .lead { font-size: 1em; max-width: none; white-space: nowrap; }
 body.presenting .code pre { font-size: 0.8em; }
 body.presenting .cards { grid-template-columns: repeat(auto-fit, minmax(13em, 1fr)); }
 body.presenting .cards.row { grid-template-columns: none; }
@@ -659,12 +670,15 @@ body.presenting.idle { cursor: none; }
   body.toc-open .toc { transform: none; box-shadow: var(--shadow); }
   body.toc-open .toc-scrim { display: block; position: fixed; inset: var(--topbar-h) 0 0 0; z-index: 24; background: rgb(0 0 0 / 0.35); }
   .flow { grid-auto-flow: row; gap: 26px; }
+  body.presenting .hero .lead { white-space: normal; }
   .cards.row, body.presenting .cards.row { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .flow li:not(:last-child)::after { top: auto; right: auto; bottom: -24px; left: 50%; transform: translateX(-50%) rotate(90deg); }
 }
 
 @media (max-width: 640px) {
-  .compare { grid-template-columns: 1fr; }
+  .compare { grid-template-columns: 1fr; row-gap: 16px; }
+  .compare .card { grid-row: auto; grid-template-rows: none; }
+  .compare ul { display: block; }
   .crumb, .brand span, .btn span { display: none; }
   .topbar { gap: 8px; padding: 0 12px; }
   .actions { gap: 6px; }

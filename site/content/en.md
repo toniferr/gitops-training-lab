@@ -6,7 +6,7 @@ Content of this training's website. Conventions (see site/README.md):
 - "> [!NOTE]", "> [!TIP]", "> [!WARNING]" are callouts.
 - "> [!DOCS]" with a list of links: further reading, at the foot of the section.
 - ```flow, ```cards, ```steps and ```row blocks: one item per line, "Title | text".
-- ```compare block: two lines, "Title | point | point…"; the first is what is left out, the second what is in.
+- ```compare block: two lines, "Title | point | point…"; the first is what is in, the second what is left out.
 - "repo:path" links point to the file on GitHub, on the published branch.
 -->
 
@@ -15,21 +15,21 @@ Content of this training's website. Conventions (see site/README.md):
 How software gets to run, **not the software itself**.
 
 ```compare
-Not today | Docker | Programming languages | User interfaces or hardware | CI | IaC
-Today | Kubernetes | The Linux terminal | Git and GitHub | Configuration as code (CaC) | GitOps with Flux
+Today | Kubernetes | Configuration as code (CaC) | CD with GitOps and Flux | The Linux terminal | Git and GitHub
+Not today | Docker | Infrastructure as code (IaC) | CI | Programming languages | User interfaces or hardware
 ```
 
 ## Introduction {Context}
 
 - **Where:** IOPEDGE architecture, for Inditex
-- **Team:** IOP Turing Lee, after Alan Turing and Tim Berners-Lee
 - **What we provide:** a *locations* system where other teams deploy their workloads
 
-![Platform: the locations system spans the microservices, Azure (Cosmos DB, Event Hubs, Kubernetes…) and the store and warehouse clusters; Inditex teams release their versions with a push to Git and Flux reconciles those clusters automatically](diagrams/iopedge-platform.en.svg "Each team releases on its own: it pushes to Git and Flux reconciles automatically. That's what we'll see today, on a small scale, in a lab.")
+![Platform: the locations system spans the ITX microservices, Azure in Europe, Asia and America (Cosmos DB, Event Hubs, Kubernetes…) and the EDGE store and warehouse clusters, with their current state; Inditex teams release their versions with a push to Git and Flux reconciles those clusters automatically](diagrams/iopedge-platform.en.svg "Each team releases on its own: it pushes to Git and Flux reconciles automatically. That's what we'll see today, on a small scale, in a lab.")
 
 ## What is a Kubernetes cluster? {Theory}
 
-A **cluster** is a group of machines, called **nodes**, that work as if they were one. [Kubernetes](https://kubernetes.io/docs/concepts/overview/) is the software that coordinates them: you tell it *what* you want to run, and it decides *where* and keeps it running.
+A **cluster** is a group of machines, called **nodes**, that work as if they were one.\
+[Kubernetes](https://kubernetes.io/docs/concepts/overview/) coordinates them: you say *what* to run; it decides *where* and keeps it running.
 
 ![Kubernetes cluster: a control plane with kube-apiserver, etcd, scheduler and controller-manager, and two worker nodes with kubelet, containerd and Pods](diagrams/cluster.en.svg "A Pod is one or more containers that run together: the smallest unit in Kubernetes. In this lab, kind simulates the whole cluster on your laptop: each node is a Docker container inside WSL2.")
 
@@ -41,7 +41,7 @@ A **cluster** is a group of machines, called **nodes**, that work as if they wer
 
 ## Kubernetes doesn't run commands: it reconciles state {Theory}
 
-This idea sets up everything else: GitOps uses **the same pattern**, just with Git as a stable input.
+The basis of GitOps: **the same pattern**, with Git as the input.
 
 ```flow
 YAML / spec | You declare what you want, not how.
@@ -50,7 +50,7 @@ YAML / spec | You declare what you want, not how.
 Status | Reports the observed real state.
 ```
 
-The controller repeats this loop forever: compare `spec` with `status`, and act when they differ.
+The controller repeats this loop forever and acts when they differ.
 
 > [!DOCS]
 > - [Kubernetes concepts](repo:docs/en/reference/kubernetes-concepts.md)
