@@ -16,7 +16,7 @@ How software gets to run, **not the software itself**.
 
 ```compare
 Today | Kubernetes | Configuration as code (CaC) | CD with GitOps and Flux | Platform architecture
-Not today | Docker | Infrastructure as code (IaC) | CI | Programming languages | User interfaces or hardware
+Not today | Docker | Infrastructure as code (IaC) | CI | AI or programming languages | User interfaces or hardware
 ```
 
 ## Introduction {Context}
