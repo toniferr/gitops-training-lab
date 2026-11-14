@@ -3,6 +3,10 @@
   "slug": "01-gitops-flux-foundations",
   "repo": "toniferr/gitops-training-lab",
   "duration": "25",
+  "event": {
+    "es": "Softtek · 25 de noviembre de 2026",
+    "en": "Softtek · 25 November 2026"
+  },
   "defaultLang": "es",
   "languages": ["es", "en"],
   "title": {
