@@ -15,7 +15,7 @@ Content of this training's website. Conventions (see site/README.md):
 How software gets to run, **not the software itself**.
 
 ```compare
-Today | Kubernetes | Configuration as code (CaC) | CD with GitOps and Flux | The Linux terminal | Git and GitHub
+Today | Kubernetes | Configuration as code (CaC) | CD with GitOps and Flux | Platform architecture
 Not today | Docker | Infrastructure as code (IaC) | CI | Programming languages | User interfaces or hardware
 ```
 
