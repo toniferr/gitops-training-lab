@@ -12,11 +12,11 @@ Content of this training's website. Conventions (see site/README.md):
 
 ## What this talk is (and isn't) about {Scope}
 
-We talk about **how software gets to run** and stays that way, not about the software itself.
+How software gets to run, **not the software itself**.
 
 ```compare
-What we won't cover | Docker in depth: we use it, we don't explain it | Languages or frameworks: Java and Spring Boot are just the example | A specific application: the API is a pretext | User interfaces | Our software running on machines, stores or devices | CI pipelines or real production: cloud, security, high availability
-What we will cover | Kubernetes from scratch: cluster, Pods and Deployments | The Linux terminal: `kubectl`, `git` and `flux` in WSL | Git and GitHub as the source of truth | Configuration as code: declarative YAML, not manual steps | GitOps with Flux: a commit reaches the cluster on its own | Drift and rollback, always through Git
+Not today | Docker in depth | Java or Spring Boot | The app itself | User interfaces | Hardware or devices | CI or production
+Today | Kubernetes basics | The Linux terminal | Git and GitHub | Configuration as code | GitOps with Flux | Drift and rollback
 ```
 
 ## Introduction {Context}

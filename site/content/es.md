@@ -12,11 +12,11 @@ Contenido de la web de esta formación. Convenciones (ver site/README.md):
 
 ## De qué va esta charla (y de qué no) {Alcance}
 
-Hablamos de **cómo llega el software a ejecutarse** y se mantiene así, no del software en sí.
+Cómo llega el software a ejecutarse, **no el software en sí**.
 
 ```compare
-Lo que no veremos | Docker a fondo: lo usamos, no lo explicamos | Lenguajes ni frameworks: Java y Spring Boot son solo el ejemplo | Una aplicación concreta: la API es una excusa | Interfaces de usuario | Nuestro software funcionando en máquinas, tiendas o dispositivos | Pipelines de CI ni producción real: nube, seguridad, alta disponibilidad
-Lo que sí veremos | Kubernetes desde cero: clúster, Pods y Deployments | La terminal de Linux: `kubectl`, `git` y `flux` en WSL | Git y GitHub como fuente de verdad | Configuración como código: YAML declarativo, no pasos manuales | GitOps con Flux: un commit llega solo al clúster | Drift y rollback, siempre a través de Git
+No veremos | Docker a fondo | Java ni Spring Boot | La aplicación en sí | Interfaces de usuario | Hardware ni dispositivos | CI ni producción
+Sí veremos | Kubernetes básico | Terminal Linux | Git y GitHub | Configuración como código | GitOps con Flux | Drift y rollback
 ```
 
 ## Introducción {Contexto}
