@@ -15,8 +15,8 @@ Contenido de la web de esta formación. Convenciones (ver site/README.md):
 Cómo llega el software a ejecutarse, **no el software en sí**.
 
 ```compare
-No veremos | Docker a fondo | Java ni Spring Boot | La aplicación en sí | Interfaces de usuario | Hardware ni dispositivos | CI ni producción
-Sí veremos | Kubernetes básico | Terminal Linux | Git y GitHub | Configuración como código | GitOps con Flux | Drift y rollback
+No veremos | Docker | Lenguajes de programación | La aplicación en sí | Interfaces de usuario | Hardware ni dispositivos | CI | IaC
+Sí veremos | Kubernetes | Terminal Linux | Git y GitHub | Configuración como código (CaC) | GitOps con Flux
 ```
 
 ## Introducción {Contexto}
