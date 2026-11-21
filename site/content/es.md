@@ -87,7 +87,7 @@ La base de **GitOps**: **el mismo patrón**, con Git como entrada.\
 
 Git pasa a ser la entrada que el clúster obedece, según [OpenGitOps](https://opengitops.dev/).
 
-![Las cinco capas, de arriba abajo: 1, el código (pom.xml, src/, Dockerfile y k8s/ en java-api-gitops); 2, docker build crea una imagen OCI en dos etapas, build con Maven y runtime con el JRE 21; 3, docker push la publica en un registry como Docker Hub, GHCR o Amazon ECR; 4, el YAML de Git fija la etiqueta y Flux, con source-controller y kustomize-controller, lo aplica en kube-apiserver; 5, Kubernetes crea el Deployment, su ReplicaSet y dos Pods, y el kubelet descarga la imagen del registry](diagrams/gitops-pipeline.es.svg)
+![Las cinco capas, de arriba abajo: 1, código (CI); 2, imagen, con docker build (CI); 3, registry, con docker push (CI); 4, GitOps, Flux aplica Git en la API de Kubernetes (CD); 5, Kubernetes, lo que de verdad corre (CD), y el kubelet descarga la imagen del registry](diagrams/gitops-pipeline-simple.es.svg)
 
 ```row
 Declarativo | Estado deseado, no pasos.
@@ -182,6 +182,10 @@ Flux reconcilia el estado revertido igual que cualquier otro commit, y el histor
 > [!DOCS]
 > - [`git revert`](https://git-scm.com/docs/git-revert)
 > - [Flux: `prune`](https://fluxcd.io/flux/components/kustomize/kustomizations/#prune)
+
+## Cómo usas GitOps en tu día a día {Día a día}
+
+![Las cinco capas, de arriba abajo: 1, el código (pom.xml, src/, Dockerfile y k8s/ en java-api-gitops); 2, docker build crea una imagen OCI en dos etapas, build con Maven y runtime con el JRE 21; 3, docker push la publica en un registry como Docker Hub, GHCR o Amazon ECR; 4, el YAML de Git fija la etiqueta y Flux, con source-controller y kustomize-controller, lo aplica en kube-apiserver; 5, Kubernetes crea el Deployment, su ReplicaSet y dos Pods, y el kubelet descarga la imagen del registry](diagrams/gitops-pipeline.es.svg)
 
 ## Practica por tu cuenta {Si te pica el gusanillo}
 
