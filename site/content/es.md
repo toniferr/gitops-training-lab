@@ -21,7 +21,7 @@ No veremos | Docker | Infraestructura como código (IaC) | CI | IA ni lenguajes 
 
 ## Introducción {Contexto}
 
-- **Dónde:** arquitectura de IOPEDGE, para Inditex
+- **Dónde:** arquitectura de IOPEDGE
 - **Qué proveemos:** un sistema de *locations* donde otros equipos despliegan sus workloads
 
 ![Plataforma: el sistema de locations engloba los microservicios de ITX, Azure en Europa, Asia y América (Cosmos DB, Event Hubs, Kubernetes…) y los clústeres EDGE de tiendas y almacenes, con su estado actual; los equipos de Inditex sacan sus versiones con un push a Git y Flux reconcilia esos clústeres automáticamente](diagrams/iopedge-platform.es.svg "Cada equipo saca sus versiones por su cuenta: hace push a Git y Flux reconcilia automáticamente. Es lo que hoy veremos en pequeño, en un laboratorio.")
@@ -31,7 +31,7 @@ No veremos | Docker | Infraestructura como código (IaC) | CI | IA ni lenguajes 
 Un **clúster** es un grupo de máquinas, llamadas **nodos**, que trabajan como si fueran una sola.\
 [Kubernetes](https://kubernetes.io/docs/concepts/overview/) las coordina: tú dices *qué* ejecutar; él decide *dónde* y lo mantiene en marcha.
 
-![Clúster de Kubernetes: un plano de control con kube-apiserver, etcd, scheduler y controller-manager, y dos nodos worker con kubelet, containerd y Pods](diagrams/cluster.es.svg "Un Pod es uno o varios contenedores que se ejecutan juntos: la unidad mínima de Kubernetes. En este laboratorio, kind simula el clúster entero en tu portátil: cada nodo es un contenedor Docker dentro de WSL2.")
+![Clúster de Kubernetes: un plano de control con kube-apiserver, etcd, scheduler y controller-manager, y dos nodos worker con kubelet, containerd y Pods](diagrams/cluster.es.svg "Un Pod es uno o varios contenedores que se ejecutan juntos: la unidad mínima de Kubernetes.")
 
 > [!DOCS]
 > - [Kubernetes: componentes del clúster](https://kubernetes.io/docs/concepts/overview/components/)
@@ -39,46 +39,31 @@ Un **clúster** es un grupo de máquinas, llamadas **nodos**, que trabajan como 
 > - [Recorrido por el clúster Kind](repo:docs/es/reference/recorrido-cluster-kind.md)
 > - [Kind](https://kind.sigs.k8s.io/)
 
-## Kubernetes no ejecuta órdenes: reconcilia estado {Teoría}
-
-La base de GitOps: **el mismo patrón**, con Git como entrada.
-
-```flow
-YAML / spec | Declaras qué quieres, no cómo hacerlo.
-`kube-apiserver` | Lo valida y lo guarda en `etcd` como estado deseado.
-`controller-manager` | Sus controladores comparan deseado y real, y crean o borran Pods; el `scheduler` elige su nodo.
-Status | Reporta el estado real observado.
-```
-
-El controlador repite este ciclo sin fin y actúa si difieren.
-
-> [!DOCS]
-> - [Conceptos de Kubernetes](repo:docs/es/reference/conceptos-kubernetes.md)
-> - [Kubernetes: controladores](https://kubernetes.io/docs/concepts/architecture/controller/)
-> - [Kubernetes: objetos](https://kubernetes.io/docs/concepts/overview/working-with-objects/)
-
 ## Anatomía de un manifiesto {Teoría}
 
-Todo objeto cuenta la misma historia: quién soy, qué quiero, qué está ocurriendo.
+Un manifiesto es **configuración como código (CaC)**: quién soy, qué quiero, qué está ocurriendo.
 
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mi-app
-  labels:
-    app.kubernetes.io/name: mi-app
-spec:
-  replicas: 2            # lo que edita Git
-status:
-  availableReplicas: 2   # lo que reporta el clúster
+  name: api-java-gitops  # k8s/deployment.yaml de java-api-gitops (resumido)
+spec:                    # lo que edita Git
+  replicas: 2
+  template:
+    spec:
+      containers:
+        - name: java-api
+          image: gitops-lab/java-api:0.1.0
+status:                  # no está en Git: lo escribe el clúster
+  availableReplicas: 2
 ```
 
 ```cards
 apiVersion + kind | Tipo de contrato con Kubernetes.
 metadata | Nombre, labels, namespace.
 spec | Estado **deseado** por el equipo — lo que edita Git.
-status | Estado **observado** por el clúster — lo que reporta `kubectl`.
+status | Estado **observado** — lo escribe el clúster y lo ves con `kubectl`.
 ```
 
 > [!DOCS]
@@ -86,7 +71,19 @@ status | Estado **observado** por el clúster — lo que reporta `kubectl`.
 > - [Labels y selectores](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
 > - [Conceptos de Kubernetes](repo:docs/es/reference/conceptos-kubernetes.md)
 
-## GitOps: Git como contrato operativo {Teoría}
+## Kubernetes reconcilia estado {Teoría}
+
+La base de **GitOps**: **el mismo patrón**, con Git como entrada.\
+**Flux** es la herramienta para usar GitOps en Kubernetes.
+
+![Clúster de Kubernetes con dos entradas al kube-apiserver: tú pides un cambio, o Flux lo pide a partir del estado deseado que lee de Git](diagrams/reconcile.es.svg "El controller-manager compara sin fin el estado deseado y el real, y actúa si difieren.")
+
+> [!DOCS]
+> - [Conceptos de Kubernetes](repo:docs/es/reference/conceptos-kubernetes.md)
+> - [Kubernetes: controladores](https://kubernetes.io/docs/concepts/architecture/controller/)
+> - [Kubernetes: objetos](https://kubernetes.io/docs/concepts/overview/working-with-objects/)
+
+## Cómo encaja GitOps en CI/CD {Teoría}
 
 Git pasa a ser la entrada que el clúster obedece, según [OpenGitOps](https://opengitops.dev/).
 
@@ -103,9 +100,9 @@ Reconciliación continua | Corrige el drift en cada intervalo.
 > - [Principios de OpenGitOps](https://opengitops.dev/)
 > - [Flux: conceptos básicos](https://fluxcd.io/flux/concepts/)
 
-## Cómo encaja todo: Git, Flux y Kubernetes {Nuestro escenario}
+## DEMO: GitOps con Kind {Nuestro escenario}
 
-[Flux](https://fluxcd.io/flux/) vive **dentro** del clúster: vigila Git y aplica lo que encuentra, una y otra vez. Tú solo cambias Git, en dos repos separados, para que cada cambio sea **repetible y auditable**.
+Usaremos un clúster [**kind**](https://kind.sigs.k8s.io/) (Kubernetes en Docker, dentro de WSL2), [**Flux**](https://fluxcd.io/flux/) instalado en él y dos repos en **GitHub**.
 
 ![Git, Flux y Kubernetes: haces push a GitHub; cac-gitops-platform le dice a Flux qué repositorios vigilar; source-controller hace pull de los dos; kustomize-controller aplica los manifiestos en kube-apiserver; Kubernetes ejecuta el Deployment, los Pods y el Service de java-api](diagrams/gitops-flux.es.svg)
 
@@ -165,12 +162,16 @@ Kubernetes obedece el `scale` al instante porque no sabe que Git dice `1`. En la
 > - [Por qué funciona la corrección de drift](repo:docs/es/reference/arquitectura-flux.md#por-qué-funciona-la-corrección-de-drift)
 > - [`kubectl scale`](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_scale/)
 
-## Rollback por Git, y qué evitar {Cierre}
+## Demo 3 — Rollback por Git {Demo en vivo}
+
+Volver atrás es **otro commit**, no un cambio a mano en el clúster.
 
 ```bash
 git revert HEAD --no-edit
 git push
+
 flux reconcile kustomization java-api -n flux-system --with-source
+kubectl get deployment/api-java-gitops -n java-api   # vuelve a 2/2
 ```
 
 Flux reconcilia el estado revertido igual que cualquier otro commit, y el historial de lo ocurrido queda intacto.
@@ -184,7 +185,7 @@ Flux reconcilia el estado revertido igual que cualquier otro commit, y el histor
 
 ## Practica por tu cuenta {Si te pica el gusanillo}
 
-Repite el ejercicio completo en **tus propios forks**, con la [guía del alumno](repo:training/01-gitops-flux-foundations/learner-guide.es.md): fork de los repositorios, configuración inicial, bootstrap de Flux, ejercicios y rollback.
+Repite el ejercicio completo en **tus propios forks**: sigue [«Cómo empezar»](repo:README.es.md#cómo-empezar) del README, con una guía paso a paso y un inicio rápido.
 
 ```cards
 Fork | [`cac-gitops-platform`](https://github.com/toniferr/cac-gitops-platform) y [`java-api-gitops`](https://github.com/toniferr/java-api-gitops) en tu cuenta, desmarcando «Copy the `main` branch only».

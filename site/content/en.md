@@ -21,7 +21,7 @@ Not today | Docker | Infrastructure as code (IaC) | CI | AI or programming langu
 
 ## Introduction {Context}
 
-- **Where:** IOPEDGE architecture, for Inditex
+- **Where:** IOPEDGE architecture
 - **What we provide:** a *locations* system where other teams deploy their workloads
 
 ![Platform: the locations system spans the ITX microservices, Azure in Europe, Asia and America (Cosmos DB, Event Hubs, Kubernetes…) and the EDGE store and warehouse clusters, with their current state; Inditex teams release their versions with a push to Git and Flux reconciles those clusters automatically](diagrams/iopedge-platform.en.svg "Each team releases on its own: it pushes to Git and Flux reconciles automatically. That's what we'll see today, on a small scale, in a lab.")
@@ -31,7 +31,7 @@ Not today | Docker | Infrastructure as code (IaC) | CI | AI or programming langu
 A **cluster** is a group of machines, called **nodes**, that work as if they were one.\
 [Kubernetes](https://kubernetes.io/docs/concepts/overview/) coordinates them: you say *what* to run; it decides *where* and keeps it running.
 
-![Kubernetes cluster: a control plane with kube-apiserver, etcd, scheduler and controller-manager, and two worker nodes with kubelet, containerd and Pods](diagrams/cluster.en.svg "A Pod is one or more containers that run together: the smallest unit in Kubernetes. In this lab, kind simulates the whole cluster on your laptop: each node is a Docker container inside WSL2.")
+![Kubernetes cluster: a control plane with kube-apiserver, etcd, scheduler and controller-manager, and two worker nodes with kubelet, containerd and Pods](diagrams/cluster.en.svg "A Pod is one or more containers that run together: the smallest unit in Kubernetes.")
 
 > [!DOCS]
 > - [Kubernetes: cluster components](https://kubernetes.io/docs/concepts/overview/components/)
@@ -39,46 +39,31 @@ A **cluster** is a group of machines, called **nodes**, that work as if they wer
 > - [Kind cluster tour](repo:docs/en/reference/kind-cluster-tour.md)
 > - [Kind](https://kind.sigs.k8s.io/)
 
-## Kubernetes doesn't run commands: it reconciles state {Theory}
-
-The basis of GitOps: **the same pattern**, with Git as the input.
-
-```flow
-YAML / spec | You declare what you want, not how.
-`kube-apiserver` | Validates it and stores it in `etcd` as desired state.
-`controller-manager` | Its controllers compare desired and actual, and create or delete Pods; the `scheduler` picks their node.
-Status | Reports the observed real state.
-```
-
-The controller repeats this loop forever and acts when they differ.
-
-> [!DOCS]
-> - [Kubernetes concepts](repo:docs/en/reference/kubernetes-concepts.md)
-> - [Kubernetes: controllers](https://kubernetes.io/docs/concepts/architecture/controller/)
-> - [Kubernetes: objects](https://kubernetes.io/docs/concepts/overview/working-with-objects/)
-
 ## Anatomy of a manifest {Theory}
 
-Every object tells the same story: who I am, what I want, what is happening.
+A manifest is **configuration as code (CaC)**: who I am, what I want, what is happening.
 
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-app
-  labels:
-    app.kubernetes.io/name: my-app
-spec:
-  replicas: 2            # what Git edits
-status:
-  availableReplicas: 2   # what the cluster reports
+  name: api-java-gitops  # k8s/deployment.yaml in java-api-gitops (trimmed)
+spec:                    # what Git edits
+  replicas: 2
+  template:
+    spec:
+      containers:
+        - name: java-api
+          image: gitops-lab/java-api:0.1.0
+status:                  # not in Git: the cluster writes it
+  availableReplicas: 2
 ```
 
 ```cards
 apiVersion + kind | The kind of contract with Kubernetes.
 metadata | Name, labels, namespace.
 spec | State **desired** by the team — what Git edits.
-status | State **observed** by the cluster — what `kubectl` reports.
+status | State **observed** — the cluster writes it and you read it with `kubectl`.
 ```
 
 > [!DOCS]
@@ -86,7 +71,19 @@ status | State **observed** by the cluster — what `kubectl` reports.
 > - [Labels and selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
 > - [Kubernetes concepts](repo:docs/en/reference/kubernetes-concepts.md)
 
-## GitOps: Git as the operating contract {Theory}
+## Kubernetes reconciles state {Theory}
+
+The basis of **GitOps**: **the same pattern**, with Git as the input.\
+**Flux** is the tool for doing GitOps on Kubernetes.
+
+![Kubernetes cluster with two ways into the kube-apiserver: you request a change, or Flux requests it from the desired state it reads from Git](diagrams/reconcile.en.svg "The controller-manager keeps comparing desired and actual state, and acts when they differ.")
+
+> [!DOCS]
+> - [Kubernetes concepts](repo:docs/en/reference/kubernetes-concepts.md)
+> - [Kubernetes: controllers](https://kubernetes.io/docs/concepts/architecture/controller/)
+> - [Kubernetes: objects](https://kubernetes.io/docs/concepts/overview/working-with-objects/)
+
+## How GitOps fits into CI/CD {Theory}
 
 Git becomes the input the cluster obeys, following [OpenGitOps](https://opengitops.dev/).
 
@@ -103,9 +100,9 @@ Continuously reconciled | Corrects drift every interval.
 > - [OpenGitOps principles](https://opengitops.dev/)
 > - [Flux: core concepts](https://fluxcd.io/flux/concepts/)
 
-## How it all fits together: Git, Flux and Kubernetes {Our scenario}
+## DEMO: GitOps with Kind {Our scenario}
 
-[Flux](https://fluxcd.io/flux/) lives **inside** the cluster: it watches Git and applies what it finds, again and again. You only change Git, in two separate repos, so that every change is **repeatable and auditable**.
+We'll use a [**kind**](https://kind.sigs.k8s.io/) cluster (Kubernetes in Docker, inside WSL2), [**Flux**](https://fluxcd.io/flux/) installed in it and two repos on **GitHub**.
 
 ![Git, Flux and Kubernetes: you push to GitHub; cac-gitops-platform tells Flux which repositories to watch; source-controller pulls both; kustomize-controller applies the manifests to kube-apiserver; Kubernetes runs the java-api Deployment, Pods and Service](diagrams/gitops-flux.en.svg)
 
@@ -165,12 +162,16 @@ Kubernetes obeys the `scale` instantly because it doesn't know Git says `1`. On 
 > - [Why drift correction works](repo:docs/en/reference/flux-architecture.md#why-drift-correction-works)
 > - [`kubectl scale`](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_scale/)
 
-## Rollback through Git, and what to avoid {Wrap-up}
+## Demo 3 — Rollback through Git {Live demo}
+
+Going back is **another commit**, not a manual change in the cluster.
 
 ```bash
 git revert HEAD --no-edit
 git push
+
 flux reconcile kustomization java-api -n flux-system --with-source
+kubectl get deployment/api-java-gitops -n java-api   # back to 2/2
 ```
 
 Flux reconciles the reverted state like any other commit, and the history of what happened stays intact.
@@ -184,7 +185,7 @@ Flux reconciles the reverted state like any other commit, and the history of wha
 
 ## Practise on your own {If you've caught the bug}
 
-Repeat the whole exercise on **your own forks** with the [learner guide](repo:training/01-gitops-flux-foundations/learner-guide.md): forking the repositories, initial setup, Flux bootstrap, exercises and rollback.
+Repeat the whole exercise on **your own forks**: follow [Getting started](repo:README.md#getting-started) in the README, with a step-by-step guide and a quick start.
 
 ```cards
 Fork | [`cac-gitops-platform`](https://github.com/toniferr/cac-gitops-platform) and [`java-api-gitops`](https://github.com/toniferr/java-api-gitops) into your account, unticking "Copy the `main` branch only".
