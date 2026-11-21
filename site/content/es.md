@@ -87,7 +87,7 @@ La base de **GitOps**: **el mismo patrón**, con Git como entrada.\
 
 Git pasa a ser la entrada que el clúster obedece, según [OpenGitOps](https://opengitops.dev/).
 
-![Las cinco capas, de arriba abajo: 1, código (CI); 2, imagen, con docker build (CI); 3, registry, con docker push (CI); 4, GitOps, Flux aplica Git en la API de Kubernetes (CD); 5, Kubernetes, lo que de verdad corre (CD), y el kubelet descarga la imagen del registry](diagrams/gitops-pipeline-simple.es.svg)
+![Las cinco capas, de arriba abajo: 1, código (CI); 2, imagen, con docker build (CI); 3, registry, con docker push (CI); 4, GitOps, donde Flux hace pull de los manifiestos del código (CD); 5, Kubernetes, que los controladores ponen en marcha (CD), y el kubelet descarga la imagen del registry](diagrams/gitops-pipeline-simple.es.svg)
 
 ```row
 Declarativo | Estado deseado, no pasos.

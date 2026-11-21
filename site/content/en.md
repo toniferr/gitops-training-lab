@@ -87,7 +87,7 @@ The basis of **GitOps**: **the same pattern**, with Git as the input.\
 
 Git becomes the input the cluster obeys, following [OpenGitOps](https://opengitops.dev/).
 
-![The five layers, top to bottom: 1, code (CI); 2, image, with docker build (CI); 3, registry, with docker push (CI); 4, GitOps, Flux applies Git to the Kubernetes API (CD); 5, Kubernetes, what actually runs (CD), and the kubelet pulls the image from the registry](diagrams/gitops-pipeline-simple.en.svg)
+![The five layers, top to bottom: 1, code (CI); 2, image, with docker build (CI); 3, registry, with docker push (CI); 4, GitOps, where Flux pulls the manifests from the code (CD); 5, Kubernetes, which the controllers bring up (CD), and the kubelet pulls the image from the registry](diagrams/gitops-pipeline-simple.en.svg)
 
 ```row
 Declarative | Desired state, not steps.
