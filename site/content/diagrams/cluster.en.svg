@@ -27,8 +27,8 @@
 
   <!-- Who talks to the cluster -->
   <rect class="dg-box" x="10" y="119" width="124" height="68" rx="12"/>
-  <text class="dg-t" x="26" y="148">You or Flux</text>
-  <text class="dg-d" x="26" y="170">request changes</text>
+  <text class="dg-t" x="26" y="148">You</text>
+  <text class="dg-d" x="26" y="170">request a change</text>
 
   <!-- Cluster -->
   <rect class="dg-frame" x="160" y="10" width="790" height="430" rx="18"/>
